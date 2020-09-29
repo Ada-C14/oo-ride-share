@@ -41,5 +41,9 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "raises an error when end time is before start time" do
+
+    end
   end
 end

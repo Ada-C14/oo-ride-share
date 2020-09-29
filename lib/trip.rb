@@ -1,4 +1,5 @@
 require 'csv'
+require 'time'
 
 require_relative 'csv_record'
 
@@ -36,8 +37,17 @@ module RideShare
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
+
+      # raises an ArgumentError if the end time is before the start time
+      if @start_time >= @end_time
+        raise ArgumentError.new("invalid format! #{@end_time} end time is before the start time #{@start_time}")
+      end
+
     end
 
+
+
+    # ??
     def inspect
       # Prevent infinite loop when puts-ing a Trip
       # trip contains a passenger contains a trip contains a passenger...
