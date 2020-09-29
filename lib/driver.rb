@@ -2,14 +2,14 @@ require_relative 'csv_record'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :name, :phone_number, :trips
+    attr_reader :name, :name, :vin, :status, :trips
 
-    def initialize(id:, name:, vin:, status:, trips: [])
+    def initialize(id:, name:, vin:, status: :AVAILABLE, trips: [])
       super(id)
 
-      @name = name
-      @vin = vin
-      @status = status
+      @name = name.to_s
+      @vin = vin.to_s
+      @status = status.to_sym
       @trips = trips
 
       raise ArgumentError, 'Invalid vin number' if vin.length != 17
