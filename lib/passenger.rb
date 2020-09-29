@@ -15,6 +15,19 @@ module RideShare
     def add_trip(trip)
       @trips << trip
     end
+    # returns nil for empty trip array
+    def net_expenditures()
+      # ternary operator
+      return @trips.empty? ? nil : @trips.inject{ |total_cost, trip| total_cost + trip.cost }
+    end
+    # returns nil for empty trip array
+    def total_time_spent()
+      if @trips.empty?
+        return nil
+      else
+
+      end
+    end
 
     private
 

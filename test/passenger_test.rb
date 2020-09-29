@@ -69,6 +69,15 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    before do
+      @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
+    end
+    it "returns nil if no trips taken" do
+      expect(@passenger.net_expenditures).must_be_nil
+    end
+
+    it "returns the total amount of money spent across trips" do
+
+    end
   end
 end
