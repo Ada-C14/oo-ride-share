@@ -76,7 +76,7 @@ describe "Passenger class" do
           phone_number: "1-602-620-2330 x3723",
           trips: []
       )
-      trip_1 = RideShare::Trip.new(
+      @trip_1 = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
           start_time: Time.new(2016, 8, 8),
@@ -84,7 +84,7 @@ describe "Passenger class" do
           cost: 15,
           rating: 5
       )
-      trip_2 = RideShare::Trip.new(
+      @trip_2 = RideShare::Trip.new(
           id: 9,
           passenger: @passenger,
           start_time: Time.new(2016, 9, 10),
@@ -92,14 +92,18 @@ describe "Passenger class" do
           cost: 5,
           rating: 5
       )
-
-      @passenger.add_trip(trip_1)
-      @passenger.add_trip(trip_2)
     end
 
     # You add tests for the net_expenditures method
     it "returns correct total cost of passenger's trips" do
+      @passenger.add_trip(@trip_1)
+      @passenger.add_trip(@trip_2)
+
       expect(@passenger.net_expenditures).must_equal 20
+    end
+
+    it "returns nil if @trips is empty" do
+      expect(@passenger.net_expenditures).must_be_nil
     end
   end
 end
