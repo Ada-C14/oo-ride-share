@@ -16,6 +16,18 @@ module RideShare
       @trips << trip
     end
 
+    def net_expenditures
+      return 0 if @trips.empty?
+      total_expenditure = 0
+      @trips.each do |trip|
+        unless trip.cost.nil?
+          total_expenditure += trip.cost
+        end
+      end
+
+      return total_expenditure
+    end
+
     private
 
     def self.from_csv(record)
