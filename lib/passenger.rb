@@ -16,6 +16,24 @@ module RideShare
       @trips << trip
     end
 
+
+    def net_expenditures
+      if @trips.empty?
+        raise ArgumentError, 'This passenger has no trips'
+      else
+        return (@trips.map {|trip| trip.cost}).sum          #[trip1, trip2, trip3......] #[cost1, cost2, cost3.....]
+      end
+    end
+
+    def total_time_spent
+      if @trips.empty?
+        raise ArgumentError, 'This passenger has no trips'
+      else
+        return (@trips.map {|trip| trip.duration}).sum
+      end
+
+    end
+
     private
 
     def self.from_csv(record)
@@ -27,3 +45,4 @@ module RideShare
     end
   end
 end
+
