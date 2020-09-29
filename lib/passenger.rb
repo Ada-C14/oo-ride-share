@@ -19,13 +19,7 @@ module RideShare
     def net_expenditures
       return nil if @trips.empty?
 
-      total_cost = 0
-
-      @trips.each do |trip|
-        total_cost += trip.cost
-      end
-
-      return total_cost
+      return @trips.reduce(0) { |total_cost, trip| total_cost + trip.cost }
     end
 
     def total_time_spent
