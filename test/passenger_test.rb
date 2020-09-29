@@ -77,20 +77,24 @@ describe "Passenger class" do
           phone_number: "1-602-620-2330 x3723",
           trips: []
       )
+      start_time = Time.now - 60 * 60
+      end_time = start_time + 25 * 60
       trip = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
-          start_time: Time.new(2016, 8, 8),
-          end_time: Time.new(2016, 8, 9),
+          start_time: start_time,
+          end_time: end_time,
           rating: 5,
           cost: 22
 
       )
+      start_time = Time.now - 60 * 60
+      end_time = start_time + 40 * 60
       trip_2 = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
-          start_time: Time.new(2016, 8, 9),
-          end_time: Time.new(2016, 8, 10),
+          start_time: start_time,
+          end_time: end_time,
           rating: 4,
           cost: 15
       )
@@ -114,7 +118,8 @@ describe "Passenger class" do
       expect(@passenger.net_expenditures).must_equal 22 + 15
     end
 
-
-    # You add tests for the net_expenditures method
+    it "returns total trip duration for a passenger " do
+      expect(@passenger.total_time_spent).must_equal 3900
+    end
   end
 end
