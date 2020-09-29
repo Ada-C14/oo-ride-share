@@ -27,3 +27,7 @@ module RideShare
     end
   end
 end
+
+
+passenger_1.load_all
+csv_data.from_csv

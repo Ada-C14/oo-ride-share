@@ -61,7 +61,7 @@ module RideShare
     end
 
     def duration
-      return @end_time.to_i - @start_time.to_i
+      return (@end_time - @start_time).to_i
     end
 
     private
