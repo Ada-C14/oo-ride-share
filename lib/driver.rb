@@ -44,11 +44,11 @@ module RideShare
     end
 
     def total_revenue
-      # if @trips.empty?
-      #   return "Driver didn't take any trips"
-      # else
-      #    @trips.sum {|trip| trip.cost}
-      # end
+      if @trips.empty?
+        return 0
+      else
+         @trips.sum {|trip| trip.cost}
+      end
 
     end
 

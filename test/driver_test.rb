@@ -135,7 +135,62 @@ describe "Driver class" do
   end
 
   describe "total_revenue" do
+    before do
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+      @trip_1 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          rating: 5,
+          cost: 15,
+      )
+      @trip_2 = RideShare::Trip.new(
+          id: 9,
+          driver: @driver,
+          passenger_id: 4,
+          start_time: Time.new(2016, 9, 8),
+          end_time: Time.new(2016, 9, 9),
+          rating: 5,
+          cost: 10,
+          )
+      #@driver.add_trip(trip_1)
+    end
     # You add tests for the total_revenue method
-    it ""
+    it "returns an integer " do
+      @driver.add_trip(@trip_1)
+
+      #assert
+      expect(@driver.total_revenue).must_be_kind_of Integer
+    end
+
+    it "correctly calculates the total revenue" do
+      #arrange and act
+      @driver.add_trip(@trip_1)
+      @driver.add_trip(@trip_2)
+
+      #assert
+      expect(@driver.total_revenue).must_equal 25
+
+    end
+
+    it "returns zero if no driven trips" do
+      #arrange and act
+
+      # assert
+      expect(@driver.total_revenue).must_equal 0
+
+    end
+
+    #extra test
+    xit "must be a positive integer" do
+
+    end
+
   end
 end
