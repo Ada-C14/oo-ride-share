@@ -69,6 +69,19 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    # let block for creating passenger - for last 2 tests
+    it "returns 0 for empty array" do
+      # create instance of passenger with empty array!
+      expect(passengers.net_expenditures).must_equal 0
+    end
+
+    it "return numeric value" do
+      expect(@passengers.net_expenditures).must_be_kind_of Numeric
+    end
+
+    it "returns sum of all trip costs for passenger" do
+      expect(@passengers.net_expenditures).must_equal #calculate value and put it here!
+    end
+
   end
 end
