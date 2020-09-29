@@ -29,6 +29,8 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
+      raise ArgumentError, 'End time is before start time' if end_time < start_time
+
       @start_time = start_time
       @end_time = end_time
       @cost = cost
