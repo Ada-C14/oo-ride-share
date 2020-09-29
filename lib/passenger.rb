@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'csv_record'
 
 module RideShare
@@ -15,24 +17,20 @@ module RideShare
     def add_trip(trip)
       @trips << trip
     end
+
     # returns nil for empty trip array
-    def net_expenditures()
+    def net_expenditures
       # ternary operator + use of inject enumerable
-      return @trips.empty? ? nil : @trips.inject(0){ |total_cost, trip| total_cost + trip.cost }
+      @trips.empty? ? nil : @trips.inject(0) { |total_cost, trip| total_cost + trip.cost }
     end
+
     # returns nil for empty trip array
-    def total_time_spent()
-      if @trips.empty?
-        return nil
-      else
-
-      end
+    def total_time_spent
+      @trips.empty? ? nil : @trips.inject(0) { |total_time, trip| total_time + trip.trip_duration }
     end
-
-    private
 
     def self.from_csv(record)
-      return new(
+      new(
         id: record[:id],
         name: record[:name],
         phone_number: record[:phone_num]
