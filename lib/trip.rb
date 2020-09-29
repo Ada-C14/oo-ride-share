@@ -1,6 +1,7 @@
 require 'csv'
 
 require_relative 'csv_record'
+require 'time'
 
 module RideShare
   class Trip < CsvRecord
