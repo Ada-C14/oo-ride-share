@@ -12,6 +12,12 @@ describe "Trip class" do
           name: "Ada",
           phone_number: "412-432-7640"
         ),
+        driver: RideShare::Driver.new(
+          id: 2,
+          name: "Chris",
+          vin: "1B6CF40K1J3Y74UY2",
+          status: :AVAILABLE
+        ),
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
@@ -51,6 +57,12 @@ describe "Trip class" do
           id: 1,
           name: "Ada",
           phone_number: "412-432-7640"
+        ),
+        driver: RideShare::Driver.new(
+          id: 2,
+          name: "Chris",
+          vin: "1B6CF40K1J3Y74UY2",
+          status: :AVAILABLE
         ),
         start_time: start_time,
         end_time: end_time,

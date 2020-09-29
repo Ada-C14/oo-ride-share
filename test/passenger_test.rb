@@ -44,9 +44,17 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+      @driver = RideShare::Driver.new(
+        id: 2,
+        name: "Chris",
+        vin: "1B6CF40K1J3Y74UY2",
+        status: :AVAILABLE,
+        trips: []
+        )
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
+        driver: @driver,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         cost: 10.5,
@@ -78,9 +86,17 @@ describe "Passenger class" do
           phone_number: "1-602-620-2330 x3723",
           trips: []
       )
+      @driver = RideShare::Driver.new(
+        id: 2,
+        name: "Chris",
+        vin: "1B6CF40K1J3Y74UY2",
+        status: :AVAILABLE,
+        trips: []
+        )
       trip = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
+          driver: @driver,
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
           cost: 10.5,
@@ -89,6 +105,7 @@ describe "Passenger class" do
       trip_2 = RideShare::Trip.new(
           id: 9,
           passenger: @passenger,
+          driver: @driver,
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
           cost: 9,
@@ -113,9 +130,17 @@ describe "Passenger class" do
           phone_number: "1-602-620-2330 x3723",
           trips: []
       )
+      @driver = RideShare::Driver.new(
+        id: 2,
+        name: "Chris",
+        vin: "1B6CF40K1J3Y74UY2",
+        status: :AVAILABLE,
+        trips: []
+        )
       trip = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
+          driver: @driver,
           start_time: Time.parse("2018-12-27 01:39:05 -0800"),
           end_time: Time.parse("2018-12-27 02:39:05 -0800"),
           cost: 10.5,
@@ -124,6 +149,7 @@ describe "Passenger class" do
       trip_2 = RideShare::Trip.new(
           id: 9,
           passenger: @passenger,
+          driver: @driver,
           start_time: Time.parse("2018-12-27 01:39:05 -0800"),
           end_time: Time.parse("2018-12-27 01:59:05 -0800"),
           cost: 9,
