@@ -48,5 +48,9 @@ describe "Trip class" do
         RideShare::Trip.new(@trip_data)
       end.must_raise ArgumentError
     end
+
+    it 'returns duration of the trip' do
+      expect(@trip.duration).must_equal 1500
+    end
   end
 end
