@@ -41,5 +41,15 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "raises an error for an invalid time entry" do
+      start_time = Time.now - 60 * 60 # 60 minutes
+      end_time = start_time - 25 * 60 # 25 minutes
+      @trip_data[:start_time] = start_time
+      @trip_data[:end_time] = end_time
+      expect do
+        RideShare::Trip.new(@trip_data)
+      end.must_raise ArgumentError
+    end
   end
 end
