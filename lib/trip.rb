@@ -59,7 +59,7 @@ module RideShare
     end
 
     def trip_duration()
-
+      return @end_time - @start_time
     end
 
     def self.from_csv(record)
