@@ -123,4 +123,59 @@ describe "Passenger class" do
     end
 
   end
+
+  describe "total_time_spent return the total time" do
+    before do
+
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      trip1 = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          cost: 10,
+          rating: 5)
+
+      trip2 = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 6),
+          end_time: Time.new(2016, 8, 7),
+          cost: 5,
+          rating: 5
+      )
+
+      @passenger.add_trip(trip1)
+      @passenger.add_trip(trip2)
+    end
+
+    it "total_time_spent returns integer" do
+      expect(@passenger.total_time_spent).must_be_kind_of Integer
+    end
+
+    it "the total time is more than 0" do
+      expect(@passenger.total_time_spent).must_be :>, 0
+    end
+
+    it "it should total time spent" do
+      expect(@passenger.total_time_spent).must_equal 172800
+    end
+
+    it "raise an error if passenger has no trips" do
+      passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+
+      expect{passenger.total_time_spent}.must_raise ArgumentError
+    end
+  end
+
 end
