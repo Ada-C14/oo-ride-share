@@ -68,7 +68,59 @@ describe "Passenger class" do
     end
   end
 
-  describe "net_expenditures" do
+  describe "net_expenditures return the total amount of money" do
     # You add tests for the net_expenditures method
+    before do
+
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      trip1 = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          cost: 10,
+          rating: 5)
+
+      trip2 = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 6),
+          end_time: Time.new(2016, 8, 7),
+          cost: 5,
+          rating: 5
+      )
+
+      @passenger.add_trip(trip1)
+      @passenger.add_trip(trip2)
+    end
+
+    it "net_expenditures return integer" do
+      expect(@passenger.net_expenditures).must_be_kind_of Integer
+    end
+
+    it "the amount is more than 0" do
+      expect(@passenger.net_expenditures).must_be :>, 0
+    end
+
+    it "it should total net expenditure cost" do
+      expect(@passenger.net_expenditures).must_equal 15
+    end
+
+    it "raise an error if passenger has no trips" do
+      passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+
+      expect{passenger.net_expenditures}.must_raise ArgumentError
+    end
+
   end
 end

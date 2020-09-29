@@ -21,7 +21,7 @@ module RideShare
       if @trips.empty?
         raise ArgumentError, 'This passenger has no trips'
       else
-        return (@trips.map {|trip| trip.cost}).sum          #[trip1, trip2, trip3......] #[cost1, cost2, cost3.....]
+        return (@trips.map {|trip| trip.cost}).sum
       end
     end
 

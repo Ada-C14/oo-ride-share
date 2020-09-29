@@ -62,10 +62,8 @@ describe "Trip class" do
     end
 
     it "tests the duration of time" do
-
       expect(@trip.duration).must_be_instance_of Integer
       expect(@trip.duration).must_be :>, 0
-
     end
 
   end
