@@ -99,6 +99,17 @@ describe "Passenger class" do
       @passenger.add_trip(trip_2)
     end
 
+    it "returns nil if there are no trips" do
+      passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+
+      expect(passenger.net_expenditures).must_be_nil
+    end
+
     it "totals trip costs (multiple trips) for that passenger" do
       expect(@passenger.net_expenditures).must_equal 22 + 15
     end
