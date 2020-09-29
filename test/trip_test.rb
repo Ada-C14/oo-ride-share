@@ -20,6 +20,20 @@ describe "Trip class" do
       @trip = RideShare::Trip.new(@trip_data)
     end
 
+    it "Start time is greater than end time raises an error" do
+
+      @trip_data[:start_time] = Time.parse("2018-05-25 12:25:00 -0700")
+      @trip_data[:end_time] = Time.parse("2018-05-25 11:52:40 -0700")
+
+      expect do
+        RideShare::Trip.new(@trip_data)
+      end.must_raise ArgumentError
+    end
+
+    it "check duration of trip in seconds" do
+      expect(@trip.duration).must_equal 1500
+    end
+
     it "is an instance of Trip" do
       expect(@trip).must_be_kind_of RideShare::Trip
     end
