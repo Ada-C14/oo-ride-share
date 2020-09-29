@@ -5,7 +5,7 @@ require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver, :driver_id
 
     def initialize(
           id:,
@@ -14,8 +14,11 @@ module RideShare
           start_time:,
           end_time:,
           cost: nil,
-          rating:
+          rating:,
+          driver_id: nil,
+          driver: nil
         )
+
       super(id)
 
       if passenger
@@ -29,21 +32,36 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
+      #do the same as above for driver?
+      # if driver
+      #   @driver = driver
+      #   @driver_id = driver.id
+      # elsif driver_id
+      #   @driver_id = driver_id
+      # else
+      #   raise ArgumentError, 'Driver or driver_d is required'
+      # end
+
       @start_time = start_time
       @end_time = end_time
       @cost = cost
       @rating = rating
+      # @driver_id = driver_id
+      # @driver = driver
 
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
 
       #raise an agumenterror if end time is before the start time
-      if @start_time >= @end_time
+      if @start_time > @end_time
         raise ArgumentError.new("#{@end_time} end time is before the start time #{@start_time}")
       end
 
     end
+
+
+
 
     def inspect
       # Prevent infinite loop when puts-ing a Trip
@@ -54,17 +72,32 @@ module RideShare
         "start_time=#{start_time} " +
         "end_time=#{end_time} " +
         "cost=#{cost} " +
-        "rating=#{rating}>"
+        "rating=#{rating}> " +
+      "driver_id=#{driver&.id.inspect}"
     end
 
     def connect(passenger)
       @passenger = passenger
+      #@driver = driver
       passenger.add_trip(self)
+      #driver.add_trip(self)
     end
 
-    def trip_duration_in_secs
-      return @end_time - @start_time
+    def connect_driver(driver)
+      @driver = driver
+      driver.add_trip(self)
     end
+
+
+    def duration
+      duration_in_secs = @end_time - @start_time
+      return duration_in_secs
+    end
+
+
+    # def trip_duration_in_secs
+    #   return @end_time - @start_time
+    # end
 
     private
 
@@ -75,7 +108,8 @@ module RideShare
                start_time: Time.parse(record[:start_time]),
                end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
-               rating: record[:rating]
+               rating: record[:rating],
+               # driver_id: record[:driver_id],
              )
     end
   end

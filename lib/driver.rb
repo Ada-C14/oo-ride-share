@@ -27,6 +27,31 @@ module RideShare
 
     end
 
+    #TO-DO: create add_trip method
+    def add_trip(trip)
+      @trips << trip
+    end
+
+    def average_rating
+      if @trips.empty?
+        return 0
+      else
+        sum_rating = @trips.sum {|trip| trip.rating}
+        avg_rating = (sum_rating / @trips.size).to_f
+        return avg_rating
+      end
+
+    end
+
+    def total_revenue
+      # if @trips.empty?
+      #   return "Driver didn't take any trips"
+      # else
+      #    @trips.sum {|trip| trip.cost}
+      # end
+
+    end
+
     private
 
     def self.from_csv(record)

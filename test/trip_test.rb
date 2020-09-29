@@ -14,7 +14,13 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver: RideShare::Driver.new(
+            id: 2,
+            name: "Tram",
+            vin: "WBS76FYD47DJF7206",
+            status: :AVAILABLE
+        )
     }
     @trip = RideShare::Trip.new(@trip_data)
   end
@@ -41,25 +47,34 @@ describe "Trip class" do
       end
     end
 
-    # my test for
-    it "raises an error when end time is before start time" do
-      #arrange
-      @trip_data[:end_time] = @trip_data[:start_time] - 180 * 60
-      #act and assert
-      expect{
-        RideShare::Trip.new(@trip_data)
-      }.must_raise ArgumentError
+    it "raises an error for an invalid time (end time is before start time)" do
+      #act
+      @trip_data[:end_time] = @trip_data[:start_time] - 1
+      #assert
+      expect{ RideShare::Trip.new(@trip_data) }.must_raise ArgumentError
 
     end
 
+
+    # my test for
+    # it "raises an error when end time is before start time" do
+    #   #arrange
+    #   @trip_data[:end_time] = @trip_data[:start_time] - 180 * 60
+    #   #act and assert
+    #   expect{
+    #     RideShare::Trip.new(@trip_data)
+    #   }.must_raise ArgumentError
+    #
+    # end
+
   end
+
   describe "trip_duration_in_secs" do
-    it "should return the trip duration in secs" do
+    it "should return the accurate trip duration in secs" do
 
       trip_duration = @trip.end_time - @trip.start_time
-      test = @trip.trip_duration_in_secs
-
-      expect(test).must_equal trip_duration
+      #test = @trip.trip_duration_in_secs
+      expect(@trip.duration).must_equal trip_duration
 
     end
 

@@ -16,6 +16,19 @@ module RideShare
       @trips << trip
     end
 
+    # def net_expenditures
+    #   if @trips.empty?
+    #     return "this passenger took no trips"
+    #   end
+    #
+    #   array = []
+    #   @trips.each do |trip|
+    #     array << trip.cost
+    #   end
+    #   return array.sum
+    #
+    # end
+
     # return the toal amount of money passenger has spent of their trips
     # td.passengers.first.trips.sum {|trip| trip.cost}
     def net_expenditures
@@ -27,15 +40,25 @@ module RideShare
 
     end
 
-    # return the total amount of time spent has spent of their trips in secs?
     def total_time_spent
       if @trips.empty?
         return "Passenger didn't take any trips"
       else
-        return @trips.sum {|trip| trip.trip_duration_in_secs}
+        return @trips.sum {|trip| trip.duration}
       end
-
     end
+
+
+
+    # return the total amount of time spent has spent of their trips in secs?
+    # def total_time_spent
+    #   if @trips.empty?
+    #     return "Passenger didn't take any trips"
+    #   else
+    #     return @trips.sum {|trip| trip.trip_duration_in_secs}
+    #   end
+    #
+    # end
 
     private
 

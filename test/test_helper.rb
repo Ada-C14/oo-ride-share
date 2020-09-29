@@ -1,3 +1,4 @@
+require 'pry'
 require 'time'
 require 'minitest'
 require 'minitest/autorun'
