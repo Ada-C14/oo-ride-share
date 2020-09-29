@@ -17,12 +17,27 @@ module RideShare
       else
         raise ArgumentError, "This is a invalid status"
       end
-
-
     end
 
     def add_trip(trip)
       @trips << trip
+    end
+
+    def average_rating
+      if trips.length == 0
+        return 0
+      end
+
+      sum = @trips.sum {|trip| trip.rating}
+      average = sum / trips.length.to_f
+      average.round(1)
+    end
+
+    def total_revenue
+      sum = @trips.sum {|trip| trip.cost}
+      fee = 1.65 * trips.count
+      return 0.8 * sum - fee
+
     end
 
     private
