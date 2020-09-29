@@ -1,4 +1,5 @@
 require 'csv'
+require 'time'
 
 require_relative 'csv_record'
 
@@ -30,12 +31,19 @@ module RideShare
 
       @start_time = start_time
       @end_time = end_time
+
+      raise ArgumentError.new("Start time should occur before the end time") if @start_time > @end_time
       @cost = cost
       @rating = rating
 
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
+    end
+
+    def duration
+      duration = @end_time - @start_time
+      return duration.to_i
     end
 
     def inspect
@@ -46,7 +54,7 @@ module RideShare
         "passenger_id=#{passenger&.id.inspect} " +
         "start_time=#{start_time} " +
         "end_time=#{end_time} " +
-        "cost=#{cost} " +
+        "cost=#{cost}  " +
         "rating=#{rating}>"
     end
 
@@ -61,8 +69,8 @@ module RideShare
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
+               start_time: Time.parse(record[:start_time]),
+               end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating]
              )
