@@ -1,4 +1,6 @@
 require_relative 'csv_record'
+FEE = 1.65
+DRIVER_COMMISSION = 0.8
 
 module RideShare
   class Driver < CsvRecord
@@ -47,7 +49,9 @@ module RideShare
       if @trips.empty?
         return 0
       else
-         @trips.sum {|trip| trip.cost}
+        sum = @trips.sum {|trip| trip.cost}
+        total_earned = (sum * DRIVER_COMMISSION) - (@trips.size * FEE)
+        return total_earned
       end
 
     end

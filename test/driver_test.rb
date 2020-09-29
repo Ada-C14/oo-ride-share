@@ -136,6 +136,7 @@ describe "Driver class" do
 
   describe "total_revenue" do
     before do
+      FEE = 1.65
       @driver = RideShare::Driver.new(
           id: 54,
           name: "Rogers Bartell IV",
@@ -162,11 +163,11 @@ describe "Driver class" do
       #@driver.add_trip(trip_1)
     end
     # You add tests for the total_revenue method
-    it "returns an integer " do
+    it "returns an float " do
       @driver.add_trip(@trip_1)
 
       #assert
-      expect(@driver.total_revenue).must_be_kind_of Integer
+      expect(@driver.total_revenue).must_be_kind_of Float
     end
 
     it "correctly calculates the total revenue" do
@@ -175,20 +176,18 @@ describe "Driver class" do
       @driver.add_trip(@trip_2)
 
       #assert
-      expect(@driver.total_revenue).must_equal 25
+      expect(@driver.total_revenue).must_be_close_to ((10 + 15 ) * 0.8) - (2 * FEE), 0.01
 
     end
 
     it "returns zero if no driven trips" do
-      #arrange and act
-
       # assert
       expect(@driver.total_revenue).must_equal 0
 
     end
 
     #extra test
-    xit "must be a positive integer" do
+    xit "must be a positive number" do
 
     end
 
