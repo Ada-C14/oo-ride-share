@@ -70,5 +70,24 @@ describe "Passenger class" do
 
   describe "net_expenditures" do
     # You add tests for the net_expenditures method
+    it "total amount that passenger spent on trips" do
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          cost: 31,
+          rating: 5
+      )
+
+      @passenger.add_trip(trip)
+      expect(@passenger.net_expenditures).must_equal 31
+    end
   end
 end
