@@ -106,4 +106,41 @@ describe "Passenger class" do
       expect(@passenger.net_expenditures).must_equal 0.00
     end
   end
+
+  describe "total_time_spent" do
+    before do
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+    end
+
+    it "calculates the total amount spent on all trips for a passenger" do
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 9, 01, 03, 00),
+          end_time: Time.new(2016, 8, 9, 02, 00, 00),
+          cost: 20,
+          rating: 5
+      )
+      @passenger.add_trip(trip)
+      trip_2 = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8, 12, 00, 00),
+          end_time: Time.new(2016, 8, 8, 12, 03, 00),
+          cost: 10,
+          rating: 5
+      )
+      @passenger.add_trip(trip_2)
+      expect(@passenger.total_time_spent).must_equal 3600
+    end
+
+    it "returns 0 if the passenger has no trips" do
+      expect(@passenger.total_time_spent).must_equal 0
+    end
+  end
 end

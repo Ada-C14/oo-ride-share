@@ -22,6 +22,12 @@ module RideShare
       return all_trip_cost
     end
 
+    def total_time_spent
+      all_time_spent = 0.00
+      @trips.map { |trip| all_time_spent += trip.duration}
+      return all_time_spent
+    end
+
     private
 
     def self.from_csv(record)
