@@ -68,7 +68,40 @@ describe "Passenger class" do
     end
   end
 
-  describe "net_expenditures" do
+  describe "trip analysis" do
+    before do
+      @no_rider = RideShare::Passenger.new(id: 2398, name: "Ripley", phone_number: 382-293-2938, trips: [])
+
+      start_time = Time.parse("2020-09-28 14:20:00")
+      end_time = Time.parse("2020-09-28 15:00:00")
+      start_time_2 = Time.parse("2020-09-27 14:20:00")
+      end_time_2 = Time.parse("2020-09-27 15:00:00")
+      @passenger = RideShare::Passenger.new(id: 6, name: "Jane Fonda", phone_number: 602-233-6200, trips: [])
+      trip1 = RideShare::Trip.new(id: 2398, passenger_id: 6, start_time: start_time, end_time: end_time, cost: 100, rating: 4)
+      trip2 = RideShare::Trip.new(id: 2398, passenger_id: 6, start_time: start_time_2, end_time: end_time_2, cost: 200, rating: 2)
+      @passenger.add_trip(trip1)
+      @passenger.add_trip(trip2)
+    end
+
+    describe "net_expenditures" do
+      it "adds up all costs for passenger's trips" do
+        expect(@passenger.net_expenditures).must_equal 300
+    end
+
+      it "raises error if passenger has no trips" do
+        expect { @no_rider.net_expenditures }.must_raise ArgumentError
+      end
     # You add tests for the net_expenditures method
+    end
+
+    describe "total_time_spent" do
+      it "raises error if passenger has no trips" do
+        expect { @no_rider.total_time_spent }.must_raise ArgumentError
+      end
+
+      it "adds up all the time for a passenger's trips" do
+        expect(@passenger.total_time_spent).must_equal 4800
+      end
+    end
   end
 end
