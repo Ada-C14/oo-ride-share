@@ -35,7 +35,7 @@ module RideShare
       @rating = rating
 
       if @end_time < @start_time
-        raise ArgumentError, 'Invalid. End time is before Start time.'
+        raise ArgumentError, 'End time cannot be before Start time.'
       end
 
       if @rating > 5 || @rating < 1
