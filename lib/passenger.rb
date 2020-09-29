@@ -21,6 +21,11 @@ module RideShare
       @trips.reduce(0) {|total, trip| total + trip.cost}
     end
 
+    def total_time_spent
+      return nil if @trips.empty?
+      @trips.reduce(0){ |total_time, trip| total_time + trip.duration}
+    end
+
     private
 
     def self.from_csv(record)
