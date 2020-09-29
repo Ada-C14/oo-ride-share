@@ -3,14 +3,16 @@ require 'time'
 
 require_relative 'passenger'
 require_relative 'trip'
+require_relative 'driver'
 
 module RideShare
   class TripDispatcher
     attr_reader :drivers, :passengers, :trips
 
     def initialize(directory: './support')
-      @passengers = Passenger.load_all(directory: directory)
-      @trips = Trip.load_all(directory: directory)
+      @passengers = Passenger.load_all(directory: directory) # => returns an array of passenger instances and stores it into @passengers instance variable
+      @trips = Trip.load_all(directory: directory) # => returns an array of trip instances and stores it into @trips instance variable
+      @drivers = Driver.load_all(directory: directory)
       connect_trips
     end
 

@@ -70,5 +70,99 @@ describe "Passenger class" do
 
   describe "net_expenditures" do
     # You add tests for the net_expenditures method
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      @trip_1 = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8), # => 2016-08-08 00:00:00 -0500
+          end_time: Time.new(2016, 8, 9),
+          rating: 5,
+          cost: 15
+      )
+
+      @trip_2 = RideShare::Trip.new(
+          id: 9,
+          passenger: @passenger,
+          start_time: Time.new(2016, 10, 8),
+          end_time: Time.new(2016, 10, 9),
+          rating: 4,
+          cost: 10
+      )
+
+      # @passenger.add_trip(trip)
+      # @passenger.add_trip(trip_2)
+      # there are two trips in the passenger instance now
+    end
+
+    it "returns the right cost " do
+      #arrange
+      @passenger.add_trip(@trip_1)
+      @passenger.add_trip(@trip_2)
+      passenger_total_cost = @passenger.net_expenditures
+
+      #act and assert
+      expect(passenger_total_cost).must_equal 25
+    end
+
+    it "handles when passenger took no trips " do
+      passenger_total_cost = @passenger.net_expenditures
+
+      expect(passenger_total_cost).must_equal "Passenger didn't take any trips"
+
+    end
+
+  end
+
+  describe "total_time_spent" do
+    before do
+    @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+    )
+    @trip_1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 9, 4, 20), # => 2016-08-09 04:20:00 -0500
+        end_time: Time.new(2016, 8, 9, 4, 30), #=> 600 seconds
+        rating: 5,
+        cost: 15
+    )
+
+    @trip_2 = RideShare::Trip.new(
+        id: 9,
+        passenger: @passenger,
+        start_time: Time.new(2016, 10, 8, 10, 15),
+        end_time: Time.new(2016, 10, 8, 10, 20), #=> 5 mins, or 300 seconds
+        rating: 4,
+        cost: 10
+    )
+    end
+
+    it "returns the total duration of passenger spent of their trips" do
+      @passenger.add_trip(@trip_1)
+      @passenger.add_trip(@trip_2)
+
+      passenger_total_duration = @passenger.total_time_spent
+
+      expect(passenger_total_duration).must_equal 900
+
+    end
+
+    it "handles when passenger took no trips " do
+      passenger_total_duration = @passenger.total_time_spent
+
+      expect(passenger_total_duration).must_equal "Passenger didn't take any trips"
+
+    end
+
   end
 end
