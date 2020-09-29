@@ -62,16 +62,9 @@ describe "Trip class" do
     end
 
     it "tests the duration of time" do
-      trip = RideShare::Trip.new( id: 3,
-      #passenger:passenger,
-      passenger_id: 54,
-          start_time:Time.parse('2018-12-27 05:39:05'),
-          end_time:Time.parse('2018-12-27 03:38:08'),
-          cost:12,
-          rating:4 )
 
-      expect(trip.duration).must_be_instance_of Integer
-      expect(trip.duration > 0).must_be true
+      expect(@trip.duration).must_be_instance_of Integer
+      expect(@trip.duration).must_be :>, 0
 
     end
 
