@@ -68,7 +68,105 @@ describe "Passenger class" do
     end
   end
 
-  describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+  describe "net expenditures" do
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+    end
+
+    let (:trip_1) {
+      RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          cost: 30,
+          rating: 5
+      )
+    }
+
+    let (:trip_2) {
+      RideShare::Trip.new(
+          id: 10,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          cost: 15,
+          rating: 5
+      )
+    }
+
+    it "returns instance of Integer" do
+      @passenger.add_trip(trip_1)
+      @passenger.add_trip(trip_2)
+
+      expect(@passenger.net_expenditures).must_be_instance_of Integer
+    end
+
+    it "calculates the correct net expenditures" do
+      @passenger.add_trip(trip_1)
+      @passenger.add_trip(trip_2)
+
+      expect(@passenger.net_expenditures).must_equal 45
+    end
+
+    it "returns 0 if passenger has no trips" do
+     expect(@passenger.net_expenditures).must_equal 0
+    end
+  end
+
+  describe "total time spent" do
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+    end
+
+    let (:trip_1) {
+      RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.parse("16:30"),
+          end_time: Time.parse("17:30"),
+          rating: 5
+      )
+    }
+
+    let (:trip_2) {
+      RideShare::Trip.new(
+          id: 10,
+          passenger: @passenger,
+          start_time: Time.parse("10:15"),
+          end_time: Time.parse("10:45"),
+          rating: 5
+      )
+    }
+
+    it "returns instance of Float" do
+      @passenger.add_trip(trip_1)
+      @passenger.add_trip(trip_2)
+
+      expect(@passenger.total_time_spent).must_be_instance_of Float
+    end
+
+    it "calculates the total time for all trips" do
+      @passenger.add_trip(trip_1)
+      @passenger.add_trip(trip_2)
+
+      expect(@passenger.total_time_spent).must_equal 5400.0
+    end
+
+    it "returns 0 if passenger has no trips" do
+      expect(@passenger.total_time_spent).must_equal 0
+    end
   end
 end
