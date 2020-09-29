@@ -34,7 +34,6 @@ describe "Passenger class" do
     end
   end
 
-
   describe "trips property" do
     before do
       # TODO: you'll need to add a driver at some point here.
@@ -47,8 +46,9 @@ describe "Passenger class" do
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
+        start_time: Time.new(2016, 8, 8, 9, 25, 25),
+        end_time: Time.new(2016, 8, 8, 9, 35, 25),
+        cost: 13.55,
         rating: 5
         )
 
@@ -66,9 +66,15 @@ describe "Passenger class" do
         expect(trip.passenger.id).must_equal 9
       end
     end
-  end
 
-  describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    it "net_expenditures" do
+      # You add tests for the net_expenditures method
+      expect(@passenger.net_expenditures).must_equal 13.55
+    end
+
+    it "total time spent" do
+      # You add tests for the net_expenditures method
+      expect(@passenger.total_time_spent).must_equal 600
+    end
   end
 end
