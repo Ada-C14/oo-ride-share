@@ -1,4 +1,5 @@
 require 'csv'
+require 'time'
 
 require_relative 'csv_record'
 
@@ -15,7 +16,7 @@ module RideShare
           cost: nil,
           rating:
         )
-      super(id)
+      super(id) #super class csv record inherits from csv initialize method self.class.validate_id(id)
 
       if passenger
         @passenger = passenger
@@ -30,6 +31,9 @@ module RideShare
 
       @start_time = start_time
       @end_time = end_time
+
+      raise ArgumentError, "End time cannot be before start time." if @end_time < @start_time
+
       @cost = cost
       @rating = rating
 
@@ -41,7 +45,7 @@ module RideShare
     def inspect
       # Prevent infinite loop when puts-ing a Trip
       # trip contains a passenger contains a trip contains a passenger...
-      "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
+      "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " + #conver object id to hexidecimal (memory address)
         "id=#{id.inspect} " +
         "passenger_id=#{passenger&.id.inspect} " +
         "start_time=#{start_time} " +
@@ -50,9 +54,13 @@ module RideShare
         "rating=#{rating}>"
     end
 
-    def connect(passenger)
+    def connect(passenger) # takes an instance of passenger
       @passenger = passenger
-      passenger.add_trip(self)
+      passenger.add_trip(self) # adds the instance of trip to passenger's trips array
+    end
+
+    def get_duration # return duration of trip in seconds
+      return @end_time - @start_time
     end
 
     private
@@ -61,8 +69,8 @@ module RideShare
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
+               start_time: Time.parse(record[:start_time]),
+               end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating]
              )
