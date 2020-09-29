@@ -45,6 +45,9 @@ describe "Trip class" do
       }.must_raise ArgumentError
     end
 
+    it "returns the duration of the trip in seconds" do
+      expect(@trip.duration).must_equal 25 * 60
+    end
 
     it "stores an instance of passenger" do
       expect(@trip.passenger).must_be_kind_of RideShare::Passenger
