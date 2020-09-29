@@ -46,6 +46,7 @@ describe "Passenger class" do
         )
       trip = RideShare::Trip.new(
         id: 8,
+        driver_id: 4,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
@@ -82,6 +83,7 @@ describe "Passenger class" do
     it "returns the total spent by a passenger on trips" do
       trip = RideShare::Trip.new(
           id: 8,
+          driver_id: 4,
           passenger: @passenger,
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
@@ -91,6 +93,7 @@ describe "Passenger class" do
       @passenger.add_trip(trip)
       trip_2 = RideShare::Trip.new(
           id: 8,
+          driver_id: 5,
           passenger: @passenger,
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
@@ -120,6 +123,7 @@ describe "Passenger class" do
     it "calculates the total amount spent on all trips for a passenger" do
       trip = RideShare::Trip.new(
           id: 8,
+          driver_id: 4,
           passenger: @passenger,
           start_time: Time.new(2016, 8, 9, 01, 03, 00),
           end_time: Time.new(2016, 8, 9, 02, 00, 00),
@@ -129,6 +133,7 @@ describe "Passenger class" do
       @passenger.add_trip(trip)
       trip_2 = RideShare::Trip.new(
           id: 8,
+          driver_id: 5,
           passenger: @passenger,
           start_time: Time.new(2016, 8, 8, 12, 00, 00),
           end_time: Time.new(2016, 8, 8, 12, 03, 00),
