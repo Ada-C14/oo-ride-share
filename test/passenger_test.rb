@@ -69,6 +69,41 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 5,
+          cost: 22
+
+      )
+      trip_2 = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 9),
+          end_time: Time.new(2016, 8, 10),
+          rating: 4,
+          cost: 15
+      )
+
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip_2)
+    end
+
+    it "totals trip costs (multiple trips) for that passenger" do
+      expect(@passenger.net_expenditures).must_equal 22 + 15
+    end
+
+
     # You add tests for the net_expenditures method
   end
 end
