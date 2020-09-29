@@ -77,7 +77,37 @@ describe "Passenger class" do
     end
 
     it "returns the total amount of money spent across trips" do
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 45,
+        rating: 5
+      )
+      @passenger.add_trip(trip)
 
+      trip2 = RideShare::Trip.new(
+        id: 9,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 20,
+        rating: 5
+      )
+      @passenger.add_trip(trip2)
+
+      trip3 = RideShare::Trip.new(
+        id: 10,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 40,
+        rating: 4
+      )
+      @passenger.add_trip(trip3)
+
+      expect(@passenger.net_expenditures).must_be_close_to 105
     end
   end
 end

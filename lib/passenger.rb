@@ -17,8 +17,8 @@ module RideShare
     end
     # returns nil for empty trip array
     def net_expenditures()
-      # ternary operator
-      return @trips.empty? ? nil : @trips.inject{ |total_cost, trip| total_cost + trip.cost }
+      # ternary operator + use of inject enumerable
+      return @trips.empty? ? nil : @trips.inject(0){ |total_cost, trip| total_cost + trip.cost }
     end
     # returns nil for empty trip array
     def total_time_spent()
