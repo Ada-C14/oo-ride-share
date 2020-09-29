@@ -28,6 +28,18 @@ module RideShare
       return total_cost
     end
 
+    def total_time_spent
+      return nil if @trips.empty?
+
+      total_time = 0
+
+      @trips.each do |trip|
+        total_time += trip.duration_in_seconds
+      end
+
+      return total_time
+    end
+
     private
 
     def self.from_csv(record)
