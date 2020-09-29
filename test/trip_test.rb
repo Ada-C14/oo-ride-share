@@ -24,6 +24,11 @@ describe "Trip class" do
       expect(@trip).must_be_kind_of RideShare::Trip
     end
 
+    it "throws exception if end time is before start time" do
+      @trip_data[:end_time] = @trip_data[:start_time] - 1
+      expect{ RideShare::Trip.new(@trip_data) }.must_raise ArgumentError
+    end
+
     it "stores an instance of passenger" do
       expect(@trip.passenger).must_be_kind_of RideShare::Passenger
     end
@@ -41,5 +46,10 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "calculate the duration of the trip in seconds" do
+      expect(@trip.duration).must_equal 1500
+    end
+
   end
 end
