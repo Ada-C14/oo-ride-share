@@ -4,7 +4,7 @@ module RideShare
   class Driver < CsvRecord
     attr_reader :name, :vin, :status, :trips
 
-    def initialize(id:, name:, vin:, status:, trips: [])
+    def initialize(id:, name:, vin:, status: :AVAILABLE, trips: [])
       super(id)
 
       @name = name
@@ -21,6 +21,10 @@ module RideShare
       @trips = trips
     end
 
+    def add_trip(trip)
+      @trips << trip
+    end
+
     private
 
     def self.from_csv(record)
@@ -28,7 +32,7 @@ module RideShare
           id: record[:id],
           name: record[:name],
           vin: record[:vin],
-          status: record[:status]
+          status: record[:status].to_sym
       )
     end
   end

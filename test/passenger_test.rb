@@ -44,12 +44,18 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+      @driver = RideShare::Driver.new(
+          id: 123,
+          name: "Sally",
+          vin: "456GE554DHE234DFW"
+      )
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver: @driver
         )
 
       @passenger.add_trip(trip)
@@ -77,6 +83,11 @@ describe "Passenger class" do
           phone_number: "1-602-620-2330 x3723",
           trips: []
       )
+      @driver = RideShare::Driver.new(
+          id: 123,
+          name: "Sally",
+          vin: "456GE554DHE234DFW"
+      )
     end
 
     let (:trip_1) {
@@ -86,7 +97,8 @@ describe "Passenger class" do
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
           cost: 30,
-          rating: 5
+          rating: 5,
+          driver: @driver
       )
     }
 
@@ -97,7 +109,8 @@ describe "Passenger class" do
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
           cost: 15,
-          rating: 5
+          rating: 5,
+          driver: @driver
       )
     }
 
@@ -129,6 +142,11 @@ describe "Passenger class" do
           phone_number: "1-602-620-2330 x3723",
           trips: []
       )
+      @driver = RideShare::Driver.new(
+          id: 123,
+          name: "Sally",
+          vin: "456GE554DHE234DFW"
+      )
     end
 
     let (:trip_1) {
@@ -137,7 +155,8 @@ describe "Passenger class" do
           passenger: @passenger,
           start_time: Time.parse("16:30"),
           end_time: Time.parse("17:30"),
-          rating: 5
+          rating: 5,
+          driver: @driver
       )
     }
 
@@ -147,7 +166,8 @@ describe "Passenger class" do
           passenger: @passenger,
           start_time: Time.parse("10:15"),
           end_time: Time.parse("10:45"),
-          rating: 5
+          rating: 5,
+          driver: @driver
       )
     }
 
