@@ -89,5 +89,57 @@ describe "Passenger class" do
       @passenger.add_trip(trip)
       expect(@passenger.net_expenditures).must_equal 31
     end
+
+    it "returns nil if there are no trips" do
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      expect(@passenger.net_expenditures).must_be_nil
+
+    end
+
+  end
+
+  describe "total_time_spent" do
+    # You add tests for the net_expenditures method
+    it "total time that passenger spent on trips" do
+      start_time = Time.now - 60 * 60 # 60 minutes
+      end_time = start_time + 25 * 60 # 25 minutes
+
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: start_time,
+          end_time: end_time,
+          cost: 31,
+          rating: 5
+      )
+
+
+      @passenger.add_trip(trip)
+      expect(@passenger.total_time_spent).must_equal 1500
+
+    end
+
+    it "returns nil if there are no trips" do
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      expect(@passenger.total_time_spent).must_be_nil
+
+    end
+
   end
 end
