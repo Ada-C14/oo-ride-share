@@ -12,9 +12,15 @@ module RideShare
       @passengers = Passenger.load_all(directory: directory)
       @trips = Trip.load_all(directory: directory)
       connect_trips
+      @driver = Driver.load_all(directory: directory)
     end
 
     def find_passenger(id)
+      Passenger.validate_id(id)
+      return @passengers.find { |passenger| passenger.id == id }
+    end
+
+    def find_driver(id)
       Passenger.validate_id(id)
       return @passengers.find { |passenger| passenger.id == id }
     end
