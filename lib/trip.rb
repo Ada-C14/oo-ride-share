@@ -4,10 +4,12 @@ require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    attr_reader :id, :driver, :driver_id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
 
     def initialize(
           id:,
+          driver: nil,
+          driver_id: nil,
           passenger: nil,
           passenger_id: nil,
           start_time:,
@@ -26,6 +28,17 @@ module RideShare
 
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
+      end
+
+      if driver
+        @driver = driver
+        @driver_id = driver.id
+
+      elsif driver_id
+        @driver_id = driver_id
+
+      else
+        raise ArgumentError, 'Driver or driver_id is required'
       end
 
       @start_time = start_time
@@ -47,6 +60,7 @@ module RideShare
       # trip contains a passenger contains a trip contains a passenger...
       "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
         "id=#{id.inspect} " +
+        "driver_id=#{driver&.id.inspect} " +
         "passenger_id=#{passenger&.id.inspect} " +
         "start_time=#{start_time} " +
         "end_time=#{end_time} " +
@@ -54,9 +68,11 @@ module RideShare
         "rating=#{rating}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
+      @driver = driver
       passenger.add_trip(self)
+      driver.add_trip(self)
     end
 
     def duration
@@ -69,6 +85,7 @@ module RideShare
     def self.from_csv(record)
       return self.new(
                id: record[:id],
+               driver_id: record[:driver_id],
                passenger_id: record[:passenger_id],
                start_time: Time.parse(record[:start_time]),
                end_time: Time.parse(record[:end_time]),

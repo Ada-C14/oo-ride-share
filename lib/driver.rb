@@ -10,7 +10,7 @@ module RideShare
       super(id)
 
       raise ArgumentError.new("Invalid vin #{vin}") if vin.length != 17
-      raise ArgumentError.new("Invalid status #{status}") if !(STATUS.include?(status))
+      raise ArgumentError.new("Invalid status #{status}") unless STATUS.include?(status)
 
       @name = name
       @vin = vin
@@ -41,7 +41,7 @@ module RideShare
           id: record[:id],
           name: record[:name],
           vin: record[:vin],
-          status: record[:status]
+          status: record[:status].to_sym
       )
     end
   end
