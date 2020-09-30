@@ -18,8 +18,8 @@ module RideShare
     end
     # method the return total amount of money passenger has spent on a trips
     def net_expenditures
-      total_amount = @trip.sum { |trip| trip.cost }
-      return total_amount
+      total = @trips.sum { |trip| trip.cost }
+      return total
     end
 
     # method that Return the total amount of time passenger spent on a trips
