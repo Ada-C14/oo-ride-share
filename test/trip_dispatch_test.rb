@@ -121,4 +121,68 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "making a new trip" do
+    describe "first_available_driver" do
+      before do
+        @fake_dispatcher = build_test_dispatcher
+      end
+
+      it "returns an instance of Driver" do
+        expect(@fake_dispatcher.first_available_driver).must_be_instance_of RideShare::Driver
+      end
+
+      it "returns a driver who is available" do
+        expect(@fake_dispatcher.first_available_driver.status).must_equal :AVAILABLE
+      end
+
+      it "raises and error if no drivers are available" do
+        # come back to this one when we have a method for making
+        # driver unavailable
+      end
+    end
+
+    describe "request_trip" do
+      before do
+        @fake_dispatcher = build_test_dispatcher
+        @fake_trip = @fake_dispatcher.request_trip(1)
+      end
+
+      it "returns an instance of Trip" do
+        expect(@fake_trip).must_be_instance_of Trip
+      end
+
+      it "creates a trip with current start time" do
+        current_time = Time.now
+        expect(@fake_trip.start_time).must_equal current_time
+      end
+
+      it "creates a trip with nil values for end time, cost, rating" do
+        expect(@fake_trip.end_time).must_be_nil
+        expect(@fake_trip.cost).must_be_nil
+        expect(@fake_trip.rating).must_be_nil
+      end
+
+      it "add in progress trip to passenger's trips array" do
+        expect(@fake_trip.passenger.trips).must_include @fake_trip
+      end
+
+      it "add in progress trip to driver's trips array" do
+        expect(@fake_trip.driver.trips).must_include @fake_trip
+      end
+
+      it "adds in progress trip to tripdispatcher's trips array" do
+        expect(@fake_dispatcher.trips).must_include @fake_trip
+      end
+
+      it "adds correct passenger to trip" do
+        fake_passenger = @fake_dispatcher.find_passenger(1)
+        expect(@fake_trip.passenger).must_equal fake_passenger
+      end
+
+      it "changes status of driver of in progress trip to unavailable" do
+        expect(@fake_trip.driver.status).must_equal :UNAVAILABLE
+      end
+    end
+  end
 end
