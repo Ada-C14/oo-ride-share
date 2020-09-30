@@ -16,6 +16,22 @@ module RideShare
       @trips << trip
     end
 
+    def net_expenditures
+      result = 0
+      @trips.each do |trip|
+        result += trip.cost
+      end
+      return result
+    end
+
+    def total_time_spent
+      result = 0
+      @trips.each do |trip|
+        result += trip.duration
+      end
+      return result
+    end
+
     private
 
     def self.from_csv(record)   # {id: 1, name: Paul Pollich, phone_number: "(358) 263-9381"},
