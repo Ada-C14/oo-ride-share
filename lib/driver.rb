@@ -10,7 +10,7 @@ module RideShare
         id:,
         name:,
         vin:,
-        status:,
+        status: :AVAILABLE,
         trips: []
     )
 
