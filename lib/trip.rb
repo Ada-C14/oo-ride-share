@@ -49,7 +49,8 @@ module RideShare
       elsif driver_id
         @driver_id = driver_id
         all_drivers = Driver.load_all(directory: './support')
-        
+        Driver.validate_id(driver_id)
+        @driver = all_drivers.find { |drivers| drivers.id == driver_id }
       else
         raise ArgumentError, 'Driver or driver_id is required'
       end
