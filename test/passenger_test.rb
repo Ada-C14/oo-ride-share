@@ -38,6 +38,14 @@ describe "Passenger class" do
   describe "trips property" do
     before do
       # TODO: you'll need to add a driver at some point here.
+      @driver = RideShare::Driver.new(
+        id: 4,
+        name: "Driver Sample",
+        vin: "WBS76FYD47DJF7206",
+        status: :AVAILABLE,
+        trips: []
+      )
+
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -46,6 +54,8 @@ describe "Passenger class" do
         )
       trip = RideShare::Trip.new(
         id: 8,
+        driver: @driver, #should be an instance variable
+        #driver_id: nil,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
@@ -71,6 +81,13 @@ describe "Passenger class" do
   describe "net_expenditures" do
     before do
       # TODO: you'll need to add a driver at some point here.
+      @driver = RideShare::Driver.new(
+          id: 4,
+          name: "Driver Sample",
+          vin: "WBS76FYD47DJF7206",
+          status: :AVAILABLE,
+          trips: []
+      )
       @passenger = RideShare::Passenger.new(
           id: 9,
           name: "Merl Glover III",
@@ -81,6 +98,7 @@ describe "Passenger class" do
       end_time = start_time + 25 * 60
       trip = RideShare::Trip.new(
           id: 8,
+          driver: @driver,
           passenger: @passenger,
           start_time: start_time,
           end_time: end_time,
@@ -92,6 +110,7 @@ describe "Passenger class" do
       end_time = start_time + 40 * 60
       trip_2 = RideShare::Trip.new(
           id: 8,
+          driver: @driver,
           passenger: @passenger,
           start_time: start_time,
           end_time: end_time,
