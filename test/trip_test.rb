@@ -48,7 +48,12 @@ describe "Trip class" do
       @trip_data[:end_time] = @trip_data[:start_time]
       expect do
         RideShare::Trip.new(@trip_data)
-        end.must_raise ArgumentError
+      end.must_raise ArgumentError
+    end
+
+
+    it "returns duration of the trip in second" do
+      expect(@trip.trip_duration).must_equal 1500
     end
   end
 end
