@@ -30,13 +30,14 @@ module RideShare
       @driver ||= obj_id[0]
       @driver_id ||= obj_id[1]
 
-      raise ArgumentError.new 'End time before start time' if start_time >= end_time
+      # End times can be nil, but if not, check that it's after start time
+      raise ArgumentError.new 'End time before start time' if end_time && start_time >= end_time
       @start_time = start_time
       @end_time = end_time
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
+      if @rating && (@rating > 5 || @rating < 1)
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
     end
@@ -44,9 +45,11 @@ module RideShare
     def inspect
       # Prevent infinite loop when puts-ing a Trip
       # trip contains a passenger contains a trip contains a passenger...
-      "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
+        "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
         "id=#{id.inspect} " +
-        "passenger_id=#{passenger&.id.inspect} " +
+        # Lonely operator (&) prevents passenger_id from displaying correctly
+        #"passenger_id=#{passenger&.id.inspect} "
+        "raw_passenger_id=#{@passenger_id} " +
         "start_time=#{start_time} " +
         "end_time=#{end_time} " +
         "cost=#{cost} " +

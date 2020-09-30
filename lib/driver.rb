@@ -25,6 +25,12 @@ module RideShare
       @trips << trip
     end
 
+    def take_trip(trip)
+      raise ArgumentError, 'Invalid trip' unless trip.class == Trip
+      @trips << trip
+      @status = :UNAVAILABLE
+    end
+
     def average_rating
       return 0 if @trips.empty?
       total_rating = trips.sum { |trip| trip.rating }

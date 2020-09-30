@@ -3,6 +3,7 @@ require 'time'
 
 require_relative 'passenger'
 require_relative 'trip'
+require_relative 'driver'
 
 module RideShare
   class TripDispatcher
@@ -31,6 +32,36 @@ module RideShare
               #{trips.count} trips, \
               #{drivers.count} drivers, \
               #{passengers.count} passengers>"
+    end
+
+    def request_trip(passenger_id)
+      return nil if passenger_id == nil || passenger_id.class != Integer
+      # Tries to lazily find the passenger assuming array indexing
+      unless @passengers[passenger_id - 1]&.id == passenger_id
+        return nil unless find_passenger(passenger_id)
+      end
+      trip_driver = nil
+
+      driver_index = @drivers.find_index { |driver| driver.status == :AVAILABLE }
+      return nil unless driver_index
+      trip_driver = @drivers[driver_index]
+      # No drivers found, return nil
+      return nil if trip_driver == nil
+
+      new_trip = Trip.new(
+          id: @trips.length + 1,
+          passenger_id: passenger_id,
+          driver: trip_driver,
+          start_time: Time.now,
+          end_time: nil,
+          rating: nil
+      )
+
+      find_driver(trip_driver.id).take_trip(new_trip)
+      find_passenger(passenger_id).add_trip(new_trip)
+
+      @trips << new_trip
+      return new_trip
     end
 
     private

@@ -13,6 +13,7 @@ module RideShare
     end
 
     def add_trip(trip)
+      raise ArgumentError, 'Invalid trip' unless trip.class == Trip
       @trips << trip
     end
 
