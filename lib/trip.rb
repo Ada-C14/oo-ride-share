@@ -5,10 +5,12 @@ require 'time'
 
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    attr_reader :id, :driver, :driver_id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
 
     def initialize(
           id:,
+          driver:,
+          driver_id:,
           passenger: nil,
           passenger_id: nil,
           start_time:,
