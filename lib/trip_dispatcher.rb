@@ -25,6 +25,18 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
 
+    def request_trip(passenger_id)
+      passenger = find_passenger(passenger_id)
+      # do we need "find_driver" to validate driver_id?
+      driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+      trip = Trip.new(id: 601, passenger: passenger, passenger_id: passenger_id, driver: driver, driver_id: driver.id, start_time: Time.now, end_time: nil, cost: nil, rating: nil)
+
+      passenger.add_trip(trip)
+      driver.add_trip(trip)
+      driver.trip_in_progress
+      return trip
+    end
+
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \

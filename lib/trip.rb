@@ -47,13 +47,14 @@ module RideShare
       @start_time = start_time
       @end_time = end_time
 
-      raise ArgumentError.new("Start time should occur before the end time") if @start_time > @end_time
+      raise ArgumentError.new("Start time should occur before the end time") if @start_time > @end_time unless @end_time.nil?
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      unless @rating.nil?
+        raise ArgumentError.new("Invalid rating #{@rating}") if @rating > 5 || @rating < 1
       end
+
     end
 
     def duration

@@ -45,6 +45,10 @@ module RideShare
       return total.round(2)
     end
 
+    def trip_in_progress
+      @status = :UNAVAILABLE
+    end
+
     private
 
     def self.from_csv(record)
