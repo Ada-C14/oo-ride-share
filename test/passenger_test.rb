@@ -43,14 +43,14 @@ describe "Passenger class" do
         name: "Merl Glover III",
         phone_number: "1-602-620-2330 x3723",
         trips: []
-        )
+      )
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         rating: 5
-        )
+      )
 
       @passenger.add_trip(trip)
     end
@@ -69,6 +69,100 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
+
     # You add tests for the net_expenditures method
+    it "return the total amount of money the passenger has spent" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+      trip1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 23.45,
+        rating: 5
+      )
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 27.45,
+        rating: 5
+      )
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 13.45,
+        rating: 5
+      )
+      @passenger.add_trip(trip1)
+      @passenger.add_trip(trip2)
+      @passenger.add_trip(trip3)
+
+      expect(@passenger.net_expenditures).must_equal 64.35
+    end
+
+  end
+  describe "total time spent" do
+    before do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+      trip1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.parse("2018-11-04 12:00:00 -0800"),
+        end_time: Time.parse("2018-11-04 12:00:30 -0800"),
+        cost: 23.45,
+        rating: 5
+      )
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.parse("2018-11-04 12:00:00 -0800"),
+        end_time: Time.parse("2018-11-04 12:00:45 -0800"),
+        cost: 27.45,
+        rating: 5
+      )
+      # trip3 = RideShare::Trip.new(
+      #   id: 8,
+      #   passenger: @passenger,
+      #   start_time: Time.new(2016, 8, 8),
+      #   end_time: Time.new(2016, 8, 9),
+      #   cost: 13.45,
+      #   rating: 5
+      # )
+      @passenger.add_trip(trip1)
+      @passenger.add_trip(trip2)
+      # @passenger.add_trip(trip3)
+    end
+    it "total amount of time the passenger has spent on their trips" do
+
+
+      expect(@passenger.total_time_spent).must_equal 75
+    end
+
+    it "must be a float" do
+      expect(@passenger.total_time_spent).must_be_instance_of Float
+    end
+    it "Passenger has 0 trips" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+      expect(@passenger.total_time_spent).must_equal 0
+    end
   end
 end
