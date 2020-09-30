@@ -121,5 +121,17 @@ describe "Passenger class" do
     it "returns total trip duration for a passenger " do
       expect(@passenger.total_time_spent).must_equal 3900
     end
+
+    it "returns 0 if there are no trips and the trip duration method is called" do
+      passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+
+      expect(passenger.total_time_spent).must_equal 0
+      end
+
   end
 end
