@@ -78,8 +78,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: remove for drivers
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -120,6 +119,48 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+
+  describe "Request_trip method" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    let (:trip_1)  {
+      @dispatcher.request_trip(1)
+    }
+
+    it "request trip was created correctly" do
+      expect(trip_1.passenger_id).must_equal 1
+      expect(trip_1.id).must_equal 6
+      expect(trip_1.driver_id).must_equal 2
+      expect(trip_1.start_time).must_be_kind_of Time
+      expect(trip_1.end_time).must_be_nil
+      expect(trip_1.cost).must_be_nil
+      expect(trip_1.rating).must_be_nil
+    end
+
+    it "Picked an available driver" do
+      first_availible = @dispatcher.drivers.find_index { |driver| driver.status == :AVAILABLE }
+      first_availible += 1 # To get Driver ID
+      trip_1
+      expect(trip_1.driver_id).must_equal first_availible
+    end
+
+    it "driver status changed to UNAVAILABLE" do
+      trip_1
+      expect(@dispatcher.drivers[1].status).must_equal :UNAVAILABLE
+    end
+
+    it "were the trip lists for the driver and passenger updated?" do
+
+    end
+
+    it "no available drivers returns nil" do
+      trip_1
+      @dispatcher.request_trip(1)
+      expect(@dispatcher.request_trip(1)).must_be_nil
     end
   end
 end
