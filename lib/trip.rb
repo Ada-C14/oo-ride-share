@@ -64,7 +64,6 @@ module RideShare
 
     # method to calculate the duration of the trip
     def trip_duration
-      # puts @end_time - @start_time
       return @end_time - @start_time
     end
 

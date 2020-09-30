@@ -67,8 +67,9 @@ describe "Passenger class" do
       end
     end
   end
-
+  #total amount of money that passenger has spent
   describe "net_expenditures" do
     # You add tests for the net_expenditures method
+    # expect(@passenger.net_expenditures).must_equal
   end
 end
