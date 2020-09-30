@@ -49,7 +49,8 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver_id: 16
         )
 
       @passenger.add_trip(trip)
@@ -77,8 +78,8 @@ describe "Passenger class" do
       start_time_2 = Time.parse("2020-09-27 14:20:00")
       end_time_2 = Time.parse("2020-09-27 15:00:00")
       @passenger = RideShare::Passenger.new(id: 6, name: "Jane Fonda", phone_number: 602-233-6200, trips: [])
-      trip1 = RideShare::Trip.new(id: 2398, passenger_id: 6, start_time: start_time, end_time: end_time, cost: 100, rating: 4)
-      trip2 = RideShare::Trip.new(id: 2398, passenger_id: 6, start_time: start_time_2, end_time: end_time_2, cost: 200, rating: 2)
+      trip1 = RideShare::Trip.new(id: 2398, passenger_id: 6, start_time: start_time, end_time: end_time, cost: 100, rating: 4, driver_id: 17)
+      trip2 = RideShare::Trip.new(id: 2398, passenger_id: 6, start_time: start_time_2, end_time: end_time_2, cost: 200, rating: 2, driver_id: 17)
       @passenger.add_trip(trip1)
       @passenger.add_trip(trip2)
     end
