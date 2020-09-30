@@ -46,14 +46,16 @@ module RideShare
     end
 
     def total_revenue
-      if @trips.empty?
-        return 0
-      else
-        sum = @trips.sum {|trip| trip.cost}
-        total_earned = (sum * DRIVER_COMMISSION) - (@trips.size * FEE)
-        return total_earned
-      end
-
+      #sum = 0
+      sum = @trips.sum {|trip|
+        if trip.cost < 1.65
+          return 0
+        else
+          trip.cost * DRIVER_COMMISSION - FEE
+        end
+      }
+      #total_earned = (sum * DRIVER_COMMISSION) - (@trips.size * FEE)
+      return sum
     end
 
     private

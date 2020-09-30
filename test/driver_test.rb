@@ -171,7 +171,28 @@ describe "Driver class" do
       expect(@driver.total_revenue).must_be_kind_of Float
     end
 
-    it "correctly calculates the total revenue" do
+    it "correctly get the total for a single trip" do
+      driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          rating: 5,
+          cost: 1,
+          )
+      driver.add_trip(trip)
+
+      expect(driver.total_revenue).must_equal 0
+
+    end
+
+    it "correctly calculates the total revenue of two trips" do
       #arrange and act
       @driver.add_trip(@trip_1)
       @driver.add_trip(@trip_2)

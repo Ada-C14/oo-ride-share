@@ -46,6 +46,7 @@ describe "Passenger class" do
         )
       trip = RideShare::Trip.new(
         id: 8,
+        driver_id: 3,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
@@ -82,6 +83,7 @@ describe "Passenger class" do
       @trip_1 = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
+          driver_id: 3,
           start_time: Time.new(2016, 8, 8), # => 2016-08-08 00:00:00 -0500
           end_time: Time.new(2016, 8, 9),
           rating: 5,
@@ -91,6 +93,7 @@ describe "Passenger class" do
       @trip_2 = RideShare::Trip.new(
           id: 9,
           passenger: @passenger,
+          driver_id: 4,
           start_time: Time.new(2016, 10, 8),
           end_time: Time.new(2016, 10, 9),
           rating: 4,
@@ -131,6 +134,7 @@ describe "Passenger class" do
     @trip_1 = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
+        driver_id: 2,
         start_time: Time.new(2016, 8, 9, 4, 20), # => 2016-08-09 04:20:00 -0500
         end_time: Time.new(2016, 8, 9, 4, 30), #=> 600 seconds
         rating: 5,
@@ -140,6 +144,7 @@ describe "Passenger class" do
     @trip_2 = RideShare::Trip.new(
         id: 9,
         passenger: @passenger,
+        driver_id: 3,
         start_time: Time.new(2016, 10, 8, 10, 15),
         end_time: Time.new(2016, 10, 8, 10, 20), #=> 5 mins, or 300 seconds
         rating: 4,

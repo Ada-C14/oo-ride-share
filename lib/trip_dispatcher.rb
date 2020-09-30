@@ -41,8 +41,8 @@ module RideShare
       @trips.each do |trip|
         passenger = find_passenger(trip.passenger_id)
         #driver add
-        #driver = find_driver(trip.driver_id)
-        trip.connect(passenger)
+        driver = find_driver(trip.driver_id)
+        trip.connect(passenger, driver)
         #trip.connect_driver(driver)
       end
 

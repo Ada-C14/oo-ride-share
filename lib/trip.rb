@@ -33,21 +33,21 @@ module RideShare
       end
 
       #do the same as above for driver?
-      # if driver
-      #   @driver = driver
-      #   @driver_id = driver.id
-      # elsif driver_id
-      #   @driver_id = driver_id
-      # else
-      #   raise ArgumentError, 'Driver or driver_d is required'
-      # end
+      if driver
+        @driver = driver
+        @driver_id = driver.id
+      elsif driver_id
+        @driver_id = driver_id
+      else
+        raise ArgumentError, 'Driver or driver_id is required'
+      end
 
       @start_time = start_time
       @end_time = end_time
       @cost = cost
       @rating = rating
-      @driver_id = driver_id
-      @driver = driver
+      # @driver_id = driver_id
+      # @driver = driver
 
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
@@ -76,17 +76,17 @@ module RideShare
       "driver_id=#{driver&.id.inspect}"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
-      #@driver = driver
-      passenger.add_trip(self)
-      #driver.add_trip(self)
-    end
-
-    def connect_driver(driver)
       @driver = driver
+      passenger.add_trip(self)
       driver.add_trip(self)
     end
+
+    # def connect_driver(driver)
+    #   @driver = driver
+    #   driver.add_trip(self)
+    # end
 
 
     def duration
@@ -109,7 +109,7 @@ module RideShare
                end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating],
-               # driver_id: record[:driver_id],
+               driver_id: record[:driver_id],
              )
     end
   end
