@@ -37,7 +37,7 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
+      # TODO: you'll need to add a driver at some point here. DONE
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -71,7 +71,7 @@ describe "Passenger class" do
 
   describe "net_expenditures" do
     before do
-      # TODO: you'll need to add a driver at some point here.
+      # TODO: you'll need to add a driver at some point here. DONE
       @passenger = RideShare::Passenger.new(
           id: 9,
           name: "Merl Glover III",
