@@ -34,6 +34,28 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+    def request_trip(passenger_id)
+      available_driver = []
+      drivers.each do |driver|
+        if driver.status == :AVAILABLE
+          available_driver << driver
+        end
+      end
+
+      if available_driver.nil? || available_driver == []
+        raise ArgumentError, "There is no available drivers"
+      end
+
+      passenger = find_passenger(passenger_id)
+      driver = available_driver.first
+
+      request = Trip.new(id: @trips.length + 1, passenger:passenger, driver:driver, start_time: Time.now, end_time: nil, cost: nil, rating: nil)
+
+      driver.request_trip_helper(request)
+      @trips << request
+      return request
+    end
+
     private
 
     def connect_trips
