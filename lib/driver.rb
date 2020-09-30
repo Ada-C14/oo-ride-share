@@ -17,8 +17,13 @@ module RideShare
       @status = status
       @trips = trips
 
+      raise ArgumentError, "Bad Vin Number" unless vin.length == 17
       #raise for vin string length
       # raise error for bad ID
+    end
+
+    def add_trip(trip)
+      @trips << trip
     end
 
     def self.from_csv(record)
