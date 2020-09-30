@@ -39,6 +39,17 @@ module RideShare
       return @trips.reduce(0) { |average_rating, trip| average_rating + trip.rating }.to_f / @trips.length
     end
 
+    def total_revenue
+      return 0 if @trips.length == 0
+
+      cost = @trips.reduce(0) { |total_cost, trip| total_cost + trip.cost }.to_f
+
+      return 0 if cost < 1.65
+
+      fee = @trips.length * 1.65
+      return (cost - fee) * 0.8
+    end
+
     private
 
     def self.from_csv(record)
