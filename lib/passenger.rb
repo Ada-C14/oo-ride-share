@@ -16,6 +16,28 @@ module RideShare
       @trips << trip
     end
 
+    def net_expenditures
+      # You are already in the passenger class, a passenger knows
+      # how many trips there are.
+      total = 0
+      @trips.each do |trip|
+        total += trip.cost
+      end
+
+      return total
+
+    end
+
+    def total_time_spent
+      total = 0
+      @trips.each do |trip|
+        total += trip.trip_duration
+      end
+
+      return total
+
+    end
+
     private
 
     def self.from_csv(record)
@@ -27,3 +49,9 @@ module RideShare
     end
   end
 end
+
+# @trips = Trip.load_all(directory: directory)
+# if @passenger.trips.length == 0
+#   puts 'This customer does not have any trip'
+# end
+# if trip.passenger_id == Passenger.validate_id(id)

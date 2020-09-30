@@ -9,8 +9,8 @@ describe "Trip class" do
         id: 8,
         passenger: RideShare::Passenger.new(
           id: 1,
-          name: "Ada",
-          phone_number: "412-432-7640"
+        name: "Ada",
+        phone_number: "412-432-7640"
         ),
         start_time: start_time,
         end_time: end_time,
@@ -31,6 +31,20 @@ describe "Trip class" do
     it "stores an instance of driver" do
       skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
+    end
+
+    it 'raises an error for an invalid start time' do
+      start_time = Time.now - 60 * 60 # 60 minutes
+      end_time = start_time - 25 * 60
+      @trip_data[:start_time] = start_time
+      @trip_data[:end_time] = end_time
+      expect do
+        RideShare::Trip.new(@trip_data)
+      end.must_raise ArgumentError
+    end
+
+    it 'calculate the duration of the trip in seconds' do
+      expect(@trip.trip_duration).must_equal 25 * 60
     end
 
     it "raises an error for an invalid rating" do

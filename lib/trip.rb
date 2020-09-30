@@ -1,11 +1,12 @@
 require 'csv'
+require 'time'
 
 require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
     attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
-
+    # binding.pry
     def initialize(
           id:,
           passenger: nil,
@@ -27,9 +28,14 @@ module RideShare
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
-
+      
+      # binding.pry
+      if start_time > end_time
+        raise ArgumentError, "Your start time#{start_time} is later than your end time#{end_time} "
+      end
       @start_time = start_time
       @end_time = end_time
+
       @cost = cost
       @rating = rating
 
@@ -55,17 +61,30 @@ module RideShare
       passenger.add_trip(self)
     end
 
+    def trip_duration
+      return  @end_time - @start_time
+    end
+
     private
 
     def self.from_csv(record)
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
+               start_time: Time.parse(record[:start_time]),
+               end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating]
              )
     end
   end
 end
+
+# Updating str_time to time() with time method/enumerable
+# Helper method to convert starting time and ending time in a trip
+# to regular time mon, day, year and time of the day hr, min, sec
+# def time_conversion
+
+# RideShare::Trip.load_all(full_path: '/Users/ada/Ada/oo-ride-share/support/trips.csv').each do |trip|
+#     puts "Passenger Id: #{trip.passenger_id}"
+# end
