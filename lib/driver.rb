@@ -11,6 +11,9 @@ module RideShare
       @trips = trips
 
 
+      unless @vin.length == 17
+        raise ArgumentError, "Invalid vehicle identification number"
+      end
     end
   end
 end
