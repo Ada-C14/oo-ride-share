@@ -1,3 +1,4 @@
+require 'pry'
 require 'csv'
 
 module RideShare
@@ -8,7 +9,9 @@ module RideShare
       self.class.validate_id(id)
       @id = id
     end
-    
+
+    # binding.pry
+
     # Takes either full_path or directory and optional file_name
     # Default file name matches class name
     def self.load_all(full_path: nil, directory: nil, file_name: nil)
@@ -22,6 +25,7 @@ module RideShare
       ).map { |record| from_csv(record) }
     end
 
+    # Helper method to validate id input
     def self.validate_id(id)
       if id.nil? || id <= 0
         raise ArgumentError, 'ID cannot be blank or less than one.'
@@ -29,11 +33,14 @@ module RideShare
     end
 
     private
-    
+
+    # Template method-intended to be overridden by a subclass.
     def self.from_csv(record)
       raise NotImplementedError, 'Implement me in a child class!'
     end
+    # binding.pry
 
+    # Helper method to make sure that that your load_all method is using a correct path
     def self.build_path(directory, file_name)
       unless directory
         raise ArgumentError, "Either full_path or directory is required"

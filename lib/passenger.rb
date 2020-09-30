@@ -50,8 +50,3 @@ module RideShare
   end
 end
 
-# @trips = Trip.load_all(directory: directory)
-# if @passenger.trips.length == 0
-#   puts 'This customer does not have any trip'
-# end
-# if trip.passenger_id == Passenger.validate_id(id)
