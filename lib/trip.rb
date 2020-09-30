@@ -22,11 +22,11 @@ module RideShare
 
       # Uses private helper method require_one to DRY up logic a bit
       # Object OR id is required
-      obj_id = require_one(passenger, passenger_id)
+      obj_id = require_one(passenger, passenger_id, "Passenger")
       @passenger ||= obj_id[0]
       @passenger_id ||= obj_id[1]
 
-      obj_id = require_one(driver, driver_id)
+      obj_id = require_one(driver, driver_id, "Driver")
       @driver ||= obj_id[0]
       @driver_id ||= obj_id[1]
 
@@ -68,7 +68,7 @@ module RideShare
 
     # Helper method to require either object or id for initialize methods
     # Returns an array [object, id]
-    def require_one(object, id)
+    def require_one(object, id, class_name)
       if object
         object_return = object
         id_return = object.id
@@ -77,7 +77,7 @@ module RideShare
         id_return = id
 
       else
-        raise ArgumentError, 'Passenger or passenger_id is required'
+        raise ArgumentError, "#{class_name} or #{class_name}_id is required"
       end
 
       return object_return, id_return
