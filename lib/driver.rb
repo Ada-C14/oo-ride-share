@@ -27,12 +27,14 @@ module RideShare
       average_total = total/@trips.length
       return average_total
     end
-
+    #Each driver gets 80% of the trip cost after a fee of $1.65 per trip
+    # is subtracted.
     def total_revenue
       revenue = 0
       @trips.each do |trip|
-        revenue += @trips.cost.to_f
+        revenue += (@trips.cost.to_f - 1.65) * .8
       end
+
       return revenue
     end
 
