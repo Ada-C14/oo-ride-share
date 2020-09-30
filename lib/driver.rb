@@ -39,10 +39,14 @@ module RideShare
         total_income = 0
 
         @trips.each do |trip|
-          total_income += ((trip.cost.to_f - 1.65) * 0.80).round(2)
+          if trip.cost <= 1.65
+            total_income += (trip.cost * 0.80).round(2)
+          else
+            total_income += ((trip.cost.to_f - 1.65) * 0.80).round(2)
+          end
         end
 
-        total_income
+        return total_income
       end
     end
 

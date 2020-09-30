@@ -142,6 +142,43 @@ describe "Driver class" do
       expect(@driver.total_revenue).must_equal 0
     end
 
+    it "waives the $1.65 deduction for trips costing < $1.65" do
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 1.50,
+        rating: 5,
+        driver: @driver
+      )
+      @driver.add_trip(trip)
+
+      trip2 = RideShare::Trip.new(
+        id: 9,
+        passenger_id: 4,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 1.25,
+        rating: 5,
+        driver: @driver
+      )
+      @driver.add_trip(trip2)
+
+      trip3 = RideShare::Trip.new(
+        id: 10,
+        passenger_id: 5,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 5,
+        rating: 4,
+        driver: @driver
+      )
+      @driver.add_trip(trip3)
+
+      expect(@driver.total_revenue).must_be_close_to 4.88
+    end
+
     it "correctly calculates the total revenue" do
       trip = RideShare::Trip.new(
         id: 8,
