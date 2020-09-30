@@ -126,7 +126,7 @@ describe "TripDispatcher class" do
   describe "request a new trip" do
     before do
       @dispatcher = build_test_dispatcher
-      @new_trip = @dispatcher.request_trip(9)
+      @new_trip = @dispatcher.request_trip(2)
     end
 
     it "the new trip must be a Trip class" do
@@ -135,6 +135,16 @@ describe "TripDispatcher class" do
 
     it "update driver's status to unavailable" do
       expect(@new_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "update passenger's trip list" do
+      passenger = @dispatcher.find_passenger(2)
+      expect(passenger.trips.last).must_equal @new_trip
+    end
+
+    it "update driver's trip list" do
+      driver = @new_trip.driver
+      expect(driver.trips.last).must_equal @new_trip
     end
 
     it "raise error when no driver is available" do
