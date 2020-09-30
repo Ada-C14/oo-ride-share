@@ -14,7 +14,7 @@ module RideShare
           start_time:,
           end_time:,
           cost: nil,
-          rating: ,
+          rating:,
           driver_id: nil,
           driver: nil
         )
@@ -86,7 +86,6 @@ module RideShare
                rating: record[:rating]
              )
     end
-
 
   end
 end

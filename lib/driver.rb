@@ -7,7 +7,7 @@ module RideShare
   class Driver < CsvRecord
     attr_reader :id, :name, :vin, :status, :trips
 
-    def initialize(id:, name:, vin:, status:, trips: [])
+    def initialize(id:, name:, vin:, status: :AVAILABLE, trips: [])
       super(id)
 
       @name = name
@@ -23,7 +23,23 @@ module RideShare
       unless @status == :AVAILABLE || @status == :UNAVAILABLE
         raise ArgumentError, " Status needs to be either Available or Unavailable"
       end
+    end
 
+    def add_trip(trip)
+      @trips << trip
+    end
+
+    def average_rating
+      if trips.length == 0
+        return 0
+      end
+
+      total_ratings = 0
+      trips.each do |trip|
+        total_ratings += trip.rating.to_f
+      end
+
+      return total_ratings / trips.length
     end
 
     private
