@@ -121,5 +121,53 @@ describe "TripDispatcher class" do
         end
       end
     end
+
+    describe "request_trip" do
+      before do
+        @dispatcher = build_test_dispatcher
+      end
+
+      it "Check that the number of trips increases by 1" do
+        before_length_trip = @dispatcher.trips.length
+        before_length_driver = @dispatcher.find_driver(2).trips.length
+        before_length_passenger = @dispatcher.find_passenger(1).trips.length
+
+        @dispatcher.request_trip(1)
+        expect(@dispatcher.trips.length).must_equal before_length_trip + 1
+        expect(@dispatcher.find_driver(2).trips.length).must_equal before_length_driver + 1
+        expect(@dispatcher.find_passenger(1).trips.length).must_equal before_length_passenger + 1
+      end
+
+      it "trip was created properly" do
+        expect(@dispatcher.request_trip(1)).must_be_kind_of RideShare::Trip
+      end
+
+      it "Driver status is unavailable" do
+        expect(@dispatcher.request_trip(1).driver.status).must_equal :UNAVAILABLE
+      end
+
+      it "check if request trip adds the correct passenger id" do
+        expect(@dispatcher.request_trip(1).passenger.id).must_equal 1
+      end
+
+      it "check if request trip adds the correct driver id" do
+        expect(@dispatcher.request_trip(1).driver.id).must_equal 2
+      end
+
+      it "check if driver's status changes" do
+        expect(@dispatcher.find_driver(2).status).must_equal :AVAILABLE
+        @dispatcher.request_trip(1)
+        expect(@dispatcher.find_driver(2).status).must_equal :UNAVAILABLE
+      end
+
+      it "There is no available drivers" do
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(1)
+        expect{
+          @dispatcher.request_trip(1)
+          }.must_raise ArgumentError
+      end
+
+    end
   end
 end
