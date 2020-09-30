@@ -1,4 +1,5 @@
 require_relative 'csv_record'
+#require_relative 'trip'
 
 module RideShare
   class Passenger < CsvRecord
@@ -18,12 +19,16 @@ module RideShare
 
     def net_expenditures
       all_cost = @trips.map { |trip| trip.cost }
-      if all_cost.nil?
-        return 0
-      else
-        return all_cost.sum
-      end
+
+      all_cost.nil? ? 0 : all_cost.sum
     end
+
+    def total_time_spent
+      all_times = @trips.map {|trip| trip.duration}
+
+      all_times.nil? ? 0 : all_times.sum
+    end
+
 
     private
 
