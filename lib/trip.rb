@@ -44,7 +44,7 @@ module RideShare
 
       if driver
         @driver = driver
-        @driver = driver.id
+        @driver_id = driver.id
       elsif driver_id
         @driver_id = driver_id
       else

@@ -8,7 +8,6 @@ describe "Driver class" do
         name: "Test Driver",
         vin: "12345678901234567",
         status: :AVAILABLE
-        driver:
       )
     end
 

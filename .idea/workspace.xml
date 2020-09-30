@@ -38,7 +38,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bf6ed736-fcd4-43b5-8f49-27781756a54b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/driver.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/driver.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/trip.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/trip.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/driver_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/driver_test.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/passenger_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/passenger_test.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +63,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.ruby.settings.RubyActiveModuleSdkConfigurable" />
   </component>
-  <component name="RunManager" selected="Test::Unit/Shoulda/Minitest.Trip class::initialize">
+  <component name="RunManager" selected="Test::Unit/Shoulda/Minitest.has a default status of :AV...">
     <configuration name="trip" type="RubyRunConfigurationType" factoryName="Ruby" temporary="true">
       <module name="oo-ride-share" />
       <RUBY_RUN_CONFIG NAME="RUBY_ARGS" VALUE="" />
@@ -136,7 +140,7 @@
       <RTEST_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_OPTIONS" VALUE="" />
       <method v="2" />
     </configuration>
-    <configuration name="calculate the duration of t..." type="TestUnitRunConfigurationType" factoryName="Test::Unit/Shoulda/Minitest" temporary="true" nameIsGenerated="true">
+    <configuration name="has a default status of :AV..." type="TestUnitRunConfigurationType" factoryName="Test::Unit/Shoulda/Minitest" temporary="true" nameIsGenerated="true">
       <module name="oo-ride-share" />
       <predefined_log_file enabled="true" id="RUBY_TESTUNIT" />
       <RTEST_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="-Ilib:test" />
@@ -155,9 +159,9 @@
         </COVERAGE_PATTERN>
       </EXTENSION>
       <RTEST_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$MODULE_DIR$/test/trip_test.rb" />
+      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$MODULE_DIR$/test/driver_test.rb" />
       <RTEST_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="TEST_METHOD_NAME" VALUE="^Trip class::initialize#test_\d+_calculate\ the\ duration\ of\ the\ trip\ in\ seconds$" />
+      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="TEST_METHOD_NAME" VALUE="^Driver class::Driver instantiation#test_\d+_has\ a\ default\ status\ of\ :AVAILABLE$" />
       <RTEST_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_METHOD" />
       <RTEST_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
       <RTEST_RUN_CONFIG_SETTINGS_ID NAME="ZEUS" VALUE="false" />
@@ -196,11 +200,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Test::Unit/Shoulda/Minitest.has a default status of :AV..." />
         <item itemvalue="Test::Unit/Shoulda/Minitest.Trip class::initialize" />
         <item itemvalue="Ruby.trip" />
         <item itemvalue="Test::Unit/Shoulda/Minitest.Passenger has 0 trips in Pa..." />
         <item itemvalue="Test::Unit/Shoulda/Minitest.total amount of time the pa..." />
-        <item itemvalue="Test::Unit/Shoulda/Minitest.calculate the duration of t..." />
       </list>
     </recent_temporary>
   </component>
@@ -223,7 +227,7 @@
       <workItem from="1601487633810" duration="35000" />
       <workItem from="1601487696152" duration="258000" />
       <workItem from="1601488035239" duration="4118000" />
-      <workItem from="1601506182375" duration="1375000" />
+      <workItem from="1601506182375" duration="3736000" />
     </task>
     <servers />
   </component>
@@ -240,29 +244,29 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1098" height="205" key="GridCell.Tab.0.bottom" timestamp="1601492167187">
+    <state width="937" height="205" key="GridCell.Tab.0.bottom" timestamp="1601508428628">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state width="668" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1601425539685" />
-    <state width="1098" height="205" key="GridCell.Tab.0.bottom/0.23.1440.806@0.23.1440.806" timestamp="1601492167187" />
+    <state width="937" height="205" key="GridCell.Tab.0.bottom/0.23.1440.806@0.23.1440.806" timestamp="1601508428628" />
     <state width="1098" height="205" key="GridCell.Tab.0.bottom/0.23.1440.808@0.23.1440.808" timestamp="1601430536039" />
-    <state width="1098" height="205" key="GridCell.Tab.0.center" timestamp="1601492167186">
+    <state width="937" height="205" key="GridCell.Tab.0.center" timestamp="1601508428627">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state width="668" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1601425539684" />
-    <state width="1098" height="205" key="GridCell.Tab.0.center/0.23.1440.806@0.23.1440.806" timestamp="1601492167186" />
+    <state width="937" height="205" key="GridCell.Tab.0.center/0.23.1440.806@0.23.1440.806" timestamp="1601508428627" />
     <state width="1098" height="205" key="GridCell.Tab.0.center/0.23.1440.808@0.23.1440.808" timestamp="1601430536038" />
-    <state width="1098" height="205" key="GridCell.Tab.0.left" timestamp="1601492167185">
+    <state width="937" height="205" key="GridCell.Tab.0.left" timestamp="1601508428627">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state width="668" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1601425539683" />
-    <state width="1098" height="205" key="GridCell.Tab.0.left/0.23.1440.806@0.23.1440.806" timestamp="1601492167185" />
+    <state width="937" height="205" key="GridCell.Tab.0.left/0.23.1440.806@0.23.1440.806" timestamp="1601508428627" />
     <state width="1098" height="205" key="GridCell.Tab.0.left/0.23.1440.808@0.23.1440.808" timestamp="1601430536038" />
-    <state width="1098" height="205" key="GridCell.Tab.0.right" timestamp="1601492167186">
+    <state width="937" height="205" key="GridCell.Tab.0.right" timestamp="1601508428628">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state width="668" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1601425539684" />
-    <state width="1098" height="205" key="GridCell.Tab.0.right/0.23.1440.806@0.23.1440.806" timestamp="1601492167186" />
+    <state width="937" height="205" key="GridCell.Tab.0.right/0.23.1440.806@0.23.1440.806" timestamp="1601508428628" />
     <state width="1098" height="205" key="GridCell.Tab.0.right/0.23.1440.808@0.23.1440.808" timestamp="1601430536038" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
@@ -271,5 +275,6 @@
     <SUITE FILE_PATH="coverage/oo_ride_share@trip.rcov" NAME="trip Coverage Results" MODIFIED="1601490718170" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lib" MODULE_NAME="oo-ride-share" />
     <SUITE FILE_PATH="coverage/oo_ride_share@total_amount_of_time_the_pa___.rcov" NAME="total amount of time the pa... Coverage Results" MODIFIED="1601430074845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="oo-ride-share" />
     <SUITE FILE_PATH="coverage/oo_ride_share@Passenger_has_0_trips_in_Pa___.rcov" NAME="Passenger has 0 trips in Pa... Coverage Results" MODIFIED="1601430527737" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="oo-ride-share" />
+    <SUITE FILE_PATH="coverage/oo_ride_share@has_a_default_status_of__AV___.rcov" NAME="has a default status of :AV... Coverage Results" MODIFIED="1601508399768" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="oo-ride-share" />
   </component>
 </project>
