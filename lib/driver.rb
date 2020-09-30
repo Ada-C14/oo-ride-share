@@ -32,14 +32,30 @@ module RideShare
     def average_rating
       if trips.length == 0
         return 0
-      end
-
-      total_ratings = 0
-      trips.each do |trip|
-        total_ratings += trip.rating.to_f
+      else
+        total_ratings = 0
+        trips.each do |trip|
+          total_ratings += trip.rating.to_f
+        end
       end
 
       return total_ratings / trips.length
+    end
+
+    def total_revenue
+      total_revenue = 0
+      fee = 1.65
+      driver_pct = 0.8
+
+      if trips.empty?
+        return 0
+      else
+        trips.each do |trip|
+          total_revenue += (trip.cost - fee) * driver_pct
+        end
+      end
+
+      return total_revenue
     end
 
     private
