@@ -198,18 +198,13 @@ describe "Driver class" do
       @driver.add_trip(@trip_2)
 
       #assert
-      expect(@driver.total_revenue).must_be_close_to ((10 + 15 ) * 0.8) - (2 * FEE), 0.01
+      expect(@driver.total_revenue).must_be_close_to 17.36, 0.01
 
     end
 
     it "returns zero if no driven trips" do
       # assert
       expect(@driver.total_revenue).must_equal 0
-
-    end
-
-    #extra test
-    xit "must be a positive number" do
 
     end
 

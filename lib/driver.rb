@@ -14,7 +14,6 @@ module RideShare
       @status = status.to_sym
       @trips = trips
 
-
       unless @vin.size == 17
         raise ArgumentError.new("#{@vin} is not the right size")
       end
@@ -23,10 +22,6 @@ module RideShare
         raise ArgumentError.new("Invalid status")
       end
 
-      # until [:AVAILABLE, :UNAVAILABLE].include?(@status)
-      #   raise ArgumentError.new("Invalid status")
-      # end
-
     end
 
     #TO-DO: create add_trip method
@@ -34,12 +29,16 @@ module RideShare
       @trips << trip
     end
 
-    # driver helper method to change driver status to unavailable
-    def change_status(new_trip)
-      #@trips << new_trip
-      new_trip.driver.status = :UNAVAILABLE
-
-    end
+    # def average_rating
+    #   if @trips.empty?
+    #     return 0
+    #   else
+    #     average_rating = @trips.sum {|trip| trip.rating} / @trips.length
+    #     return average_rating.to_f
+    #   end
+    #   # average_rating = @trips.sum {|trip| trip.rating} / @trips.length
+    #   # return average_rating.to_f
+    # end
 
     def average_rating
       if @trips.empty?
@@ -53,16 +52,23 @@ module RideShare
     end
 
     def total_revenue
-      #sum = 0
       sum = @trips.sum {|trip|
         if trip.cost < 1.65
           return 0
         else
-          trip.cost * DRIVER_COMMISSION - FEE
+          (trip.cost - FEE ) * DRIVER_COMMISSION
         end
       }
       #total_earned = (sum * DRIVER_COMMISSION) - (@trips.size * FEE)
       return sum
+    end
+
+
+    # driver helper method to change driver status to unavailable
+    def change_status(new_trip)
+      #@trips << new_trip
+      new_trip.driver.status = :UNAVAILABLE
+
     end
 
     private

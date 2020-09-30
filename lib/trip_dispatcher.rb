@@ -94,15 +94,7 @@ module RideShare
         #driver add
         driver = find_driver(trip.driver_id)
         trip.connect(passenger, driver)
-        #trip.connect_driver(driver)
       end
-
-      #another each loop to connect the driver
-      # @trips.each do |trip|
-      #   driver = find_driver(trip.driver_id)
-      #   trip.connect(driver)
-      # end
-
       return trips
     end
   end
