@@ -68,6 +68,10 @@ module RideShare
       @trips << trip
     end
 
+    def unavailable_driver()
+      @status = :UNAVAILABLE
+    end
+
     # class methods
     def self.from_csv(record)
       new(

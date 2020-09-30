@@ -267,4 +267,18 @@ describe "Driver class" do
       expect(@driver.total_revenue).must_be_close_to 80.04
     end
   end
+
+  describe "unavailable_driver method" do
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+    end
+    it "converts an available driver to unavailable after being called" do
+      @driver.unavailable_driver
+      expect(@driver.status).must_equal :UNAVAILABLE
+    end
+  end
 end
