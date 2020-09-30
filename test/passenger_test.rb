@@ -115,4 +115,33 @@ describe "Passenger class" do
       expect(@passenger.net_expenditures).must_equal 0
     end
   end
+
+  describe "total_time_spent" do
+    before do
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8, 12),
+          end_time: Time.new(2016, 8, 8, 12, 10, 30),
+          cost: 24.5,
+          rating: 5
+      )
+      @passenger.add_trip(trip)
+    end
+
+    it "returns a float" do
+      expect(@passenger.total_time_spent).must_be_instance_of Float
+    end
+
+    it "returns accurate result" do
+      expect(@passenger.total_time_spent).must_equal 630
+    end
+  end
+
 end
