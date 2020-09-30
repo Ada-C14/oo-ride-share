@@ -40,7 +40,7 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      raise ArgumentError.new("Invalid rating #{@rating}") if @rating > 5 || @rating < 1
+      raise ArgumentError, "Invalid rating #{@rating}" if @rating > 5 || @rating < 1
 
       if driver
         @driver = driver
@@ -66,13 +66,16 @@ module RideShare
         "rating=#{rating}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
+
+      @driver = driver
+      driver.add_trip(self)
     end
 
-    def trip_duration()
-      return @end_time - @start_time
+    def trip_duration
+      @end_time - @start_time
     end
 
     def self.from_csv(record)
