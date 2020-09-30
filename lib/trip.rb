@@ -70,10 +70,11 @@ module RideShare
         "rating=#{rating}>"
     end
 
-    def connect(passenger)
-      # TODO add driver to this
+    def connect(passenger, driver)
       @passenger = passenger
+      @driver = driver
       passenger.add_trip(self)
+      driver.add_trip(self)
     end
 
     def duration
