@@ -45,9 +45,6 @@ module RideShare
 
     end
 
-
-
-    # ??
     def inspect
       # Prevent infinite loop when puts-ing a Trip
       # trip contains a passenger contains a trip contains a passenger...
@@ -67,12 +64,14 @@ module RideShare
 
     private
 
+
+    # Time.parse(parse start and end time)
     def self.from_csv(record)
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
+               start_time: Time.parse(record[:start_time]),
+               end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating]
              )

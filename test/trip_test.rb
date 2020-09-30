@@ -1,3 +1,4 @@
+require 'pry'
 require_relative 'test_helper'
 
 describe "Trip class" do
@@ -42,8 +43,12 @@ describe "Trip class" do
       end
     end
 
+    # raises an error for an incorrect time
     it "raises an error when end time is before start time" do
-
+      @trip_data[:end_time] = @trip_data[:start_time]
+      expect do
+        RideShare::Trip.new(@trip_data)
+        end.must_raise ArgumentError
     end
   end
 end

@@ -1,5 +1,6 @@
 require_relative 'csv_record'
 
+
 module RideShare
   class Passenger < CsvRecord
     attr_reader :name, :phone_number, :trips
