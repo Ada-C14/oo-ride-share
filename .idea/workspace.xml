@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8bc19736-a5c4-463e-afe5-c919c1b5f1df" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1i9thDOpqv992qC5AWsnQF0pHqO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpringUtil" SPRING_PRE_LOADER_OPTION="true" RAKE_SPRING_PRE_LOADER_OPTION="true" RAILS_SPRING_PRE_LOADER_OPTION="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8bc19736-a5c4-463e-afe5-c919c1b5f1df" name="Default Changelist" comment="" />
+      <created>1601331752899</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1601331752899</updated>
+      <workItem from="1601331754310" duration="2233000" />
+      <workItem from="1601334270669" duration="5109000" />
+      <workItem from="1601416991984" duration="1196000" />
+      <workItem from="1601418546090" duration="833000" />
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="458" y="62" key="SettingsEditor" timestamp="1601417112000">
+      <screen x="0" y="23" width="1440" height="828" />
+    </state>
+    <state x="458" y="62" key="SettingsEditor/0.23.1440.828@0.23.1440.828" timestamp="1601417112000" />
+    <state x="401" y="173" width="670" height="678" key="search.everywhere.popup" timestamp="1601417145450">
+      <screen x="0" y="23" width="1440" height="828" />
+    </state>
+    <state x="401" y="173" width="670" height="676" key="search.everywhere.popup/0.23.1440.826@0.23.1440.826" timestamp="1601401152421" />
+    <state x="401" y="173" width="670" height="678" key="search.everywhere.popup/0.23.1440.828@0.23.1440.828" timestamp="1601417145450" />
+  </component>
+</project>
