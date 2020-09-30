@@ -26,6 +26,10 @@ module RideShare
       raise ArgumentError if vin.length != 17
     end
 
+    def add_trip(trip)
+      @trips << trip
+    end
+
     private
 
     def self.from_csv(record)

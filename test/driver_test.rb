@@ -131,6 +131,83 @@ describe "Driver class" do
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          rating: 5,
+          cost: 4.55
+      )
+      trip2 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          rating: 5,
+          cost: 12
+
+      )
+      @driver.add_trip(trip)
+      @driver.add_trip(trip2)
+    end
+    it "returns 0 if no trips performed" do
+      driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+
+      expect(driver.total_revenue).must_equal 0
+    end
+
+    it "returns a float" do
+      expect(@driver.total_revenue).must_be_instance_of Float
+    end
+
+    it "it correctly calculates total earnings" do
+      expect(@driver.total_revenue).must_equal 10.6
+    end
+
+    it "it returns 0 if trip cost is less than $1.65" do
+      driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          rating: 5,
+          cost: 0.75
+      )
+      driver.add_trip(trip)
+      expect(driver.total_revenue).must_equal 0
+    end
+    it "adds 0 to a revenue total if a cost is below $1.65" do
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          rating: 5,
+          cost: 0.75
+      )
+      @driver.add_trip(trip)
+
+      expect(@driver.total_revenue).must_equal 10.6
+    end
   end
 end

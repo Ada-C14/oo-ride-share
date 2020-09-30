@@ -37,7 +37,6 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -50,7 +49,12 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+            id: 1,
+            name: "Jill",
+            vin: "12345678901234567",
+            )
         )
 
       @passenger.add_trip(trip)
@@ -72,7 +76,6 @@ describe "Passenger class" do
   describe "net_expenditures" do
     # let block for creating passenger - for last 2 tests
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
           id: 9,
           name: "Merl Glover III",
@@ -86,7 +89,12 @@ describe "Passenger class" do
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
           rating: 5,
-          cost: 32.5
+          cost: 32.5,
+          driver: RideShare::Driver.new(
+              id: 1,
+              name: "Jill",
+              vin: "12345678901234567",
+              )
       )
 
       @passenger.add_trip(trip)
@@ -114,7 +122,6 @@ describe "Passenger class" do
   end
   describe "total_time_spent" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
           id: 9,
           name: "Merl Glover III",
@@ -127,7 +134,12 @@ describe "Passenger class" do
           start_time: Time.new(2019, 10, 10, 10, 0),
           end_time: Time.new(2019, 10, 10, 10, 5),
           rating: 5,
-          cost: 32.5
+          cost: 32.5,
+          driver: RideShare::Driver.new(
+              id: 1,
+              name: "Jill",
+              vin: "12345678901234567",
+              )
       )
 
       @passenger.add_trip(trip)
