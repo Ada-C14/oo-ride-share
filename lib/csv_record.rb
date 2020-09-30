@@ -14,6 +14,9 @@ module RideShare
     def self.load_all(full_path: nil, directory: nil, file_name: nil)
       full_path ||= build_path(directory, file_name)
 
+      #all
+      # string numbers into numeric
+      # #converting rows from the csv
       return CSV.read(
         full_path,
         headers: true,

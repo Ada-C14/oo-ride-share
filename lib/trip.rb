@@ -1,4 +1,5 @@
 require 'csv'
+require 'time'
 
 require_relative 'csv_record'
 
@@ -9,7 +10,7 @@ module RideShare
     def initialize(
           id:,
           passenger: nil,
-          passenger_id: nil,
+          passenger_id: nil, # 54
           start_time:,
           end_time:,
           cost: nil,
@@ -27,7 +28,9 @@ module RideShare
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
-
+      if end_time < start_time
+        raise ArgumentError, "This trip could not have ended before it started."
+      end
       @start_time = start_time
       @end_time = end_time
       @cost = cost
@@ -61,11 +64,16 @@ module RideShare
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
+               start_time: convert_time(record[:start_time]),
+               end_time: convert_time(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating]
              )
     end
+
+    def self.convert_time(time_to_convert)
+      return Time.parse(time_to_convert)
+    end
+
   end
 end
