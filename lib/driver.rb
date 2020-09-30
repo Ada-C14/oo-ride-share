@@ -29,6 +29,10 @@ module RideShare
       raise ArgumentError, "Invalid driver status" if !VALID_STATUS.include?(@status)
     end
 
+    def add_trip(trip)
+      @trips << trip
+    end
+
     private
 
     def self.from_csv(record)
