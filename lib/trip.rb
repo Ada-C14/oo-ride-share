@@ -10,7 +10,7 @@ module RideShare
     def initialize(
           id:,
           passenger: nil,
-          passenger_id: nil, # 54
+          passenger_id: nil,
           start_time:,
           end_time:,
           cost: nil,
@@ -75,5 +75,8 @@ module RideShare
       return Time.parse(time_to_convert)
     end
 
+    def duration(begin_time, end_time)
+      return end_time - begin_time
+    end
   end
 end
