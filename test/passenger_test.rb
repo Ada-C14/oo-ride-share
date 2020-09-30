@@ -1,4 +1,5 @@
 require_relative 'test_helper'
+require 'time'
 
 describe "Passenger class" do
 
@@ -39,18 +40,18 @@ describe "Passenger class" do
     before do
       # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
-        id: 9,
-        name: "Merl Glover III",
-        phone_number: "1-602-620-2330 x3723",
-        trips: []
-        )
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
       trip = RideShare::Trip.new(
-        id: 8,
-        passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        rating: 5
-        )
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 5
+      )
 
       @passenger.add_trip(trip)
     end
@@ -66,9 +67,67 @@ describe "Passenger class" do
         expect(trip.passenger.id).must_equal 9
       end
     end
+
   end
 
-  describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+  #TESTS FOR TOTAL_TIME_SPENT
+  describe "total_time_spent" do
+
+    before do
+      @passenger_random = RideShare::Passenger.new(id: 500, name: "TestName", phone_number: "test_phone_number", trips: [])
+      @trip_random = RideShare::Trip.new(id: 5, passenger: @passenger_random, start_time: Time.new(2016, 8, 8), end_time: Time.new(2016, 8, 9), rating: 5)
+    end
+
+    it "Evaluates to zero if the passenger didn't do any trips" do
+      expect(@passenger_random.total_time_spent).must_equal 0
+    end
+
+    it "Evaluates to length of time of the trip if there is only one trip" do
+      @passenger_random.add_trip(@trip_random)
+      expect(@passenger_random.total_time_spent).must_equal 86400 #24 * 60 * 60
+    end
+
   end
+
+  # TESTS FOR NET_EXPENDITURES
+  describe "net_expenditures" do
+    before do
+           @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+    end
+    it "calculates the single trip " do
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 5,
+          cost: 22
+      )
+      @passenger.add_trip(trip)
+      expect(@passenger.net_expenditures).must_equal 22
+    end
+    it "calulates for no trips " do
+      expect(@passenger.net_expenditures).must_equal 0
+    end
+    it "calulates for multiple trips " do
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 5,
+          cost: 22
+      )
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip)
+      expect(@passenger.net_expenditures).must_equal 66
+    end
+  end
+
 end

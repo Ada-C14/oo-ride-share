@@ -1,4 +1,8 @@
 require_relative 'csv_record'
+require 'time'
+require 'trip.rb'
+require 'Trip'
+require 'trip'
 
 module RideShare
   class Passenger < CsvRecord
@@ -15,6 +19,37 @@ module RideShare
     def add_trip(trip)
       @trips << trip
     end
+
+    def net_expenditures
+      total_money_spent_by_this_passenger = 0
+      @trips.each do |trip|
+        total_money_spent_by_this_passenger += trip.cost
+      end
+      return total_money_spent_by_this_passenger
+    end
+
+    def total_time_spent
+      total_time_spent_by_this_passenger = 0
+      if @trips == []
+        total_time_spent_by_this_passenger = 0
+      else
+         @trips.each do |each_trip|
+         total_time_spent_by_this_passenger += each_trip.duration
+         end
+      end
+      return total_time_spent_by_this_passenger
+    end
+
+    # def total_time_spent
+    #   total_time_spent_by_this_passenger = 0
+    #   if @trips == []
+    #        total_time_spent_by_this_passenger = 0
+    #   else
+    #     time_arr = @trips.map{|trip|trip.duration}
+    #     total_time_spent_by_this_passenger = (time_arr.sum).to_i
+    #   end
+    #   return total_time_spent_by_this_passenger
+    #   end
 
     private
 

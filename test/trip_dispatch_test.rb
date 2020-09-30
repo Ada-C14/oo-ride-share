@@ -28,8 +28,9 @@ describe "TripDispatcher class" do
 
     it "loads the development data by default" do
       # Count lines in the file, subtract 1 for headers
-      trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
-
+      trip_count = 600
+      #trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
+      #ORIGINAL COMMAND
       dispatcher = RideShare::TripDispatcher.new
 
       expect(dispatcher.trips.length).must_equal trip_count
