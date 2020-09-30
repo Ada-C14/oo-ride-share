@@ -29,7 +29,11 @@ module RideShare
       if @trips.empty?
         raise ArgumentError, 'This passenger has no trips'
       else
-        return (@trips.map {|trip| trip.duration}).sum
+        if @trips.last.end_time == nil
+          raise ArgumentError, 'Wait! There is a trip in progress. Please try again later.'
+        else
+          return (@trips.map {|trip| trip.duration}).sum
+        end
       end
 
     end

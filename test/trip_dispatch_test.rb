@@ -130,7 +130,7 @@ describe "TripDispatcher class" do
     end
 
     it "the new trip must be a Trip class" do
-      expect(@new_trip).must_be_kind_of Trip
+      expect(@new_trip).must_be_instance_of RideShare::Trip
     end
 
     it "update driver's status to unavailable" do
@@ -155,6 +155,7 @@ describe "TripDispatcher class" do
     end
 
   end
+
 
 
 end

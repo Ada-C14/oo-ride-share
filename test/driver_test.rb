@@ -128,6 +128,25 @@ describe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
+    it "raise an error when there is a trip on progress" do
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip1 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 9),
+          end_time: nil,
+          rating: nil
+      )
+      @driver.add_trip(trip1)
+
+      expect { @driver.average_rating }.must_raise ArgumentError
+    end
   end
 
   describe "total_revenue" do

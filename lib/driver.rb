@@ -2,7 +2,8 @@ require_relative 'csv_record'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :name, :name, :vin, :status, :trips
+    attr_reader :name, :name, :vin, :trips
+    attr_accessor :status
 
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: [])
       super(id)
@@ -25,9 +26,13 @@ module RideShare
       if @trips.empty?
         return 0
       else
-        total_rating = (@trips.map {|trip| trip.rating}).sum
+        if @trips.last.end_time == nil
+          raise ArgumentError, 'Wait! There is a trip in progress. Please try again later.'
+        else
+          total_rating = (@trips.map {|trip| trip.rating}).sum
+          return (total_rating.to_f / @trips.length).round(1)
+        end
       end
-      return (total_rating.to_f / @trips.length).round(1)
     end
 
     def total_revenue
