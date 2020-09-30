@@ -4,6 +4,7 @@ STATUSES = [:AVAILABLE, :UNAVAILABLE]
 
 module RideShare
   class Driver < CsvRecord
+
     attr_reader :name, :vin, :status, :trips
 
 
@@ -22,6 +23,30 @@ module RideShare
     def add_trip(trip)
       raise ArgumentError, 'Invalid trip' unless trip.class == Trip
       @trips << trip
+    end
+
+    def average_rating
+      return 0 if @trips.empty?
+      total_rating = trips.sum { |trip| trip.rating }
+      trips_count = trips.count.to_f
+      avg_rating = total_rating / trips_count
+      return avg_rating
+    end
+
+    def total_revenue
+      return 0 if @trips.empty?
+      total_earnings = 0
+      @trips.each do |trip|
+        if trip.cost.nil?
+          next
+        elsif trip.cost <= 1.65
+          total_earnings += 0.8 * trip.cost
+        else
+          total_earnings += 0.8 * (trip.cost - 1.65)
+        end
+      end
+
+      return total_earnings.floor(2)
     end
 
     private

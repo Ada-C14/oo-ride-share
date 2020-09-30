@@ -78,7 +78,7 @@ describe "Driver class" do
     end
   end
 
-  xdescribe "average_rating method" do
+  describe "average_rating method" do
     before do
       @driver = RideShare::Driver.new(
         id: 54,
@@ -90,7 +90,7 @@ describe "Driver class" do
         driver: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
         rating: 5
       )
       @driver.add_trip(trip)
@@ -130,7 +130,74 @@ describe "Driver class" do
     end
   end
 
-  xdescribe "total_revenue" do
-    # You add tests for the total_revenue method
+  describe "total_revenue" do
+    before do
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+      @trip_1 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          cost: 1.50,
+          rating: 5
+      )
+      @trip_2 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 5
+      )
+      @trip_3 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          cost: 22.71,
+          rating: 5
+      )
+      @trip_4 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          cost: 30,
+          rating: 5
+      )
+    end
+
+    it "return 0 if there are no trips" do
+      expect(@driver.total_revenue).must_equal 0
+    end
+
+    it "skip nil values for trip costs" do
+      @driver.add_trip(@trip_2)
+
+      expect(@driver.total_revenue).must_equal 0
+    end
+
+    it "return amount if cost is less than 1.65" do
+      @driver.add_trip(@trip_1)
+
+      expect(@driver.total_revenue).must_equal 1.20
+    end
+
+    it "calculate total revenue for all trips" do
+      @driver.add_trip(@trip_1)
+      @driver.add_trip(@trip_2)
+      @driver.add_trip(@trip_3)
+      @driver.add_trip(@trip_4)
+
+      expect(@driver.total_revenue).must_be_close_to 40.72
+    end
+
   end
 end
