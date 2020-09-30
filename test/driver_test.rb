@@ -210,7 +210,7 @@ describe "Driver class" do
       @driver.add_trip(driver3)
       @driver.add_trip(driver4)
 
-      expect(@driver.total_revenue).must_equal 0.8
+      expect{@driver.total_revenue}.must_raise ArgumentError
     end
 
   end

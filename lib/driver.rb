@@ -27,7 +27,7 @@ module RideShare
       else
         total_rating = (@trips.map {|trip| trip.rating}).sum
       end
-      return total_rating.to_f / @trips.length
+      return (total_rating.to_f / @trips.length).round(1)
     end
 
     def total_revenue
@@ -38,7 +38,7 @@ module RideShare
           if trip.cost > 1.65
             (trip.cost - 1.65).to_f
           else
-            trip.cost.to_f  #or argument error
+            raise ArgumentError, 'The trip cost is less than the Trip fee'
           end
         end
         total_rev = total_cost.sum

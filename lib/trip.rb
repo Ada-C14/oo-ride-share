@@ -58,6 +58,7 @@ module RideShare
     end
 
     def connect(passenger, driver)
+      raise ArgumentError, 'The input can only be Passenger or Driver' if passenger.class != Passenger || driver.class != Driver
       @passenger = passenger
       passenger.add_trip(self)
       @driver = driver
