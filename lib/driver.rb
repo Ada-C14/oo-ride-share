@@ -33,6 +33,12 @@ module RideShare
       @trips << trip
     end
 
+    def average_rating
+      return 0 if @trips.empty?
+
+      return @trips.reduce(0) { |average_rating, trip| average_rating + trip.rating }.to_f / @trips.length
+    end
+
     private
 
     def self.from_csv(record)
