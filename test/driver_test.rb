@@ -138,7 +138,10 @@ describe "Driver class" do
           name: "Rogers Bartell IV",
           vin: "1C9EVBRM0YBC564DZ"
       )
-      trip = RideShare::Trip.new(
+    end
+
+    it "returns correct total revenue" do
+      trip_1 = RideShare::Trip.new(
           id: 8,
           driver: @driver,
           passenger_id: 3,
@@ -147,10 +150,7 @@ describe "Driver class" do
           cost: 10,
           rating: 5
       )
-      @driver.add_trip(trip)
-    end
 
-    it "returns correct total revenue" do
       trip2 = RideShare::Trip.new(
           id: 8,
           driver: @driver,
@@ -160,9 +160,31 @@ describe "Driver class" do
           cost: 5,
           rating: 1
       )
+
+      @driver.add_trip(trip_1)
       @driver.add_trip(trip2)
 
       expect(@driver.total_revenue).must_equal 9.36
+    end
+
+    it "returns 0 total_revenue for 0 trips" do
+      expect(@driver.total_revenue).must_equal 0
+    end
+
+    it "returns 0 if cost of trip was less than $1.65" do
+      trip_3 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          cost: 1.00,
+          rating: 5
+      )
+
+      @driver.add_trip(trip_3)
+
+      expect(@driver.total_revenue).must_equal 0
     end
   end
 end
