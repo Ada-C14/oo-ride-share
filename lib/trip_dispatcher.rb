@@ -35,6 +35,57 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+    #Wave 3
+    def request_trip(passenger_id)
+      @driver = find_first_available_driver # => first_driver is the first  driver instance that's available
+
+
+      # do I need to create a new instance of Passenger?
+      # new_passenger = Passenger.new(
+      #     id: passenger_id,
+      #     name: "Smithy",
+      #     phone_number: "353-533-5334",
+      #     trips: []
+      # )
+      @passenger = self.find_passenger(passenger_id)
+
+
+      new_trip = Trip.new(
+          # what should the id of this trip be?
+          id: 601,
+          passenger: @passenger,
+          passenger_id: passenger_id,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+          driver_id: @driver.id,
+          driver: @driver
+      )
+
+      @driver.change_status(new_trip) #=> what is this doing?, adding the new trip to the collection of trips for that driver
+
+      # why wouldn't I do this?
+      @passenger.add_trip(new_trip)
+      @driver.add_trip(new_trip)
+
+      # or something like this?
+      # how to add the new_trip instance to the Passenger's list of trips?
+      @trips << new_trip
+
+      return new_trip
+
+
+    end
+
+    def find_first_available_driver
+      if @drivers.find {|driver| driver.status == :AVAILABLE}.nil?
+        raise ArgumentError.new("No available drivers.")
+      else
+        return @drivers.find {|driver| driver.status == :AVAILABLE}
+      end
+    end
+
     private
 
     def connect_trips

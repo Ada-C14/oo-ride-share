@@ -46,8 +46,6 @@ module RideShare
       @end_time = end_time
       @cost = cost
       @rating = rating
-      # @driver_id = driver_id
-      # @driver = driver
 
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")

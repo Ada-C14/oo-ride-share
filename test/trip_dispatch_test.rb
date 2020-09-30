@@ -80,7 +80,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -123,4 +123,29 @@ describe "TripDispatcher class" do
       end
     end
   end
+  # tests for the request_trip method for wave 3
+  # What should I test?
+  # That the return value is an instance of the trip class (in-progess trip)
+  # That the driver status is changed to unavailable
+  # that we added the new_trip to the @trips array and to the #trips array in the passenger
+  # Update the driver trips also
+  # Was the driver who was selected available?
+  describe "request_trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    it "is an instance of Trip" do
+      expect(@dispatcher.request_trip(3)).must_be_kind_of RideShare::Trip
+    end
+
+    it "" do
+
+    end
+
+
+
+  end
+
+
 end

@@ -11,7 +11,7 @@ module RideShare
 
       @name = name
       @vin = vin
-      @status = status
+      @status = status.to_sym
       @trips = trips
 
 
@@ -32,6 +32,13 @@ module RideShare
     #TO-DO: create add_trip method
     def add_trip(trip)
       @trips << trip
+    end
+
+    # driver helper method to change driver status to unavailable
+    def change_status(new_trip)
+      #@trips << new_trip
+      new_trip.driver.status = :UNAVAILABLE
+
     end
 
     def average_rating
@@ -65,7 +72,7 @@ module RideShare
           id: record[:id],
           name: record[:name],
           vin: record[:vin],
-          status: record[:status].to_sym)
+          status: record[:status])
     end
   end
 end
