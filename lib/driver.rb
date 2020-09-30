@@ -8,7 +8,14 @@ module RideShare
 
     attr_reader :name, :vin, :status, :trips
 
-    def initialize(id:, name:, vin:, status:, trips: [])
+    def initialize(
+        id:,
+        name:,
+        vin:,
+        status: :AVAILABLE,
+        trips: []
+    )
+
       super(id)
       @name = name
       @vin = vin
