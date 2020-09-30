@@ -5,6 +5,7 @@ require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
+
     # we ask attr_reader to create the following methods using the input from initialize
     attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
 
@@ -23,6 +24,9 @@ module RideShare
       # must save those variable so that the methods by the same name can access them
       @cost = cost
       @rating = rating
+
+        @cost = cost
+        @rating = rating
 
       if passenger
         @passenger = passenger
