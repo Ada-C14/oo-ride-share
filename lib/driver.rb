@@ -36,11 +36,7 @@ module RideShare
     def total_revenue
       return 0 if @trips.empty?
 
-      # total = @trips.select.sum { |trip| trip.cost - 1.65 if trip.cost > 1.65 }
-      #
-      # return (0.8 * total).round(2)
-
-      return (@trips.reduce(0.0) { |total_profit, trip| total_profit + 0.8 * (trip.cost - 1.65) if trip.cost > 1.65 }).round(2)
+      return (@trips.reduce(0.0) { |driver_revenue, trip| trip.cost > 1.65 ? ( driver_revenue + 0.8 * (trip.cost - 1.65) ) : driver_revenue }).round(2)
     end
 
     private
