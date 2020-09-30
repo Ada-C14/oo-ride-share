@@ -153,8 +153,16 @@ describe "TripDispatcher class" do
       expect(@dispatcher.drivers[1].status).must_equal :UNAVAILABLE
     end
 
-    it "were the trip lists for the driver and passenger updated?" do
+    it "were the trip lists for the driver updated?" do
+      driver_start = @dispatcher.find_driver(2).trips.length
+      trip_1
+      expect(@dispatcher.find_driver(2).trips.length).must_equal driver_start + 1
+    end
 
+    it "were the trip lists for the passenger updated?" do
+      passenger_start = @dispatcher.find_passenger(1).trips.length
+      trip_1
+      expect(@dispatcher.find_passenger(1).trips.length).must_equal passenger_start + 1
     end
 
     it "no available drivers returns nil" do

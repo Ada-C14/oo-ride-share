@@ -50,15 +50,17 @@ module RideShare
 
       new_trip = Trip.new(
           id: @trips.length + 1,
+          passenger: find_passenger(passenger_id),
           passenger_id: passenger_id,
           driver: trip_driver,
+          driver_id: trip_driver.id,
           start_time: Time.now,
           end_time: nil,
           rating: nil
       )
 
       find_driver(trip_driver.id).take_trip(new_trip)
-      find_passenger(passenger_id).add_trip(new_trip)
+      new_trip.passenger.add_trip(new_trip)
 
       @trips << new_trip
       return new_trip
