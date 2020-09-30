@@ -142,6 +142,16 @@ describe "Passenger class" do
     it "returns accurate result" do
       expect(@passenger.total_time_spent).must_equal 630
     end
+
+    it "returns 0 for nil trips" do
+      @passenger = RideShare::Passenger.new(
+          id: 12,
+          name: "Merl Glover IV",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      expect(@passenger.total_time_spent).must_equal 0
+    end
   end
 
 end
