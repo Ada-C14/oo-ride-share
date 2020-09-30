@@ -54,4 +54,26 @@ describe "Trip class" do
     end
   end
 
+  describe "duration" do
+    before do
+      start_time = Time.now
+      end_time = start_time + 10 * 60 # 10 minutes
+      @trip_data = {
+          id: 8,
+          passenger: RideShare::Passenger.new(
+              id: 1,
+              name: "Ada",
+              phone_number: "412-432-7640"
+          ),
+          start_time: start_time,
+          end_time: end_time,
+          cost: 23.45,
+          rating: 3
+      }
+      @trip = RideShare::Trip.new(@trip_data)
+    end
+    it "returns accurate number of seconds" do
+      expect(@trip.duration).must_equal 600
+    end
+  end
 end
