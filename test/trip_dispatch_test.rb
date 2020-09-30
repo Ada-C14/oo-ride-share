@@ -140,3 +140,21 @@ describe "TripDispatcher class" do
 
   end
 end
+
+# TESTS NEEDED FOR WAVE 3 #
+
+# - Finds the right passenger for passenger_id, and adds trip to passenger trip list
+# - Finds the first available driver, and adds trip to driver's trip list
+# - Ensure returned trip has the right parameters
+# - @trips list should increase by 1 whenever request_trip is  (SEE LINE 33)
+# - trip ID should be incrementally higher than last trip id (SEE LINE 32)
+# - If request trip twice, both new trips should have unique IDs
+#
+# - Ignore average rating, duration and revenue calculation on trips in-progress
+#
+# - Edge case -- what happens if all drivers are unavailable?
+#       should raise ArgumentError for nil driver
+# - Edge case -- what happens if there are NO DRIVERS?
+#       should raise ArgumentError for nil driver
+# - Edge case -- invalid passenger ID
+#       raise ArgumentError for nil passenger
