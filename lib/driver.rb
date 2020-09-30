@@ -34,10 +34,22 @@ module RideShare
     end
 
     def total_revenue
+      if trips.length == 0
+        return 0
+      end
+
       sum = @trips.sum {|trip| trip.cost}
+      if sum < 1.65
+        return 0
+      end
       fee = 1.65 * trips.count
       return 0.8 * sum - fee
+    end
 
+    def request_trip_helper(new_trip)
+      add_trip(new_trip)
+      @status = :UNAVAILABLE
+      new_trip.passenger.add_trip(new_trip)
     end
 
     private
