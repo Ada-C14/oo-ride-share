@@ -7,7 +7,12 @@ describe "Trip class" do
       end_time = start_time + 25 * 60 # 25 minutes
       @trip_data = {
         id: 8,
-        driver_id: 4,
+        driver: RideShare::Driver.new(
+            id: 1,
+            name: "Lovelace",
+            vin: "12345678901234567",
+            status: :AVAILABLE
+        ),
         passenger: RideShare::Passenger.new(
           id: 1,
           name: "Ada",
@@ -30,7 +35,7 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
+      # skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
