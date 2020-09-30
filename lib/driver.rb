@@ -16,7 +16,13 @@ module RideShare
       @trips = trips
     end
     # readers
+    def average_rating
+      # By getting each trip data, there must be a collection for the trip rating from "ADD TRIP"
+      # Taking each rating value from the trip, sum it up and divide by the total number of trips OF the DRIVER.
 
+      return trips.empty? ? 0 : @trips.inject(0.0) { |sum, trip| sum + trip.rating } / @trips.length
+
+    end
     # writers
     def add_trip(trip)
       @trips << trip

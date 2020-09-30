@@ -73,8 +73,8 @@ describe "Passenger class" do
     before do
       @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
     end
-    it "returns nil if no trips taken" do
-      expect(@passenger.net_expenditures).must_be_nil
+    it "returns 0 if no trips taken" do
+      expect(@passenger.net_expenditures).must_equal 0
     end
 
     it "returns the total amount of money spent across trips" do
@@ -120,8 +120,8 @@ describe "Passenger class" do
       @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
     end
 
-    it "returns nil for an empty trip" do
-      expect(@passenger.total_time_spent).must_be_nil
+    it "returns 0 for an empty trip" do
+      expect(@passenger.total_time_spent).must_equal 0
     end
 
     it "returns the total time spent across trips" do

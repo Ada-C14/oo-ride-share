@@ -21,12 +21,12 @@ module RideShare
     # returns nil for empty trip array
     def net_expenditures
       # ternary operator + use of inject enumerable
-      @trips.empty? ? nil : @trips.inject(0) { |total_cost, trip| total_cost + trip.cost }
+      @trips.empty? ? 0 : @trips.inject(0) { |total_cost, trip| total_cost + trip.cost }
     end
 
     # returns nil for empty trip array
     def total_time_spent
-      @trips.empty? ? nil : @trips.inject(0) { |total_time, trip| total_time + trip.trip_duration }
+      @trips.empty? ? 0 : @trips.inject(0) { |total_time, trip| total_time + trip.trip_duration }
     end
 
     def self.from_csv(record)

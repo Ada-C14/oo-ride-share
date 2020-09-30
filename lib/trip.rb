@@ -48,7 +48,8 @@ module RideShare
 
       elsif driver_id
         @driver_id = driver_id
-
+        all_drivers = Driver.load_all(directory: './support')
+        
       else
         raise ArgumentError, 'Driver or driver_id is required'
       end
