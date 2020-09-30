@@ -15,7 +15,8 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver_id: 222
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -44,19 +45,14 @@ describe "Trip class" do
 
     it "raises an error for invalid time" do
 
-      #passenger = Passenger.new(id:3, name:'Carol', phone_number: '545-545-454')
-
       expect do
-      # arrange
       RideShare::Trip.new( id: 3,
-          #passenger:passenger,
                           passenger_id: 54,
                           start_time:Time.parse('2018-12-27 05:39:05'),
                           end_time:Time.parse('2018-12-27 03:38:08'),
                           cost:12,
-                          rating:4 )
-
-      # assert
+                          rating:4,
+                           driver_id: 333 )
       end.must_raise ArgumentError
 
     end

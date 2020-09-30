@@ -44,12 +44,21 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+      @driver = RideShare::Driver.new(
+          id: 5,
+          name: "Paul Klee",
+          vin: "WBS76FYD47DJF7206",
+          status: :AVAILABLE
+      )
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver_id: 333,
+        driver: @driver
+
         )
 
       @passenger.add_trip(trip)
@@ -78,13 +87,21 @@ describe "Passenger class" do
           phone_number: "1-602-620-2330 x3723",
           trips: []
       )
+      @driver = RideShare::Driver.new(
+          id: 5,
+          name: "Paul Klee",
+          vin: "WBS76FYD47DJF7206",
+          status: :AVAILABLE
+      )
       trip1 = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
           cost: 10,
-          rating: 5)
+          rating: 5,
+          driver_id: 333,
+          driver: @driver)
 
       trip2 = RideShare::Trip.new(
           id: 8,
@@ -92,7 +109,9 @@ describe "Passenger class" do
           start_time: Time.new(2016, 8, 6),
           end_time: Time.new(2016, 8, 7),
           cost: 5,
-          rating: 5
+          rating: 5,
+          driver_id: 333,
+          driver: @driver
       )
 
       @passenger.add_trip(trip1)
@@ -133,13 +152,21 @@ describe "Passenger class" do
           phone_number: "1-602-620-2330 x3723",
           trips: []
       )
+      @driver = RideShare::Driver.new(
+          id: 5,
+          name: "Paul Klee",
+          vin: "WBS76FYD47DJF7206",
+          status: :AVAILABLE
+      )
       trip1 = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
           cost: 10,
-          rating: 5)
+          rating: 5,
+          driver_id: 333,
+          driver: @driver)
 
       trip2 = RideShare::Trip.new(
           id: 8,
@@ -147,7 +174,9 @@ describe "Passenger class" do
           start_time: Time.new(2016, 8, 6),
           end_time: Time.new(2016, 8, 7),
           cost: 5,
-          rating: 5
+          rating: 5,
+          driver_id: 333,
+          driver: @driver
       )
 
       @passenger.add_trip(trip1)

@@ -6,26 +6,15 @@ module RideShare
   class Trip < CsvRecord
     attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver, :driver_id
 
-    def initialize(
-          id:,
-          passenger: nil,
-          passenger_id: nil,
-          start_time:,
-          end_time:,
-          cost: nil,
-          rating:,
-          driver: nil,
-          driver_id:
-        )
+    def initialize(id:, passenger: nil, passenger_id: nil, start_time:, end_time:, cost: nil, rating:, driver: nil, driver_id: nil)
       super(id)
+
 
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
       elsif passenger_id
         @passenger_id = passenger_id
-
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
@@ -52,8 +41,8 @@ module RideShare
         raise ArgumentError, 'Driver or driver_id is required'
       end
 
-
     end
+
 
     def inspect
       # Prevent infinite loop when puts-ing a Trip
@@ -65,11 +54,14 @@ module RideShare
         "end_time=#{end_time} " +
         "cost=#{cost} " +
         "rating=#{rating}>"
+        "driver_id=#{driver&.id.inspect}>"
     end
 
     def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
+      @driver = driver
+      driver.add_trip(self)
     end
 
     def duration
@@ -85,7 +77,9 @@ module RideShare
                start_time: Time.parse(record[:start_time]),
                end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
-               rating: record[:rating]
+               rating: record[:rating],
+               driver_id: record[:driver_id]
+
              )
     end
   end
