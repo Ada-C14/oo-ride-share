@@ -69,21 +69,6 @@ describe "Passenger class" do
   end
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   describe "net_expenditures" do
     # You add tests for the net_expenditures method
     before do
@@ -117,7 +102,7 @@ describe "Passenger class" do
       # there are two trips in the passenger instance now
     end
 
-    it "returns the right cost " do
+    it "returns the acurrate cost " do
       #arrange
       @passenger.add_trip(@trip_1)
       @passenger.add_trip(@trip_2)
@@ -127,11 +112,10 @@ describe "Passenger class" do
       expect(passenger_total_cost).must_equal 25
     end
 
-    it "handles when passenger took no trips " do
+    it "returns zero when passenger took no trips " do
       passenger_total_cost = @passenger.net_expenditures
 
-      expect(passenger_total_cost).must_equal "Passenger didn't take any trips"
-
+      expect(passenger_total_cost).must_equal 0
     end
 
   end
@@ -173,10 +157,10 @@ describe "Passenger class" do
 
     end
 
-    it "handles when passenger took no trips " do
+    it "returns zero when passenger took no trips " do
       passenger_total_duration = @passenger.total_time_spent
 
-      expect(passenger_total_duration).must_equal "Passenger didn't take any trips"
+      expect(passenger_total_duration).must_equal 0
 
     end
 

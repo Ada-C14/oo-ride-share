@@ -28,6 +28,7 @@ describe "Driver class" do
       expect(RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567").status).must_equal :AVAILABLE
     end
 
+    #added test
     it "throws an argument error with invalid status" do
       expect { RideShare::Driver.new(id: 100, name: "George", vin: "33133313331333133", status: :BOOP)}.must_raise ArgumentError
     end
@@ -136,7 +137,7 @@ describe "Driver class" do
 
   describe "total_revenue" do
     before do
-      FEE = 1.65
+      #FEE = 1.65
       @driver = RideShare::Driver.new(
           id: 54,
           name: "Rogers Bartell IV",

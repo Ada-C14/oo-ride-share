@@ -57,7 +57,7 @@ module RideShare
     end
 
     private
-
+    # implement the from_csv template method
     def self.from_csv(record)
       return self.new(
           id: record[:id],

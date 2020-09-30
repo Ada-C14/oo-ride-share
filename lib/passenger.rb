@@ -33,7 +33,7 @@ module RideShare
     # td.passengers.first.trips.sum {|trip| trip.cost}
     def net_expenditures
       if @trips.empty?
-        return "Passenger didn't take any trips"
+        return 0
       else
         return @trips.sum {|trip| trip.cost}
       end
@@ -42,7 +42,7 @@ module RideShare
 
     def total_time_spent
       if @trips.empty?
-        return "Passenger didn't take any trips"
+        return 0
       else
         return @trips.sum {|trip| trip.duration}
       end
