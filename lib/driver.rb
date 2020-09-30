@@ -21,7 +21,7 @@ module RideShare
       end
 
       unless @status == :AVAILABLE || @status == :UNAVAILABLE
-        raise ArgumentError, " Status needs to be either Available or Unavailable"
+        raise ArgumentError, "Status needs to be either Available or Unavailable"
       end
     end
 
@@ -65,10 +65,8 @@ module RideShare
           id: record[:id],
           name: record[:name],
           vin: record[:vin],
-          status: record[:status]
+          status: record[:status].to_sym
       )
     end
-
-
   end
 end

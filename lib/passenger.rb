@@ -12,6 +12,10 @@ module RideShare
       @trips = trips
     end
 
+    # def get_drivers
+    #   @trips.map{ |trip| trip.driver}
+    # end
+
     def add_trip(trip)
       @trips << trip
     end

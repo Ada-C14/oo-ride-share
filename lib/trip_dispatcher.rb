@@ -3,6 +3,7 @@ require 'time'
 
 require_relative 'passenger'
 require_relative 'trip'
+require_relative 'driver'
 
 module RideShare
   class TripDispatcher
@@ -21,6 +22,11 @@ module RideShare
       return @passengers.find { |passenger| passenger.id == id }
     end
 
+    def find_driver(id)
+      Driver.validate_id(id)
+      return @drivers.find { |driver| driver.id == id }
+    end
+
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
@@ -34,7 +40,8 @@ module RideShare
     def connect_trips
       @trips.each do |trip|
         passenger = find_passenger(trip.passenger_id)
-        trip.connect(passenger)
+        driver = find_driver(trip.driver_id)
+        trip.connect(passenger, driver)
       end
 
       return trips
