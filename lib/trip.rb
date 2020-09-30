@@ -5,7 +5,7 @@ require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver_id, :driver
     # binding.pry
     def initialize(
           id:,
@@ -14,7 +14,9 @@ module RideShare
           start_time:,
           end_time:,
           cost: nil,
-          rating:
+          rating:,
+          driver_id: nil,
+          driver: nil
         )
       super(id)
 
@@ -28,11 +30,23 @@ module RideShare
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
+
+      if driver
+        @driver = driver
+        @driver_id = driver.id
+
+      elsif driver_id
+        @driver_id = driver_id
+
+      else
+        raise ArgumentError, 'Driver or Driver_id is required'
+      end
       
       # binding.pry
       if start_time > end_time
         raise ArgumentError, "Your start time#{start_time} is later than your end time#{end_time} "
       end
+
       @start_time = start_time
       @end_time = end_time
 
