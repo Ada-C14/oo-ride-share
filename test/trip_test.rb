@@ -12,6 +12,7 @@ describe "Trip class" do
           name: "Ada",
           phone_number: "412-432-7640"
         ),
+        driver_id: 9,
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,

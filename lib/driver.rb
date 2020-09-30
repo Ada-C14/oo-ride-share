@@ -9,14 +9,19 @@ module RideShare
 
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: [])
       super(id)
-      raise ArgumentError.new('Name must be a string') unless name.class == String
+      raise ArgumentError, 'Name must be a string' unless name.class == String
       @name = name
-      raise ArgumentError.new('Incorrect VIN format') unless vin.length == 17 && vin.class == String
+      raise ArgumentError, 'Incorrect VIN format' unless vin.length == 17 && vin.class == String
       @vin = vin
-      raise ArgumentError.new('Incorrect status') unless STATUSES.include?(status)
+      raise ArgumentError, 'Incorrect status' unless STATUSES.include?(status)
       @status = status
-      raise ArgumentError.new('Not an Array') unless trips.class == Array
+      raise ArgumentError, 'Not an Array' unless trips.class == Array
       @trips = trips
+    end
+
+    def add_trip(trip)
+      raise ArgumentError, 'Invalid trip' unless trip.class == Trip
+      @trips << trip
     end
 
     private
@@ -26,7 +31,7 @@ module RideShare
           id: record[:id],
           name: record[:name],
           vin: record[:vin],
-          status: record[:status]
+          status: record[:status].to_sym
       )
     end
   end
