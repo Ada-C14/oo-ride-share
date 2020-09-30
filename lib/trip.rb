@@ -1,5 +1,5 @@
 require 'csv'
-
+require 'time'
 require_relative 'csv_record'
 
 module RideShare
@@ -7,14 +7,14 @@ module RideShare
     attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
 
     def initialize(
-          id:,
-          passenger: nil,
-          passenger_id: nil,
-          start_time:,
-          end_time:,
-          cost: nil,
-          rating:
-        )
+      id:,
+      passenger: nil,
+      passenger_id: nil,
+      start_time:,
+      end_time:,
+      cost: nil,
+      rating:
+    )
       super(id)
 
       if passenger
@@ -30,6 +30,12 @@ module RideShare
 
       @start_time = start_time
       @end_time = end_time
+
+      if start_time - end_time >= 0
+        raise ArgumentError, 'Reminder: time moves in the forward direction and teleportation
+        does not yet exist (start time must occur before end time)'
+      end
+
       @cost = cost
       @rating = rating
 
@@ -50,22 +56,27 @@ module RideShare
         "rating=#{rating}>"
     end
 
-    def connect(passenger)
-      @passenger = passenger
-      passenger.add_trip(self)
+    def connect(passenger) # connect passengers to a trip
+    @passenger = passenger
+    passenger.add_trip(self)
+    end
+
+    def duration
+      time_in_seconds = @end_time - @start_time
+      return time_in_seconds
     end
 
     private
 
     def self.from_csv(record)
       return self.new(
-               id: record[:id],
-               passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
-               cost: record[:cost],
-               rating: record[:rating]
-             )
+        id: record[:id],
+        passenger_id: record[:passenger_id],
+        start_time: Time.parse(record[:start_time]),
+        end_time: Time.parse(record[:end_time]),
+        cost: record[:cost],
+        rating: record[:rating]
+      )
     end
   end
 end
