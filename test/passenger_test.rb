@@ -49,7 +49,8 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver_id: 2
         )
 
       @passenger.add_trip(trip)
@@ -83,7 +84,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         cost: 45,
-        rating: 5
+        rating: 5,
+        driver_id: 3
       )
       @passenger.add_trip(trip)
 
@@ -93,7 +95,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         cost: 20,
-        rating: 5
+        rating: 5,
+        driver_id: 4
       )
       @passenger.add_trip(trip2)
 
@@ -103,7 +106,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         cost: 40,
-        rating: 4
+        rating: 4,
+        driver_id: 5
       )
       @passenger.add_trip(trip3)
 
@@ -127,7 +131,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8) + 10 * 60,
         cost: 45,
-        rating: 5
+        rating: 5,
+        driver_id: 3
       )
       @passenger.add_trip(trip)
 
@@ -137,7 +142,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8) + 20 * 60,
         cost: 20,
-        rating: 5
+        rating: 5,
+        driver_id: 4
       )
       @passenger.add_trip(trip2)
 
@@ -147,7 +153,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8) + 30 * 60,
         cost: 40,
-        rating: 4
+        rating: 4,
+        driver_id: 5
       )
       @passenger.add_trip(trip3)
 
