@@ -69,45 +69,11 @@ describe "Passenger class" do
   end
 
   #================
-  #total amount of money that passenger has spent
+  #total amount of money and total duration that passenger has spent
   describe "net_expenditures" do
     # You add tests for the net_expenditures method
     before do
       # TODO: you'll need to add a driver at some point here.
-      @passenger = RideShare::Passenger.new(
-          id: 9,
-          name: "Merl Glover III",
-          phone_number: "1-602-620-2330 x3723",
-          trips: []
-      )
-      @trip_one = RideShare::Trip.new(
-          id: 8,
-          passenger: @passenger,
-          start_time: Time.new(2016, 8, 8),
-          end_time: Time.new(2016, 8, 9),
-          rating: 5,
-          cost: 20
-      )
-
-      @trip_two = RideShare::Trip.new(
-          id: 9,
-          passenger: @passenger,
-          start_time: Time.new(2016, 8, 8),
-          end_time: Time.new(2016, 8, 9),
-          rating: 3,
-          cost: 10
-      )
-      @passenger.add_trip(@trip_one)
-      @passenger.add_trip(@trip_two)
-    end
-    it "return total amount of money passenger has spent" do
-      expect(@passenger.net_expenditures).must_equal 30
-    end
-  end
-
-  #  amount of time
-  describe "total amount of time passenger spent" do
-    before do
       @passenger = RideShare::Passenger.new(
           id: 9,
           name: "Merl Glover III",
@@ -134,6 +100,10 @@ describe "Passenger class" do
       @passenger.add_trip(@trip_one)
       @passenger.add_trip(@trip_two)
     end
+    it "return total amount of money passenger has spent" do
+      expect(@passenger.net_expenditures).must_equal 30
+    end
+
     it "return total amount of time passenger spent" do
       total_time_expectation = @trip_one.trip_duration + @trip_two.trip_duration
       expect(@passenger.total_time_spent).must_equal total_time_expectation
