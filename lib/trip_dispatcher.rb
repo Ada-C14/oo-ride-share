@@ -34,6 +34,27 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+
+    def request_trip(passenger_id)
+      unless @driver.find {|driver| driver.status == :AVAILABLE}
+        raise ArgumentError, 'Sorry, no driver is available now.'
+      end
+      trip_driver = @driver.find {|driver| driver.status == :AVAILABLE}
+      trip = Trip.new(id: @trips.length +1,
+                                        passenger: find_passenger(passenger_id),
+                                        passenger_id: passenger_id,
+                                        start_time: Time.now,
+                                        end_time:nil,
+                                        cost: nil,
+                                        rating: nil,
+                                        driver: trip_driver,
+                                        driver_id:trip_driver.id)
+      trip.connect(trip.passenger, trip.driver)
+      @trips << trip
+      trip_driver.status = :UNAVAILABLE
+      return trip
+    end
+
     private
 
     def connect_trips

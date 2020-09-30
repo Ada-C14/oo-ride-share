@@ -122,4 +122,29 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "request a new trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+      @new_trip = @dispatcher.request_trip(9)
+    end
+
+    it "the new trip must be a Trip class" do
+      expect(@new_trip).must_be_kind_of Trip
+    end
+
+    it "update driver's status to unavailable" do
+      expect(@new_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "raise error when no driver is available" do
+      @dispatcher.driver.each do |driver|
+        driver.status = :UNAVAILABLE
+      end
+      expect { @dispatcher.request_trip(9) }.must_raise ArgumentError
+    end
+
+  end
+
+
 end
