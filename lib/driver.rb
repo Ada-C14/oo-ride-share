@@ -30,8 +30,8 @@ module RideShare
       else
         return @trips.inject(0.0) do |sum, trip|
           if trip.rating.nil?
-            sum += 0
             finished_trips -= 1
+            sum
           else
             sum + trip.rating
           end
