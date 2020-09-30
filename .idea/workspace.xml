@@ -39,6 +39,7 @@
   <component name="ChangeListManager">
     <list default="true" id="bf6ed736-fcd4-43b5-8f49-27781756a54b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/driver.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/driver.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/trip_dispatcher.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/trip_dispatcher.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -224,7 +225,7 @@
       <workItem from="1601487633810" duration="35000" />
       <workItem from="1601487696152" duration="258000" />
       <workItem from="1601488035239" duration="4118000" />
-      <workItem from="1601506182375" duration="399000" />
+      <workItem from="1601506182375" duration="1000000" />
     </task>
     <servers />
   </component>

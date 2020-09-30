@@ -26,6 +26,7 @@ module RideShare
       return @driver.find { |driver| driver.id == id}
     end
 
+
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \

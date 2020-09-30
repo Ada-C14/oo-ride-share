@@ -19,6 +19,23 @@ module RideShare
       @trips << trip
     end
 
+    def average_rating
+      total = 0
+      @trips.each do |trip|
+        total += trip.rating.to_f
+      end
+      average_total = total/@trips.length
+      return average_total
+    end
+
+    def total_revenue
+      revenue = 0
+      @trips.each do |trip|
+        revenue += @trips.cost.to_f
+      end
+      return revenue
+    end
+
     private
 
     def self.from_csv(record)
