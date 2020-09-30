@@ -8,16 +8,16 @@ module RideShare
     attr_reader :id, :driver, :driver_id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
 
     def initialize(
-          id:,
-          driver: nil,
-          driver_id: nil,
-          passenger: nil,
-          passenger_id: nil,
-          start_time:,
-          end_time:,
-          cost: nil,
-          rating:
-        )
+      id:,
+      driver: nil,
+      driver_id: nil,
+      passenger: nil,
+      passenger_id: nil,
+      start_time:,
+      end_time:,
+      cost: nil,
+      rating:
+    )
       super(id)
 
       if driver
@@ -70,22 +70,26 @@ module RideShare
         "rating=#{rating}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
+
+      @driver = driver
+      driver.add_trip(self)
     end
 
     private
 
     def self.from_csv(record)
       return self.new(
-               id: record[:id],
-               passenger_id: record[:passenger_id],
-               start_time: Time.parse(record[:start_time]), #"2019-01-24 21:36:19 -0800"
-               end_time: Time.parse(record[:end_time]),
-               cost: record[:cost],
-               rating: record[:rating]
-             )
+        id: record[:id],
+        driver_id: record[:driver_id],
+        passenger_id: record[:passenger_id],
+        start_time: Time.parse(record[:start_time]), # "2019-01-24 21:36:19 -0800"
+        end_time: Time.parse(record[:end_time]),
+        cost: record[:cost],
+        rating: record[:rating]
+      )
     end
   end
 end

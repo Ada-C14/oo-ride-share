@@ -14,7 +14,7 @@ module RideShare
 
       @name = name
       @vin = vin
-      @status = status
+      @status = status.to_sym
       @trips = trips
 
       raise ArgumentError, "Bad Vin Number" unless vin.length == 17
