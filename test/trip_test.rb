@@ -33,6 +33,10 @@ describe "Trip class" do
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
+    it "stores end_time as an instance of Time" do
+      expect(@trip.end_time).must_be_instance_of Time
+    end
+
     it "raises an error for an invalid rating" do
       [-3, 0, 6].each do |rating|
         @trip_data[:rating] = rating
@@ -41,5 +45,13 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "raises an error for end times before start times" do
+      @trip_data[:end_time] = @trip_data[:start_time] - 25 * 60
+      expect do
+        RideShare::Trip.new(@trip_data)
+      end.must_raise ArgumentError
+    end
   end
+
 end
