@@ -22,7 +22,7 @@ module RideShare
     end
 
     def total_time_spent
-      return nil if @trips.empty?
+      return 0 if @trips.empty?
       @trips.reduce(0){ |total_time, trip| total_time + trip.duration}
     end
 
