@@ -25,7 +25,7 @@ module RideShare
     # method that Return the total amount of time passenger spent on a trips
     def total_time_spent
       # trip_duration method created in trip class
-      total_time = @trip.sum { |trip| trip.trip_duration }
+      total_time = @trips.sum { |trip| trip.trip_duration }
       return total_time
     end
 

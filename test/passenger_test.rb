@@ -86,7 +86,7 @@ describe "Passenger class" do
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
           rating: 5,
-          cost: 10.5
+          cost: 20
       )
 
       @trip_two = RideShare::Trip.new(
@@ -95,13 +95,47 @@ describe "Passenger class" do
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
           rating: 3,
-          cost: 9
+          cost: 10
       )
       @passenger.add_trip(@trip_one)
       @passenger.add_trip(@trip_two)
     end
     it "return total amount of money passenger has spent" do
-      expect(@passenger.net_expenditures).must_equal 19.5
+      expect(@passenger.net_expenditures).must_equal 30
+    end
+  end
+
+  #  amount of time
+  describe "total amount of time passenger spent" do
+    before do
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      @trip_one = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.parse('2018-12-27 01:39:05 -0800'),
+          end_time: Time.parse('2018-12-27 02:39:05 -0800'),
+          rating: 5,
+          cost: 20
+      )
+
+      @trip_two = RideShare::Trip.new(
+          id: 9,
+          passenger: @passenger,
+          start_time: Time.parse('2018-12-27 01:39:05 -0800'),
+          end_time: Time.parse('2018-12-27 01:59:05 -0800'),
+          rating: 3,
+          cost: 10
+      )
+      @passenger.add_trip(@trip_one)
+      @passenger.add_trip(@trip_two)
+    end
+    it "return total amount of time passenger spent" do
+      expect(@passenger.total_time_spent).must_equal 4800
     end
   end
 end
