@@ -135,7 +135,8 @@ describe "Passenger class" do
       @passenger.add_trip(@trip_two)
     end
     it "return total amount of time passenger spent" do
-      expect(@passenger.total_time_spent).must_equal 4800
+      total_time_expectation = @trip_one.trip_duration + @trip_two.trip_duration
+      expect(@passenger.total_time_spent).must_equal total_time_expectation
     end
   end
 end
