@@ -29,24 +29,30 @@ module RideShare
     def average_rating
       return 0 if @trips.empty?
 
-      total_ratings = @trips.reduce(0){ |ratings_total, trip| ratings_total + trip.rating.to_f}
+      total_ratings = @trips.reduce(0) { |ratings_total, trip| ratings_total + trip.rating.to_f}
       trip_length = @trips.length
       average_rating = total_ratings / trip_length
 
       return average_rating
     end
 
-    def fee_charge_on_trip_cost(trip_cost)
-      if trip_cost < 1.65
-        return trip_cost
+    def fee_charge_on_trip_cost(trip)
+      if trip.cost.to_f < 1.65
+        return trip.cost.to_f
       else
-        return trip_cost - 1.65
+        return (trip.cost.to_f - 1.65)
       end
     end
 
     def total_revenue
       return 0 if @trips.empty?
-      return @trips.reduce(0){ |total_revenue, trip| total_revenue + (fee_charge_on_trip_cost(trip.cost.to_f) * 0.8) }
+
+      # total = 0
+      # @trips.each do |trip|
+      #   total += ((trip.cost.to_f - 1.65) * 0.8)
+      # end
+      # return total
+      return @trips.reduce(0) { |total_revenue, trip| total_revenue + (fee_charge_on_trip_cost(trip) * 0.8) }
     end
 
     private

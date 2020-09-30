@@ -145,15 +145,15 @@ describe "Driver class" do
           end_time: Time.new(2016, 8, 8),
           rating: 5,
           cost: 20
-      ),
+      )
       trip2 = RideShare::Trip.new(
           id: 8,
           driver: @driver,
           passenger_id: 3,
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
-          rating: 1,
-          cost: 50
+          cost: 50,
+          rating: 1
       )
       @driver.add_trip(trip1)
       @driver.add_trip(trip2)
