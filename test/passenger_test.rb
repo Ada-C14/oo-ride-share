@@ -73,15 +73,61 @@ describe "Passenger class" do
         expect(trip.passenger.id).must_equal 9
       end
     end
+  end
 
+  describe "check net expensitures and total time spent" do
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Test Driver",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+      )
+
+    end
     it "net_expenditures" do
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          driver: @driver,
+          start_time: Time.new(2016, 8, 8, 9, 25, 25),
+          end_time: Time.new(2016, 8, 8, 9, 35, 25),
+          cost: 13.55,
+          rating: 5
+      )
+
+      @passenger.add_trip(trip)
       # You add tests for the net_expenditures method
       expect(@passenger.net_expenditures).must_equal 13.55
     end
 
+    it "net_expenditures will return 0 if there are no trips" do
+      # You add tests for the net_expenditures method
+      expect(@passenger.net_expenditures).must_equal 0
+    end
+
     it "total time spent" do
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          driver: @driver,
+          start_time: Time.new(2016, 8, 8, 9, 25, 25),
+          end_time: Time.new(2016, 8, 8, 9, 35, 25),
+          cost: 13.55,
+          rating: 5
+      )
+
+      @passenger.add_trip(trip)
       # You add tests for the net_expenditures method
       expect(@passenger.total_time_spent).must_equal 600
     end
+
   end
 end
