@@ -16,6 +16,11 @@ module RideShare
     def add_trip(trip)
       @trips << trip
     end
+    # method the return total amount of money that passenger has spent on their trips
+    def net_expenditures
+      total_amount = @trip.sum { |trip| trip.cost}
+      return total_amount
+    end
 
     private
 

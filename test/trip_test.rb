@@ -51,7 +51,6 @@ describe "Trip class" do
       end.must_raise ArgumentError
     end
 
-
     it "returns duration of the trip in second" do
       expect(@trip.trip_duration).must_equal 1500
     end
