@@ -122,4 +122,46 @@ describe "TripDispatcher class" do
       end
     end
   end
+  describe "request_trip" do #TODO we were here
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    it "creates a trip properly" do
+
+    end
+
+    it "updates the passenger lists" do
+
+    end
+
+    it "updates the driver lists" do
+
+    end
+
+    it "updates the trip dispatcher lists" do
+
+    end
+
+    it "selects an available driver" do
+
+    end
+
+    it "changes driver's status from available to unavailable after receiving a ride" do
+
+    end
+
+    it "raises an error if there are no available drivers" do
+      @dispatcher.drivers[1].status = :UNAVAILABLE
+      @dispatcher.drivers[2].status = :UNAVAILABLE
+
+      expect { @dispatcher.request_trip(1) }.must_raise ArgumentError
+    end
+
+    it "returns a trip" do
+      trip = @dispatcher.request_trip(1)
+
+      expect(trip).must_be_kind_of RideShare::Trip
+    end
+  end
 end
