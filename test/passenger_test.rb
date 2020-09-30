@@ -44,6 +44,7 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
@@ -70,18 +71,84 @@ describe "Passenger class" do
 
   describe "net_expenditures" do
     # let block for creating passenger - for last 2 tests
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 5,
+          cost: 32.5
+      )
+
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip)
+    end
+
     it "returns 0 for empty array" do
+      passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
       # create instance of passenger with empty array!
-      expect(passengers.net_expenditures).must_equal 0
+      expect(passenger.net_expenditures).must_be_nil
     end
 
     it "return numeric value" do
-      expect(@passengers.net_expenditures).must_be_kind_of Numeric
+      expect(@passenger.net_expenditures).must_be_kind_of Numeric
     end
 
     it "returns sum of all trip costs for passenger" do
-      expect(@passengers.net_expenditures).must_equal #calculate value and put it here!
+      expect(@passenger.net_expenditures).must_equal 65
+    end
+  end
+  describe "total_time_spent" do
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2019, 10, 10, 10, 0),
+          end_time: Time.new(2019, 10, 10, 10, 5),
+          rating: 5,
+          cost: 32.5
+      )
+
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip)
     end
 
+    it "it returns nil if no trips were taken" do
+      passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: [])
+      expect(passenger.total_time_spent).must_be_nil
+    end
+
+    it "it returns a numeric value" do
+      expect(@passenger.total_time_spent).must_be_kind_of Numeric
+    end
+
+    it "returns the sum of all trip durations for a passenger" do
+      expect(@passenger.total_time_spent).must_equal 600
+    end
   end
 end
