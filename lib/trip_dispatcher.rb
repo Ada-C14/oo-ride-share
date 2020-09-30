@@ -18,6 +18,22 @@ module RideShare
       connect_trips
     end
 
+    def self.request_trip(passenger_id)
+      #trip.new (
+      #       id:,
+      #       driver: nil, #could helper find_driver method --> @drivers.find { |driver| driver.status == :AVAILABLE }
+      #       driver_id: nil,
+      #       passenger: nil, -->does this auto assingn? or we do self.find_passenger?
+      #       passenger_id: nil, #passenger_id
+      #       start_time:, Time.now
+      #       end_time:, nil
+      #       cost: nil,
+      #       rating:
+      #     )
+      #
+      # call another method on driver --> go to driver to write that instance method to change the status
+    end
+
     def find_passenger(id)
       Passenger.validate_id(id)
       @passengers.find { |passenger| passenger.id == id }
