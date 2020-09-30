@@ -44,12 +44,15 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
-      end
+      if @end_time
 
-      if @start_time > @end_time
-        raise ArgumentError.new ("Invalid time")
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
+
+        if @start_time > @end_time
+          raise ArgumentError.new ("Invalid time")
+        end
       end
     end
 
