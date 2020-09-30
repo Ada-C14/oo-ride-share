@@ -20,7 +20,7 @@ module RideShare
       driver: nil
     )
       super(id)
-      if (end_time - start_time).negative?
+      if !end_time.nil? && (end_time - start_time).negative?
         raise ArgumentError, 'Invalid trip time - end time must be later than start time'
       end
 
@@ -40,7 +40,7 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      raise ArgumentError, "Invalid rating #{@rating}" if @rating > 5 || @rating < 1
+      raise ArgumentError, "Invalid rating #{@rating}" if !@rating.nil? && (@rating > 5 || @rating < 1)
 
       if driver
         @driver = driver
@@ -71,12 +71,13 @@ module RideShare
     def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
-
       @driver = driver
       driver.add_trip(self)
     end
 
     def trip_duration
+      raise ArgumentError, 'Trip still in progress' if @end_time.nil?
+
       @end_time - @start_time
     end
 

@@ -34,10 +34,8 @@ describe "Passenger class" do
     end
   end
 
-
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -75,6 +73,43 @@ describe "Passenger class" do
     end
     it "returns 0 if no trips taken" do
       expect(@passenger.net_expenditures).must_equal 0
+    end
+
+    it "Adds 0 if trip is in progress" do
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+        driver_id: 3
+      )
+      @passenger.add_trip(trip)
+
+      trip2 = RideShare::Trip.new(
+        id: 9,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 20,
+        rating: 5,
+        driver_id: 4
+      )
+      @passenger.add_trip(trip2)
+
+      trip3 = RideShare::Trip.new(
+        id: 10,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 40,
+        rating: 4,
+        driver_id: 5
+      )
+      @passenger.add_trip(trip3)
+
+      expect(@passenger.net_expenditures).must_be_close_to 60
     end
 
     it "returns the total amount of money spent across trips" do
@@ -161,5 +196,41 @@ describe "Passenger class" do
       expect(@passenger.total_time_spent).must_be_close_to 60 * 60
     end
 
+    it "Adds 0 if trip is in progress" do
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+        driver_id: 3
+      )
+      @passenger.add_trip(trip)
+
+      trip2 = RideShare::Trip.new(
+        id: 9,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8) + 20 * 60,
+        cost: 20,
+        rating: 5,
+        driver_id: 4
+      )
+      @passenger.add_trip(trip2)
+
+      trip3 = RideShare::Trip.new(
+        id: 10,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8) + 30 * 60,
+        cost: 40,
+        rating: 4,
+        driver_id: 5
+      )
+      @passenger.add_trip(trip3)
+
+      expect(@passenger.total_time_spent).must_be_close_to 50 * 60
+    end
   end
 end

@@ -24,8 +24,19 @@ module RideShare
     def average_rating
       # By getting each trip data, there must be a collection for the trip rating from "ADD TRIP"
       # Taking each rating value from the trip, sum it up and divide by the total number of trips OF the DRIVER.
-
-      trips.empty? ? 0 : @trips.inject(0.0) { |sum, trip| sum + trip.rating } / @trips.length
+      finished_trips = @trips.length
+      if trips.empty?
+        return 0
+      else
+        return @trips.inject(0.0) do |sum, trip|
+          if trip.rating.nil?
+            sum += 0
+            finished_trips -= 1
+          else
+            sum + trip.rating
+          end
+        end / finished_trips
+      end
     end
 
     def total_revenue
@@ -39,14 +50,16 @@ module RideShare
         total_income = 0
 
         @trips.each do |trip|
-          if trip.cost <= 1.65
-            total_income += (trip.cost * 0.80).round(2)
-          else
-            total_income += ((trip.cost.to_f - 1.65) * 0.80).round(2)
-          end
+          total_income +=
+            if trip.cost.nil?
+              0
+            elsif trip.cost <= 1.65
+              (trip.cost * 0.80).round(2)
+            else
+              ((trip.cost.to_f - 1.65) * 0.80).round(2)
+            end
         end
-
-        return total_income
+        total_income
       end
     end
 

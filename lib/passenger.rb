@@ -18,15 +18,36 @@ module RideShare
       @trips << trip
     end
 
-    # returns nil for empty trip array
+    # returns 0 for empty trip array
     def net_expenditures
-      # ternary operator + use of inject enumerable
-      @trips.empty? ? 0 : @trips.inject(0) { |total_cost, trip| total_cost + trip.cost }
+      if @trips.empty?
+        0
+      else
+        @trips.inject(0) do |total_cost, trip|
+          if trip.cost.nil?
+            total_cost
+          else
+            total_cost + trip.cost
+          end
+        end
+      end
     end
 
-    # returns nil for empty trip array
+    # returns 0 for empty trip array
     def total_time_spent
-      @trips.empty? ? 0 : @trips.inject(0) { |total_time, trip| total_time + trip.trip_duration }
+      # @trips.empty? ? 0 : @trips.inject(0) { |total_time, trip| total_time + trip.trip_duration }
+      if @trips.empty?
+        0
+      else
+        @trips.inject(0) do |total_time, trip|
+          begin
+            trip.trip_duration
+          rescue ArgumentError
+            next total_time
+          end
+          total_time + trip.trip_duration
+        end
+      end
     end
 
     def self.from_csv(record)
