@@ -174,7 +174,7 @@ describe "Driver class" do
     end
 
     it "it correctly calculates total earnings" do
-      expect(@driver.total_revenue).must_equal 10.6
+      expect(@driver.total_revenue).must_be_close_to 10.6
     end
 
     it "it returns 0 if trip cost is less than $1.65" do
@@ -207,7 +207,7 @@ describe "Driver class" do
       )
       @driver.add_trip(trip)
 
-      expect(@driver.total_revenue).must_equal 10.6
+      expect(@driver.total_revenue).must_be_close_to 10.6
     end
   end
 end
