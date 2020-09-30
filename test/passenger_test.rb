@@ -92,57 +92,13 @@ describe "Passenger class" do
     end
   end
 
-  xdescribe "net expenditures" do
-    before do
-      # TODO: you'll need to add a driver at some point here.
-      @passenger = RideShare::Passenger.new(
-          id: 9,
-          name: "Merl Glover III",
-          phone_number: "1-602-620-2330 x3723",
-          trips: []
-      )
-      @driver = RideShare::Driver.new(
-          id: 123,
-          name: "Sally",
-          vin: "456GE554DHE234DFW"
-      )
-    end
+  describe "net expenditures" do
 
-    let (:trip_1) {
-      RideShare::Trip.new(
-          id: 8,
-          passenger: @passenger,
-          start_time: Time.new(2016, 8, 8),
-          end_time: Time.new(2016, 8, 9),
-          cost: 30,
-          rating: 5,
-          driver: @driver
-      )
-    }
-
-    let (:trip_2) {
-      RideShare::Trip.new(
-          id: 10,
-          passenger: @passenger,
-          start_time: Time.new(2016, 8, 8),
-          end_time: Time.new(2016, 8, 9),
-          cost: 15,
-          rating: 5,
-          driver: @driver
-      )
-    }
-
-    it "returns instance of Integer" do
+    it "returns instance of Integer and calculates the correct net expenditures" do
       @passenger.add_trip(trip_1)
       @passenger.add_trip(trip_2)
 
       expect(@passenger.net_expenditures).must_be_instance_of Integer
-    end
-
-    it "calculates the correct net expenditures" do
-      @passenger.add_trip(trip_1)
-      @passenger.add_trip(trip_2)
-
       expect(@passenger.net_expenditures).must_equal 45
     end
 
@@ -151,55 +107,13 @@ describe "Passenger class" do
     end
   end
 
-  xdescribe "total time spent" do
-    before do
-      # TODO: you'll need to add a driver at some point here.
-      @passenger = RideShare::Passenger.new(
-          id: 9,
-          name: "Merl Glover III",
-          phone_number: "1-602-620-2330 x3723",
-          trips: []
-      )
-      @driver = RideShare::Driver.new(
-          id: 123,
-          name: "Sally",
-          vin: "456GE554DHE234DFW"
-      )
-    end
+  describe "total time spent" do
 
-    let (:trip_1) {
-      RideShare::Trip.new(
-          id: 8,
-          passenger: @passenger,
-          start_time: Time.parse("16:30"),
-          end_time: Time.parse("17:30"),
-          rating: 5,
-          driver: @driver
-      )
-    }
-
-    let (:trip_2) {
-      RideShare::Trip.new(
-          id: 10,
-          passenger: @passenger,
-          start_time: Time.parse("10:15"),
-          end_time: Time.parse("10:45"),
-          rating: 5,
-          driver: @driver
-      )
-    }
-
-    it "returns instance of Float" do
+    it "returns instance of Float and calculates the total time for all trips" do
       @passenger.add_trip(trip_1)
       @passenger.add_trip(trip_2)
 
       expect(@passenger.total_time_spent).must_be_instance_of Float
-    end
-
-    it "calculates the total time for all trips" do
-      @passenger.add_trip(trip_1)
-      @passenger.add_trip(trip_2)
-
       expect(@passenger.total_time_spent).must_equal 5400.0
     end
 
