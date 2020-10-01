@@ -122,33 +122,38 @@ describe "TripDispatcher class" do
       end
     end
   end
-  describe "request_trip" do #TODO we were here
+  describe "request_trip" do
     before do
       @dispatcher = build_test_dispatcher
+      @trip = @dispatcher.request_trip(1)
     end
 
     it "creates a trip properly" do
-
+      expect(@trip.passenger_id).must_equal 1
+      expect(@trip.driver_id).must_equal 1
+      expect(@trip.id).must_equal 1
+      expect(@trip.start_time).must_equal Time.now
+      expect(@trip.end_time).must_equal nil
+      expect(@trip.rating).must_equal nil
     end
 
     it "updates the passenger lists" do
-
+      # expect(@dispatcher.passengers[1].trips.length).must_equal 2
+      expect(@dispatcher.passengers[0].trips).must_include @trip
     end
 
     it "updates the driver lists" do
-
+      expect(@dispatcher.drivers[1].trips).must_include @trip
     end
 
     it "updates the trip dispatcher lists" do
-
+      expect(@dispatcher.trips).must_include @trip
     end
 
-    it "selects an available driver" do
-
-    end
-
-    it "changes driver's status from available to unavailable after receiving a ride" do
-
+    it "selects an available driver, then makes them unavailable after new trip" do
+      expect(@dispatcher.drivers[2].status).must_equal :AVAILABLE
+      new_trip = @dispatcher.request_trip(1)
+      expect(@dispatcher.drivers[2].status).must_equal :UNAVAILABLE
     end
 
     it "raises an error if there are no available drivers" do
@@ -159,9 +164,7 @@ describe "TripDispatcher class" do
     end
 
     it "returns a trip" do
-      trip = @dispatcher.request_trip(1)
-
-      expect(trip).must_be_kind_of RideShare::Trip
+      expect(@trip).must_be_kind_of RideShare::Trip
     end
   end
 end
