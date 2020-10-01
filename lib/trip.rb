@@ -43,8 +43,10 @@ module RideShare
         raise ArgumentError, 'Driver or driver_id is required'
       end
 
-      if end_time < start_time || end_time == nil
-        raise ArgumentError, "invalid time stamps"
+      if end_time != nil
+        if end_time < start_time
+          raise ArgumentError, "invalid time stamps"
+        end
       end
 
       @start_time = start_time
@@ -52,8 +54,10 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      if @rating != nil
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
     end
 
