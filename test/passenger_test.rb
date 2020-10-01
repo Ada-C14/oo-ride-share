@@ -92,7 +92,7 @@ describe "Passenger class" do
       )
 
     end
-    it "net_expenditures" do
+    it "net_expenditures sums cost correctly" do
       trip = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
@@ -109,11 +109,10 @@ describe "Passenger class" do
     end
 
     it "net_expenditures will return 0 if there are no trips" do
-      # You add tests for the net_expenditures method
       expect(@passenger.net_expenditures).must_equal 0
     end
 
-    it "total time spent" do
+    it "total time spent sums of durtions of each trip correctly" do
       trip = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
@@ -125,8 +124,11 @@ describe "Passenger class" do
       )
 
       @passenger.add_trip(trip)
-      # You add tests for the net_expenditures method
-      expect(@passenger.total_time_spent).must_equal 600
+      expect(@passenger.total_time_spent).must_equal 10 * 60
+    end
+
+    it "total_time_spent will return 0 if there are no trips" do
+      expect(@passenger.total_time_spent).must_equal 0
     end
 
   end
