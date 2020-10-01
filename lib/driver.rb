@@ -26,7 +26,7 @@ module RideShare
       @trips << trip
     end
 
-    def average_rating
+    def average_rating #will break for in progress trips
       return 0 if @trips.empty?
 
       total_ratings = @trips.reduce(0) { |ratings_total, trip| ratings_total + trip.rating.to_f}

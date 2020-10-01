@@ -147,13 +147,22 @@ describe "TripDispatcher class" do
     end
 
     it "changes Driver's status to :UNAVAILABLE" do
-      #what is Driver's status before .request_trip?
-
+      #Wondering if we should also show the driver's status PRIOR to calling request_trip... i guess this would answered if we test the driver.make_unavailable method...
+      #Showing Driver's status in both the trips array & from the new_trips's instance
+      expect(@new_trip.driver.status).must_equal :UNAVAILABLE
+      expect(@dispatcher.trips.last.driver.status).must_equal :UNAVAILABLE
     end
 
+    it "returns nil for end_time, rating & cost" do
+      expect(@new_trip.end_time).must_be_nil
+      expect(@new_trip.rating).must_be_nil
+      expect(@new_trip.cost).must_be_nil
+    end
     #test that end_time is nil
     # test that cost & rating are 0 --> return 0 when called .ave_rating?
     #
+
+
 
   end
 

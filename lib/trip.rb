@@ -59,7 +59,7 @@ module RideShare
 
     end
 
-    def duration
+    def duration #will break for in progress trips
       return end_time - start_time
     end
 
