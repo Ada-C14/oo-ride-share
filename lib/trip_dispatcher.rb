@@ -73,8 +73,16 @@ module RideShare
     end
 
     def assign_driver
-      driver = @drivers.find { |driver| driver.status == :AVAILABLE }
-      return driver
+      available = @drivers.select { |driver| driver.status == :AVAILABLE }
+      return nil if available.empty?
+
+      new_driver = available.find { |driver| driver.trips.empty? }
+      if new_driver.nil?
+        longest_idle = available.min_by { |driver| driver.trips[-1].end_time }
+      else
+        return new_driver
+      end
+      return longest_idle
     end
 
     def connect_new_trip(new_trip, passenger_id, selected_driver)

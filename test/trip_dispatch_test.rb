@@ -140,7 +140,7 @@ describe "TripDispatcher class" do
       # This test will break if wave 4 is implemented b/c the first driver is being selected
       previous_trips_qty = @trip_dispatcher.trips.length
       prev_passenger_trip_qty = @trip_dispatcher.passengers[0].trips.length
-      prev_driver_trips_qty = @trip_dispatcher.drivers[1].trips.length
+      prev_driver_trips_qty = @trip_dispatcher.drivers[2].trips.length
       new_trip = @trip_dispatcher.request_trip(1)
       passenger = @trip_dispatcher.find_passenger(1)
       driver = new_trip.driver
@@ -153,12 +153,18 @@ describe "TripDispatcher class" do
       expect(@trip_dispatcher.trips).must_include new_trip
     end
 
-    it "selects and available driver" do
-      before_request = @trip_dispatcher
+    it "selects an available driver" do
+      available_drivers = @trip_dispatcher.drivers.select { |driver| driver.status == :AVAILABLE }
       new_trip = @trip_dispatcher.request_trip(1)
-      available_drivers = before_request.drivers.select { |driver| driver.status == :AVAILABLE}
 
       expect(available_drivers).must_include new_trip.driver
+    end
+
+    it "selects a driver with no trips or the driver with longest time since their last ride" do
+      drivers = @trip_dispatcher.drivers.dup
+      new_trip= @trip_dispatcher.request_trip(1)
+
+      expect(new_trip.driver_id).must_equal 3
     end
 
     it "raises an ArgumentError if there are no available drivers" do
