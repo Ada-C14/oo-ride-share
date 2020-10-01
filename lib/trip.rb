@@ -31,16 +31,20 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
-      if driver
-        @driver = driver
-        @driver_id = driver.id
+      raise ArgumentError, 'Driver or driver_id is required' unless driver || driver_id
+      @driver = driver
+      @driver.nil? ? @driver_id = driver_id : @driver_id = driver.id
 
-      elsif driver_id
-        @driver_id = driver_id
+      # if driver
+      #   @driver = driver
+      #   @driver_id = driver.id
 
-      else
-        raise ArgumentError, 'Driver or driver_id is required'
-      end
+      # elsif driver_id
+      #   @driver_id = driver_id
+
+      # else
+      #   raise ArgumentError, 'Driver or driver_id is required'
+      # end
 
       @start_time = start_time
       @end_time = end_time
@@ -68,6 +72,7 @@ module RideShare
       "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
         "id=#{id.inspect} " +
         "passenger_id=#{passenger&.id.inspect} " +
+        "driver_id=#{driver&.id.inspect} " +
         "start_time=#{start_time} " +
         "end_time=#{end_time} " +
         "cost=#{cost}  " +
