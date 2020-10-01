@@ -82,8 +82,7 @@ module RideShare
     end
 
     def duration
-      trip_duration = @end_time - @start_time
-      return trip_duration
+      @end_time == nil ? nil : (@end_time - @start_time)
     end
 
     private
