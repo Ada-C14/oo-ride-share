@@ -43,27 +43,9 @@ module RideShare
           rating: nil,
           driver: assign_driver
       )
-      connect_new_trip
+      connect_new_trip(new_trip)
       return new_trip
     end
-
-
-
-
-    #def request_trip(passenger_id)
-    # Trip.new(
-    # automatically assign driver to trip @drivers.find { |driver| driver.status == :AVAILABLE }
-    # ^if returns nil, ArgumentError.new "No drivers available!"
-    # start_time: Time.now
-    # end_time: nil
-    # cost: nil
-    # rating: nil)
-    #
-    # driver.status_change
-    # passenger.add_trip(trip)
-    # add trip to all trips in trip dispatcher?
-    # turn this new instance of trip
-    # end
 
     private
 
@@ -94,7 +76,7 @@ module RideShare
       end
     end
 
-    def connect_new_trip
+    def connect_new_trip(new_trip)
       requesting_passenger = new_trip.passenger
       requesting_passenger.add_trip(new_trip)
 
@@ -102,9 +84,6 @@ module RideShare
       assigned_driver.add_trip(new_trip)
 
       @trips << new_trip
-
-
-
     end
   end
 end
