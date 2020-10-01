@@ -9,6 +9,12 @@ describe "TripDispatcher class" do
     )
   end
 
+  def build_test_dispatcher_2
+    return RideShare::TripDispatcher.new(
+        directory: './support'
+    )
+  end
+
   describe "Initializer" do
     it "is an instance of TripDispatcher" do
       dispatcher = build_test_dispatcher
@@ -124,18 +130,19 @@ describe "TripDispatcher class" do
 
     describe "request_trip" do
       before do
-        @dispatcher = build_test_dispatcher
+        @dispatcher = build_test_dispatcher_2
       end
 
       it "Check that the number of trips increases by 1" do
         before_length_trip = @dispatcher.trips.length
-        before_length_driver = @dispatcher.find_driver(3).trips.length
+        before_length_driver = @dispatcher.find_driver(1).trips.length
         before_length_passenger = @dispatcher.find_passenger(1).trips.length
 
         @dispatcher.request_trip(1)
-        expect(@dispatcher.trips.length).must_equal before_length_trip + 1
-        expect(@dispatcher.find_driver(3).trips.length).must_equal before_length_driver + 1
-        expect(@dispatcher.find_passenger(1).trips.length).must_equal before_length_passenger + 1
+        @dispatcher.request_trip(1)
+        expect(@dispatcher.trips.length).must_equal before_length_trip + 2
+        expect(@dispatcher.find_driver(1).trips.length).must_equal before_length_driver + 1
+        expect(@dispatcher.find_passenger(1).trips.length).must_equal before_length_passenger + 2
       end
 
       it "trip was created properly" do
@@ -151,24 +158,38 @@ describe "TripDispatcher class" do
       end
 
       it "check if request trip adds the correct driver id" do
-        expect(@dispatcher.request_trip(1).driver.id).must_equal 3
+        expect(@dispatcher.request_trip(1).driver.id).must_equal 1
       end
 
       it "check if driver's status changes" do
-        expect(@dispatcher.find_driver(3).status).must_equal :AVAILABLE
+        expect(@dispatcher.find_driver(1).status).must_equal :AVAILABLE
         @dispatcher.request_trip(1)
-        expect(@dispatcher.find_driver(3).status).must_equal :UNAVAILABLE
+        expect(@dispatcher.find_driver(1).status).must_equal :UNAVAILABLE
+      end
+
+      it "check that each driver should update status every time request_Trip is called" do
+        expect(@dispatcher.find_driver(6).status).must_equal :AVAILABLE
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(1)
+        expect(@dispatcher.find_driver(6).status).must_equal :UNAVAILABLE
       end
 
       it "check if driver's status for oldest end_time" do
-        expect(@dispatcher.find_driver(2).status).must_equal :AVAILABLE
+        expect(@dispatcher.find_driver(17).status).must_equal :AVAILABLE
         @dispatcher.request_trip(1)
         @dispatcher.request_trip(1)
-        expect(@dispatcher.find_driver(2).status).must_equal :UNAVAILABLE
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(1)
+        expect(@dispatcher.find_driver(17).status).must_equal :UNAVAILABLE
 
       end
 
       it "There is no available drivers" do
+        @dispatcher = build_test_dispatcher
         @dispatcher.request_trip(1)
         @dispatcher.request_trip(1)
         expect{
