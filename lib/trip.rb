@@ -1,14 +1,13 @@
 require 'csv'
 require 'time'
-
 require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
 
     # we ask attr_reader to create the following methods using the input from initialize
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
-
+    attr_reader :id, :passenger_id, :start_time, :end_time, :rating, :cost, :driver_id
+    attr_accessor :passenger, :driver
     def initialize(
         id:,
         passenger: nil,
@@ -16,7 +15,9 @@ module RideShare
         start_time:,
         end_time:,
         cost: nil,
-        rating:
+        rating:,
+        driver_id:,
+        driver:
     )
       super(id)
       # either define methods below OR if method is from parameter/ and attr_reader, save them below
@@ -24,20 +25,18 @@ module RideShare
       # must save those variable so that the methods by the same name can access them
       @cost = cost
       @rating = rating
-
-        @cost = cost
-        @rating = rating
+      @driver_id = driver_id
+      @driver = driver
 
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
       elsif passenger_id
         @passenger_id = passenger_id
-
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
+
       # Modify Trip.from_csv to turn start_time and end_time into Time instances
       # before passing them to Trip#initialize
       if start_time.class == Time
@@ -86,9 +85,11 @@ module RideShare
           "rating=#{rating}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
+      @driver = driver
+      driver.add_trip(self)
     end
 
     private
@@ -96,11 +97,13 @@ module RideShare
     def self.from_csv(record)
       return self.new(
           id: record[:id].to_i,
+          driver_id: record[:driver_id],
           passenger_id: record[:passenger_id],
           start_time: record[:start_time],
           end_time: record[:end_time],
           cost: record[:cost],
-          rating: record[:rating]
+          rating: record[:rating],
+          driver: record[:driver]
       )
     end
   end

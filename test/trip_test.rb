@@ -5,6 +5,10 @@ describe "Trip class" do
   before do
     start_time = Time.now - 60 * 60 # 60 minutes
     end_time = start_time + 25 * 60 # 25 minutes
+
+    @start_time = start_time
+    @end_time = end_time
+
     @trip_data = {
         id: 8,
         passenger: RideShare::Passenger.new(
@@ -15,7 +19,9 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver_id: 3,
+        driver: "Matisse"
     }
     @trip = RideShare::Trip.new(@trip_data)
   end
@@ -60,6 +66,7 @@ describe "Trip class" do
     # Add an instance method to the Trip class to calculate the duration of the trip
     # in seconds, and IN THIS FILE a corresponding test
     it "calculate the duration of the trip in seconds" do
+
       @trip_data[:start_time] = @start_time
       @trip_data[:end_time] = @end_time
       expect(@trip.duration).must_equal 25 * 60

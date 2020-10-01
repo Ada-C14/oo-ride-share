@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -83,11 +83,13 @@ xdescribe "Driver class" do
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ"
+        vin: "1C9EVBRM0YBC564DZ",
+      status: :AVAILABLE
       )
       trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
+        driver_id: @driver_id,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
@@ -132,5 +134,30 @@ xdescribe "Driver class" do
 
   describe "total_revenue" do
     # You add tests for the total_revenue method
+
+    it "calculates the total_revenue if there are no trips" do
+      driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 1234567123456781, status: :AVAILABLE, trips: [])
+      expect(driver.total_revenue).must_equal 0
+    end
+
+    it "calculate the total_revenue if there is one trip, worth 1.66 usd" do
+      driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 1234567123456781, status: :AVAILABLE, trips: [])
+      trip
+      expect(driver.total_revenue).must_equal 0
+    end
+
+    it "calculates the total_revenue if there are more than one trip" do
+
+    end
+
+    it "calculates the total_revenue if we have two trips, each with cost inferior to 1.65 usd" do
+
+    end
+
+    it "calculates the total_revenue if we have one trip inferior to 1.65 usd" do
+
+    end
+
+
   end
 end

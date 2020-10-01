@@ -50,7 +50,9 @@ describe "Passenger class" do
           passenger: @passenger,
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
-          rating: 5
+          rating: 5,
+          driver_id: 3,
+          driver: "Matisse"
       )
 
       @passenger.add_trip(trip)
@@ -75,7 +77,7 @@ describe "Passenger class" do
 
     before do
       @passenger_random = RideShare::Passenger.new(id: 500, name: "TestName", phone_number: "test_phone_number", trips: [])
-      @trip_random = RideShare::Trip.new(id: 5, passenger: @passenger_random, start_time: Time.new(2016, 8, 8), end_time: Time.new(2016, 8, 9), rating: 5)
+      @trip_random = RideShare::Trip.new(id: 5, passenger: @passenger_random, start_time: Time.new(2016, 8, 8), end_time: Time.new(2016, 8, 9), rating: 5, driver_id: 3, driver: "Matisse")
     end
 
     it "Evaluates to zero if the passenger didn't do any trips" do
@@ -106,7 +108,9 @@ describe "Passenger class" do
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
           rating: 5,
-          cost: 22
+          cost: 22,
+          driver_id: 3,
+          driver: "Matisse"
       )
       @passenger.add_trip(trip)
       expect(@passenger.net_expenditures).must_equal 22
@@ -121,7 +125,9 @@ describe "Passenger class" do
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
           rating: 5,
-          cost: 22
+          cost: 22,
+          driver_id: 3,
+          driver: "Matisse"
       )
       @passenger.add_trip(trip)
       @passenger.add_trip(trip)
