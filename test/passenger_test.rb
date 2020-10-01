@@ -49,7 +49,13 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+          id: 2,
+          name: "Test",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+         )
         )
 
       @passenger.add_trip(trip)
@@ -93,7 +99,13 @@ describe "Passenger class" do
           start_time: start_time,
           end_time: end_time,
           cost: 23.45,
-          rating: 3
+          rating: 3,
+          driver: RideShare::Driver.new(
+          id: 2,
+          name: "Test",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+      )
       }
       trip = RideShare::Trip.new(trip_data)
       trip_data2 = {
@@ -102,7 +114,13 @@ describe "Passenger class" do
           start_time: start_time,
           end_time: end_time,
           cost: 100.00,
-          rating: 3
+          rating: 3,
+          driver: RideShare::Driver.new(
+              id: 3,
+              name: "Test",
+              vin: "12345678901234568",
+              status: :AVAILABLE
+          )
       }
       trip2 = RideShare::Trip.new(trip_data2)
 
@@ -138,7 +156,13 @@ describe "Passenger class" do
           start_time: start_time,
           end_time: end_time,
           cost: 23.45,
-          rating: 3
+          rating: 3,
+          driver: RideShare::Driver.new(
+              id: 2,
+              name: "Test",
+              vin: "12345678901234567",
+              status: :AVAILABLE
+          )
       }
       trip = RideShare::Trip.new(trip_data)
       trip_data2 = {
@@ -147,7 +171,13 @@ describe "Passenger class" do
           start_time: start_time,
           end_time: end_time,
           cost: 100.00,
-          rating: 3
+          rating: 3,
+          driver: RideShare::Driver.new(
+              id: 1,
+              name: "Test",
+              vin: "12345678901234568",
+              status: :AVAILABLE
+          )
       }
       trip2 = RideShare::Trip.new(trip_data2)
 
