@@ -138,23 +138,59 @@ describe "TripDispatcher class" do
       expect(@dispatcher.request_trip(passenger_id).driver.status).must_equal :UNAVAILABLE
     end
 
+    it "checks that requested trip has the right parameters" do
+
+      passenger_id = 6
+      trip = @dispatcher.request_trip(passenger_id)
+
+      expect(trip.passenger_id).must_equal 6
+      expect(trip.id).must_equal 6
+      expect(trip.end_time).must_be_nil
+      expect(trip.cost).must_be_nil
+      expect(trip.rating).must_be_nil
+
+    end
+
+    it "checks that trip id increments by 1" do
+
+      # passenger_id = 1
+      # trip = @dispatcher.request_trip(passenger_id)
+      #
+      # expect(trip.passenger_id).must_equal 1
+      # expect(trip.id).must_equal 6
+      #
+      # passenger_id = 2
+      # trip = @dispatcher.request_trip(passenger_id)
+      #
+      # expect(trip.passenger_id).must_equal 2
+      # expect(trip.id).must_equal 7
+
+
+      array = [6, 7]
+      trip_id = 5
+
+      array.each do |pass|
+        trip = @dispatcher.request_trip(pass)
+        expect(trip.id).must_equal trip_id += 1
+      end
+
+    end
+
+    it "raises an error for no driver available" do
+      array = [6, 7, 3]
+
+      expect{
+        array.each do |pass|
+          @dispatcher.request_trip(pass)
+        end}.must_raise ArgumentError
+
+    end
+
   end
 end
 
 # TESTS NEEDED FOR WAVE 3 #
 
-# - Finds the right passenger for passenger_id, and adds trip to passenger trip list
-# - Finds the first available driver, and adds trip to driver's trip list
-# - Ensure returned trip has the right parameters
-# - @trips list should increase by 1 whenever request_trip is  (SEE LINE 33)
-# - trip ID should be incrementally higher than last trip id (SEE LINE 32)
-# - If request trip twice, both new trips should have unique IDs
-#
-# - Ignore average rating, duration and revenue calculation on trips in-progress
-#
-# - Edge case -- what happens if all drivers are unavailable?
-#       should raise ArgumentError for nil driver
-# - Edge case -- what happens if there are NO DRIVERS?
-#       should raise ArgumentError for nil driver
-# - Edge case -- invalid passenger ID
-#       raise ArgumentError for nil passenger
+# - adds trip to passenger trip list
+# - and adds trip to driver's trip list
+

@@ -17,7 +17,10 @@ module RideShare
     end
 
     def net_expenditures
-      total = @trips.sum { |trip| trip.cost }
+      total = 0
+      @trips.each do |trip|
+        total += trip.cost unless trip.cost.nil?
+      end
       return total
     end
 
@@ -25,7 +28,6 @@ module RideShare
       total = @trips.sum { |trip| trip.duration }
       return total
     end
-
 
     private
 

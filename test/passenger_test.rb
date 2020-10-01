@@ -119,6 +119,21 @@ describe "Passenger class" do
     it "can calculate the total spending for each passenger" do
         expect(@passenger.net_expenditures).must_equal 19.5
     end
+
+    it "can calculate total spending for a passenger with a trip in-progress" do
+      trip_3 = RideShare::Trip.new(
+          id: 10,
+          passenger: @passenger,
+          driver: @driver,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil
+      )
+      @passenger.add_trip(trip_3)
+      expect(@passenger.net_expenditures).must_equal 19.5
+    end
+
   end
 
   describe "total_time_spent" do
@@ -160,9 +175,24 @@ describe "Passenger class" do
       @passenger.add_trip(trip_2)
     end
 
-    it "can calculate the total spending for each passenger" do
+    it "can calculate the total time spent for each passenger" do
       expect(@passenger.total_time_spent).must_equal 4800
     end
+
+    it "can calculate total time spent for a passenger with a trip in-progress" do
+      trip_3 = RideShare::Trip.new(
+          id: 10,
+          passenger: @passenger,
+          driver: @driver,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil
+      )
+      @passenger.add_trip(trip_3)
+      expect(@passenger.total_time_spent).must_equal 4800
+    end
+
   end
 
 end

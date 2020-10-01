@@ -31,8 +31,6 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
-
-
       if driver
         @driver = driver
         @driver_id = driver.id
@@ -46,19 +44,21 @@ module RideShare
 
       @start_time = start_time
       @end_time = end_time
-
       raise ArgumentError.new("Start time should occur before the end time") if @start_time > @end_time unless @end_time.nil?
-      @cost = cost
-      @rating = rating
 
-      unless @rating.nil?
-        raise ArgumentError.new("Invalid rating #{@rating}") if @rating > 5 || @rating < 1
-      end
+      @cost = cost
+
+      @rating = rating
+      raise ArgumentError.new("Invalid rating #{@rating}") if @rating > 5 || @rating < 1 unless @rating.nil?
 
     end
 
     def duration
-      duration = @end_time - @start_time
+      if @end_time.nil?
+        duration = 0
+      else
+        duration = @end_time - @start_time
+      end
       return duration.to_i
     end
 
