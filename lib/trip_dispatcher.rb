@@ -42,12 +42,15 @@ module RideShare
         return nil unless find_passenger(passenger_id)
       end
 
-      # Find a driver, returning nil if there are no available drivers
-      trip_driver = nil
-      driver_index = @drivers.find_index { |driver| driver.status == :AVAILABLE }
-      return nil unless driver_index
-      trip_driver = @drivers[driver_index]
-      return nil if trip_driver == nil
+      driver_pool = filter_available_drivers
+      trip_driver = select_driver(driver_pool)
+
+      # # Find a driver, returning nil if there are no available drivers
+      # trip_driver = nil
+      # driver_index = @drivers.find_index { |driver| driver.status == :AVAILABLE }
+      # return nil unless driver_index
+      # trip_driver = @drivers[driver_index]
+      # return nil if trip_driver == nil
 
       new_trip = Trip.new(
           id: @trips.length + 1,
@@ -78,6 +81,25 @@ module RideShare
       end
 
       return trips
+    end
+
+    def filter_available_drivers
+      # Eliminate unavailable drivers and create list of driver IDs
+      driver_pool = @drivers.select { |driver| driver.status == :AVAILABLE }
+      driver_pool = driver_pool.map { |driver| driver.id }
+      # Find trips in progress
+      in_progress_trips = @trips.select { |trip| trip.end_time.nil? }
+      # Find drivers currently taking a trip
+      currently_driving = in_progress_trips.map { |trip| trip.driver_id}.uniq
+
+      # Finalize driver pool
+      driver_pool -= currently_driving
+
+      return driver_pool
+    end
+
+    def select_driver(driver_pool)
+
     end
   end
 end
