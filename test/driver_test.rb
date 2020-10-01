@@ -96,6 +96,17 @@ describe "Driver class" do
       @driver.add_trip(trip)
     end
 
+    let (:trip2) {
+      trip2 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 1
+      )
+    }
+
     it "returns a float" do
       expect(@driver.average_rating).must_be_kind_of Float
     end
@@ -116,14 +127,22 @@ describe "Driver class" do
     end
 
     it "correctly calculates the average rating" do
-      trip2 = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
-        passenger_id: 3,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        rating: 1
+      @driver.add_trip(trip2)
+
+      expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
+    end
+
+    it "skips trips in progress when calculating total rating" do
+      trip_in_progress = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: nil,
+          rating: nil,
+          cost: nil
       )
+      @driver.add_trip(trip_in_progress)
       @driver.add_trip(trip2)
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
@@ -152,6 +171,7 @@ describe "Driver class" do
           passenger_id: 3,
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
+          cost: 30,
           rating: 5
       )
       @trip_3 = RideShare::Trip.new(
@@ -163,14 +183,14 @@ describe "Driver class" do
           cost: 22.71,
           rating: 5
       )
-      @trip_4 = RideShare::Trip.new(
+      @trip_in_progress = RideShare::Trip.new(
           id: 8,
           driver: @driver,
           passenger_id: 3,
           start_time: Time.new(2016, 8, 8),
-          end_time: Time.new(2016, 8, 9),
-          cost: 30,
-          rating: 5
+          end_time: nil,
+          rating: nil,
+          cost: nil
       )
     end
 
@@ -178,23 +198,25 @@ describe "Driver class" do
       expect(@driver.total_revenue).must_equal 0
     end
 
-    it "skip nil values for trip costs" do
-      @driver.add_trip(@trip_2)
-
-      expect(@driver.total_revenue).must_equal 0
-    end
-
     it "return amount if cost is less than 1.65" do
       @driver.add_trip(@trip_1)
 
-      expect(@driver.total_revenue).must_equal 1.20
+      expect(@driver.total_revenue).must_be_close_to 1.20
     end
 
     it "calculate total revenue for all trips" do
       @driver.add_trip(@trip_1)
       @driver.add_trip(@trip_2)
       @driver.add_trip(@trip_3)
-      @driver.add_trip(@trip_4)
+
+      expect(@driver.total_revenue).must_be_close_to 40.72
+    end
+
+    it "skips trips in progress when calculating total revenue" do
+      @driver.add_trip(@trip_1)
+      @driver.add_trip(@trip_2)
+      @driver.add_trip(@trip_in_progress)
+      @driver.add_trip(@trip_3)
 
       expect(@driver.total_revenue).must_be_close_to 40.72
     end

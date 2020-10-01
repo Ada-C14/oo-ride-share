@@ -105,6 +105,14 @@ describe "Passenger class" do
           end_time: Time.parse("2018-11-24 16:01:56 -0800"),
           rating: 5
       )
+      @trip_4 = RideShare::Trip.new(
+          id: 9,
+          passenger: @passenger,
+          driver_id: 3,
+          start_time: Time.parse("2018-11-24 15:57:18 -0800"),
+          end_time: nil,
+          rating: 5
+      )
     end
 
     it "returns 0 for no trips" do
@@ -114,7 +122,14 @@ describe "Passenger class" do
     it "returns sum of all trip costs" do
       @passenger.add_trip(@trip_1)
       @passenger.add_trip(@trip_2)
+
+      expect(@passenger.net_expenditures).must_equal 10
+    end
+
+    it "skips in progress trips in figuring out trip costs" do
+      @passenger.add_trip(@trip_1)
       @passenger.add_trip(@trip_3)
+      @passenger.add_trip(@trip_2)
 
       expect(@passenger.net_expenditures).must_equal 10
     end
@@ -126,5 +141,15 @@ describe "Passenger class" do
 
       expect(@passenger.total_time_spent).must_equal 4920
     end
+
+    it "total_time_spent ignores in progress trips" do
+      @passenger.add_trip(@trip_1)
+      @passenger.add_trip(@trip_2)
+      @passenger.add_trip(@trip_4)
+      @passenger.add_trip(@trip_3)
+
+      expect(@passenger.total_time_spent).must_equal 4920
+    end
+
   end
-end
+  end

@@ -33,9 +33,14 @@ module RideShare
 
     def average_rating
       return 0 if @trips.empty?
-      total_rating = trips.sum { |trip| trip.rating }
-      trips_count = trips.count.to_f
-      avg_rating = total_rating / trips_count
+      total_rating = 0
+      rated_trips = 0
+      @trips.each do |trip|
+        next if trip.rating.nil?
+        total_rating += trip.rating
+        rated_trips += 1
+      end
+      avg_rating = total_rating / rated_trips.to_f
       return avg_rating
     end
 
