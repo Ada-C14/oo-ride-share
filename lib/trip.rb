@@ -62,6 +62,7 @@ module RideShare
       # trip contains a passenger contains a trip contains a passenger...
       "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
         "id=#{id.inspect} " +
+          "driver_id=#{driver&.id.inspect} " +
         "passenger_id=#{passenger&.id.inspect} " +
         "start_time=#{start_time} " +
         "end_time=#{end_time} " +
