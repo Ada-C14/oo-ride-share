@@ -8,15 +8,15 @@ module RideShare
     attr_reader :id, :passenger, :passenger_id, :driver, :driver_id, :start_time, :end_time, :cost, :rating
 
     def initialize(
-          id:,
-          passenger: nil,
-          passenger_id: nil,
-          driver: nil,
-          driver_id: nil,
-          start_time:,
-          end_time:,
-          cost: nil,
-          rating:
+        id:,
+        passenger: nil,
+        passenger_id: nil,
+        driver: nil,
+        driver_id: nil,
+        start_time:,
+        end_time: nil,
+        cost: nil,
+        rating: nil
         )
       super(id)
 
@@ -37,6 +37,7 @@ module RideShare
       @cost = cost
       @rating = rating
 
+      # Same for ratings
       if @rating && (@rating > 5 || @rating < 1)
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
@@ -45,15 +46,15 @@ module RideShare
     def inspect
       # Prevent infinite loop when puts-ing a Trip
       # trip contains a passenger contains a trip contains a passenger...
-        "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
-        "id=#{id.inspect} " +
-        # Lonely operator (&) prevents passenger_id from displaying correctly
-        #"passenger_id=#{passenger&.id.inspect} "
-        "raw_passenger_id=#{@passenger_id} " +
-        "start_time=#{start_time} " +
-        "end_time=#{end_time} " +
-        "cost=#{cost} " +
-        "rating=#{rating}>"
+      "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
+      "id=#{id.inspect} " +
+      # Lonely operator (&) prevents passenger_id from displaying correctly
+      #"passenger_id=#{passenger&.id.inspect} "
+      "raw_passenger_id=#{@passenger_id} " +
+      "start_time=#{start_time} " +
+      "end_time=#{end_time} " +
+      "cost=#{cost} " +
+      "rating=#{rating}>"
     end
 
     def connect(passenger, driver)
@@ -75,16 +76,13 @@ module RideShare
       if object
         object_return = object
         id_return = object.id
-
       elsif id
         id_return = id
-
       else
         raise ArgumentError, "#{class_name} or #{class_name}_id is required"
       end
 
       return object_return, id_return
-
     end
 
     def self.from_csv(record)

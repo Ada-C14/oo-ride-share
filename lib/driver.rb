@@ -7,7 +7,6 @@ module RideShare
 
     attr_reader :name, :vin, :status, :trips
 
-
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: [])
       super(id)
       raise ArgumentError, 'Name must be a string' unless name.class == String
@@ -33,6 +32,7 @@ module RideShare
 
     def average_rating
       return 0 if @trips.empty?
+
       total_rating = 0
       rated_trips = 0
       @trips.each do |trip|
@@ -40,12 +40,14 @@ module RideShare
         total_rating += trip.rating
         rated_trips += 1
       end
+
       avg_rating = total_rating / rated_trips.to_f
       return avg_rating
     end
 
     def total_revenue
       return 0 if @trips.empty?
+
       total_earnings = 0
       @trips.each do |trip|
         if trip.cost.nil?

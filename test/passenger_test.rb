@@ -152,4 +152,4 @@ describe "Passenger class" do
     end
 
   end
-  end
+end

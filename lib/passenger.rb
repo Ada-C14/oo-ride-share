@@ -19,11 +19,10 @@ module RideShare
 
     def net_expenditures
       return 0 if @trips.empty?
+
       total_expenditure = 0
       @trips.each do |trip|
-        unless trip.cost.nil?
-          total_expenditure += trip.cost
-        end
+        total_expenditure += trip.cost unless trip.cost.nil?
       end
 
       return total_expenditure
