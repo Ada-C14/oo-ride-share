@@ -24,19 +24,20 @@ module RideShare
     end
 
     def request_trip(passenger_id)
-      new_trip = trip.new (
-            id:,
-            driver: assign_driver #could helper find_driver method --> @drivers.find { |driver| driver.status == :AVAILABLE }
-            driver_id:,
-            passenger: self.find_passenger(passenger_id)
-            passenger_id: passenger_id
-            start_time:, Time.now
-            end_time:, nil
+      id = (@trips.last.id) + 1
+      new_trip = Trip.new(
+            id: id,
+            driver: assign_driver, #helper method
+            driver_id: nil,
+            passenger: self.find_passenger(passenger_id),
+            passenger_id: passenger_id,
+            start_time: Time.now,
+            end_time: nil,
             cost: nil,
             rating: nil,
           )
 
-      #new_trip.
+      new_trip.driver.trips << new_trip #this does not work?  tested with pry, creates trip, but trips.last is unchanged
 
     #   call another method on driver --> go to driver to write that instance method to change the status
     end
