@@ -23,6 +23,21 @@ module RideShare
       @trips << trip
     end
 
+    def average_rating
+      all_ratings = @trips.map { |trip| trip.rating }
+
+      if all_ratings.length == 0
+        return 0
+      else
+        average = all_ratings.sum.to_f / all_ratings.length
+        return average
+      end
+
+    end
+
+    # def total_revenue do
+    #
+    # end
 
     private
 
