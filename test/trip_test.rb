@@ -16,7 +16,7 @@ describe "Trip class" do
         end_time: end_time,
         cost: 23.45,
         rating: 3,
-      driver_id: RideShare::Driver.new(
+        driver_id: RideShare::Driver.new(
           id: 2,
           name: "Tango",
           vin: "1C9EVBRM0YBC564DZ")

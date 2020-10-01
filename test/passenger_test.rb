@@ -44,13 +44,21 @@ describe 'Passenger class' do
         phone_number: '1-602-620-2330 x3723',
         trips: []
         )
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Test Driver",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+      )
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver: @driver
         )
+
 
       @passenger.add_trip(trip)
     end
@@ -98,7 +106,11 @@ describe 'Passenger class' do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         cost: 25,
-        rating: 5
+        rating: 5,
+        driver_id: RideShare::Driver.new(
+          id: 2,
+          name: "Tango",
+          vin: "1C9EVBRM0YBC564DZ")
       )
       trip2 = RideShare::Trip.new(
         id: 8,
@@ -106,7 +118,11 @@ describe 'Passenger class' do
         start_time: Time.new(2016, 7, 7),
         end_time: Time.new(2016, 7, 8),
         cost: 15,
-        rating: 5
+        rating: 5,
+        driver_id: RideShare::Driver.new(
+            id: 2,
+            name: "Tango",
+            vin: "1C9EVBRM0YBC564DZ")
       )
 
       @passenger.add_trip(trip1)

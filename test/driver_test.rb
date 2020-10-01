@@ -34,7 +34,7 @@ describe "Driver class" do
     end
 
     it "is set up for specific attributes and data types" do
-      [:id, :name, :vin, :status, :trips].each do |prop|
+      %i[id name vin status trips].each do |prop|
         expect(@driver).must_respond_to prop
       end
 
