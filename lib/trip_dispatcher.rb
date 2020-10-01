@@ -3,6 +3,7 @@ require 'time'
 
 require_relative 'passenger'
 require_relative 'trip'
+require_relative 'driver'
 
 module RideShare
   class TripDispatcher
@@ -31,6 +32,20 @@ module RideShare
               #{trips.count} trips, \
               #{drivers.count} drivers, \
               #{passengers.count} passengers>"
+    end
+
+    def request_trip(passenger_id)
+      first_available_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+
+      Trip.new(
+        id: @trips.length + 1,
+        driver_id: first_available_driver.id,
+        passenger_id: passenger_id,
+        start_time: Time.now,
+        end_time: nil,
+        cost: nil,
+        rating: nil
+      )
     end
 
     private

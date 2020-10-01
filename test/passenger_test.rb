@@ -37,7 +37,6 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @driver = RideShare::Driver.new(
           id: 54,
           name: "Rogers Bartell IV",
