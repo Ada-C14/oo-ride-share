@@ -144,5 +144,13 @@ describe "TripDispatcher class" do
       expect(@dispatcher.trips.last.cost).must_be_nil
       expect(@dispatcher.trips.last.rating).must_be_nil
     end
+
+    it "throws error if driver selected is not AVAILABLE" do
+      expect{
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(2)
+        @dispatcher.request_trip(3)
+      }.must_raise ArgumentError
+    end
   end
 end
