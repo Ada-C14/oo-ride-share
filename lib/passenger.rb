@@ -32,21 +32,79 @@ module RideShare
     # return the toal amount of money passenger has spent of their trips
     # td.passengers.first.trips.sum {|trip| trip.cost}
     def net_expenditures
+      # need to account when cost is nil for in-progress trips
+      # if @trips.empty?
+      #   return 0
+      # else
+      #   return @trips.sum {|trip| trip.cost unless trip.end_time == nil}
+      # end
+
+      # if @trips.empty?
+      #   return 0
+      # else
+      #   @trips.sum do |trip|
+      #     if !(trip.end_time == nil )
+      #       trip.cost
+      #     end
+      #   end
+      # end
+
+      # @trips.sum do |trip|
+      #   if !(trip.end_time == nil )
+      #     trip.cost
+      #   end
+      # end
+
+      total_cost = 0
       if @trips.empty?
         return 0
       else
-        return @trips.sum {|trip| trip.cost}
+        @trips.each do |trip|
+          if trip.end_time == nil
+            total_cost += 0
+          else
+            total_cost += trip.cost
+          end
+        end
       end
+
+      # @trips.each do |trip|
+      #   if trip.end_time == nil
+      #     total_cost += 0
+      #   else
+      #     total_cost += trip.cost
+      #   end
+      # end
+
+      return total_cost
+
 
     end
 
     def total_time_spent
-      if @trips.empty?
-        return 0
-      else
-        return @trips.sum {|trip| trip.duration}
+      #need to account is end_time in nil for in-progress trups
+      # if @trips.empty?
+      #   return 0
+      # else
+      #   return @trips.sum {|trip| trip.duration unless trip.end_time == nil}
+      # end
+
+      total_time = 0
+
+      @trips.each do |trip|
+        if trip.end_time == nil
+          total_time += 0
+        else
+          total_time += trip.duration
+        end
       end
+
+      return total_time
+
+
     end
+
+
 
 
 

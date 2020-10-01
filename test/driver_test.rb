@@ -90,7 +90,7 @@ describe "Driver class" do
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ"
       )
-      trip = RideShare::Trip.new(
+      @trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
         passenger_id: 3,
@@ -98,7 +98,7 @@ describe "Driver class" do
         end_time: Time.new(2016, 8, 8),
         rating: 5
       )
-      @driver.add_trip(trip)
+      @driver.add_trip(@trip)
     end
 
     it "returns a float" do
@@ -133,6 +133,32 @@ describe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
+    #wave 3
+    it "ignores in-progress trips" do
+      passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      new_trip = RideShare::Trip.new(
+          # what should the id of this trip be?
+          id: 25,
+          passenger: passenger,
+          passenger_id: passenger.id,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+          driver_id: 4,
+          )
+      @driver.add_trip(@trip)
+      @driver.add_trip(new_trip)
+
+      expect(@driver.average_rating).must_equal 5
+
+    end
   end
 
   describe "total_revenue" do
@@ -161,6 +187,12 @@ describe "Driver class" do
           rating: 5,
           cost: 10,
           )
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
       #@driver.add_trip(trip_1)
     end
     # You add tests for the total_revenue method
@@ -211,6 +243,28 @@ describe "Driver class" do
     it "returns zero if no driven trips" do
       # assert
       expect(@driver.total_revenue).must_equal 0
+
+    end
+
+    it "ignores in-progress trips" do
+
+      new_trip = RideShare::Trip.new(
+          # what should the id of this trip be?
+          id: 25,
+          passenger: @passenger,
+          passenger_id: @passenger.id,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+          driver_id: 4,
+          )
+
+      @driver.add_trip(@trip_1)
+      @driver.add_trip(new_trip)
+
+      expect(@driver.total_revenue).must_be_close_to 10.68, 0.1
+
 
     end
 

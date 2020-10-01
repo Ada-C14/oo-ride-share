@@ -178,6 +178,8 @@ describe "TripDispatcher class" do
       end.must_raise ArgumentError
 
     end
+
+
   end
 
   describe "find_first_available_driver" do

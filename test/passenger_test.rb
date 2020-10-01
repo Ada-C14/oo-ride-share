@@ -121,6 +121,27 @@ describe "Passenger class" do
       expect(passenger_total_cost).must_equal 0
     end
 
+    #wave 3
+    it "ignores in-progress trips" do
+      new_trip = RideShare::Trip.new(
+          # what should the id of this trip be?
+          id: 25,
+          passenger: @passenger,
+          passenger_id: @passenger.id,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+          driver_id: 4,
+      )
+      @passenger.add_trip(@trip_1)
+      @passenger.add_trip(new_trip)
+
+      #assert
+      expect(@passenger.net_expenditures).must_equal 15
+
+    end
+
   end
 
   describe "total_time_spent" do
@@ -166,6 +187,27 @@ describe "Passenger class" do
       passenger_total_duration = @passenger.total_time_spent
 
       expect(passenger_total_duration).must_equal 0
+
+    end
+
+    #wave 3
+    it "ignores in-progress trips" do
+      new_trip = RideShare::Trip.new(
+          # what should the id of this trip be?
+          id: 25,
+          passenger: @passenger,
+          passenger_id: @passenger.id,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+          driver_id: 4,
+          )
+      @passenger.add_trip(@trip_1)
+      @passenger.add_trip(new_trip)
+
+      expect(@passenger.total_time_spent).must_equal 600
+
 
     end
 

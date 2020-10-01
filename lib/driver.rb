@@ -49,27 +49,61 @@ module RideShare
     # end
 
     def average_rating
+      # need to account if rating is nil
+      total_rating = 0
+      nil_count = 0
       if @trips.empty?
         return 0
       else
-        sum_rating = @trips.sum {|trip| trip.rating}
-        avg_rating = (sum_rating / @trips.size).to_f
-        return avg_rating
+        # sum_rating = @trips.sum {|trip| trip.rating }
+        # avg_rating = (sum_rating / @trips.size).to_f
+        # return avg_rating
+        @trips.each do |trip|
+          if trip.end_time == nil
+            total_rating += 0
+            nil_count += 1
+          else
+            total_rating += trip.rating
+          end
+        end
       end
+
+      total_avg_rating = (total_rating / (@trips.size - nil_count)).to_f
+      return total_avg_rating
 
     end
 
     def total_revenue
-      # how to
-      sum = @trips.sum {|trip|
-        if trip.cost < 1.65
-          return 0
-        else
-          (trip.cost - FEE ) * DRIVER_COMMISSION
+      # how to account when cost is nil?
+      # sum = @trips.sum {|trip|
+      #   if trip.cost < 1.65
+      #     return 0
+      #   else
+      #     (trip.cost - FEE ) * DRIVER_COMMISSION
+      #   end
+      # }
+      # #total_earned = (sum * DRIVER_COMMISSION) - (@trips.size * FEE)
+      # return sum
+
+      total_sum = 0
+      if @trips.empty?
+        return 0
+      else
+        @trips.each do |trip|
+          if trip.end_time == nil
+            total_sum += 0
+          elsif trip.cost < 1.65
+            total_sum += 0
+          else
+            total_sum += (trip.cost - FEE ) * DRIVER_COMMISSION
+          end
         end
-      }
-      #total_earned = (sum * DRIVER_COMMISSION) - (@trips.size * FEE)
-      return sum
+      end
+
+      return total_sum
+
+
+
     end
 
     private
