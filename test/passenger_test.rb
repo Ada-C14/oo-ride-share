@@ -46,6 +46,7 @@ describe "Passenger class" do
         )
       trip = RideShare::Trip.new(
         id: 8,
+        driver_id: 1,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
@@ -78,6 +79,7 @@ describe "Passenger class" do
       )
       trip = RideShare::Trip.new(
         id: 8,
+        driver_id: 2,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
@@ -95,6 +97,7 @@ describe "Passenger class" do
     it "returns accurate net expenditure" do
       trip = RideShare::Trip.new(
         id: 8,
+        driver_id: 3,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
@@ -126,6 +129,7 @@ describe "Passenger class" do
       )
       trip = RideShare::Trip.new(
           id: 8,
+          driver_id: 3,
           passenger: @passenger,
           start_time: Time.new(2016, 8, 8, 12),
           end_time: Time.new(2016, 8, 8, 12, 10, 30),
