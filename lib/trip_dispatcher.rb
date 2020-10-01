@@ -28,6 +28,31 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
 
+    # make new trips and appropriately assign a driver and passenger.
+    def request_trip(passenger_id)
+
+      passenger = find_passenger(passenger_id)
+      available_drive = @drivers.find { |driver| driver.status == :AVAILABLE}
+      new_trip = Trip.new(
+          id: id,
+          passenger: passenger,
+          passenger_id:passenger_id,
+          start_time: Tim.now,
+          end_time:nil,
+          cost:nil,
+          rating: nil,
+          driver_id: driver_id,
+          driver: driver
+      )
+      @trips << new_trip
+      # Add the Trip to the Passenger's list of Trips
+      passenger.add_trip(new_trip)
+      # Add the new trip to the collection of trips for that Driver
+      available_drive.add_trip(new_trip)
+      driver.unavailable_status
+      return new_trip
+    end
+
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
@@ -35,6 +60,7 @@ module RideShare
               #{drivers.count} drivers, \
               #{passengers.count} passengers>"
     end
+
 
     private
 

@@ -47,6 +47,11 @@ module RideShare
       return revenue.round(2)
     end
 
+    # Set the driver's status to :UNAVAILABLE
+    def unavailable_status
+      @status = :UNAVAILABLE
+    end
+
     private
 
 
