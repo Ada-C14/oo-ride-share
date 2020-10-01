@@ -167,34 +167,24 @@ describe "TripDispatcher class" do
         expect(@dispatcher.find_driver(1).status).must_equal :UNAVAILABLE
       end
 
-      it "check that each driver should update status every time request_Trip is called" do
+      it "check that correct driver's status changes for each call of request trip" do
         expect(@dispatcher.find_driver(6).status).must_equal :AVAILABLE
         @dispatcher.request_trip(1)
         @dispatcher.request_trip(1)
         expect(@dispatcher.find_driver(6).status).must_equal :UNAVAILABLE
       end
 
-      it "check if driver's status for oldest end_time" do
-        expect(@dispatcher.find_driver(17).status).must_equal :AVAILABLE
-        @dispatcher.request_trip(1)
-        @dispatcher.request_trip(1)
-        @dispatcher.request_trip(1)
-        @dispatcher.request_trip(1)
-        @dispatcher.request_trip(1)
-        @dispatcher.request_trip(1)
-        @dispatcher.request_trip(1)
-        @dispatcher.request_trip(1)
-        expect(@dispatcher.find_driver(17).status).must_equal :UNAVAILABLE
-
+      it "check if the status changes for the chosen driver whose most recent trip is the oldest" do
+        expect(@dispatcher.find_driver(28).status).must_equal :AVAILABLE
+        7.times {@dispatcher.request_trip(1)}
+        expect(@dispatcher.find_driver(28).status).must_equal :UNAVAILABLE
       end
 
       it "There is no available drivers" do
         @dispatcher = build_test_dispatcher
         @dispatcher.request_trip(1)
         @dispatcher.request_trip(1)
-        expect{
-          @dispatcher.request_trip(1)
-          }.must_raise ArgumentError
+        expect{ @dispatcher.request_trip(1) }.must_raise ArgumentError
       end
     end
   end
