@@ -4,15 +4,18 @@ require_relative 'csv_record'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :id, :name, :vin, :status, :trips
+    attr_reader :id, :name, :vin, :trips
+    attr_accessor :status
 
     def initialize(
         id:,
         name:,
         vin:,
-        status:,
+        status: :AVAILABLE,
         trips: []
     )
+
+      @status = status.to_sym
       super(id)
 
       raise ArgumentError, 'Length of vin must be 17' unless vin.to_s.length == 17
@@ -23,30 +26,30 @@ module RideShare
 
       @name = name
       @vin = vin
-      @status = status
+      @status = status.to_sym
       @trips = trips
     end
 
-    # THREE METHODS -------------- DONT FORGET TO ADD TESTTTTTTTTTTTTTTTTTTTTTTTTTTTSSSSSSSSSSSSSSSSS
     def add_trip(trip)
       @trips << trip
     end
 
     def average_rating
       if @trips == []
-        return nil
+        return 0
       else
-        sum_of_ratings = 0.0
+        sum_of_ratings = 0.00
       @trips.each do |trip|
         sum_of_ratings += trip.rating
       end
       number_of_ratings = @trips.length
-      return sum_of_ratings / number_of_ratings
+        average = sum_of_ratings / number_of_ratings
+      return average.round(2)
       end
     end
 
     def total_revenue
-      total = 0.0
+      total = 0.00
       @trips.each do |trip|
         if trip.cost > 1.65
         total += (trip.cost - 1.65)*0.80

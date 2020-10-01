@@ -63,7 +63,8 @@ describe "Driver class" do
         passenger: pass,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2018, 8, 9),
-        rating: 5
+        rating: 5,
+        driver_id: 5
       )
     end
 
@@ -89,7 +90,7 @@ describe "Driver class" do
       trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
-        driver_id: @driver_id,
+        driver_id: 5,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
@@ -124,7 +125,9 @@ describe "Driver class" do
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 1
+        rating: 1,
+        cost: 10.0,
+        driver_id: 5
       )
       @driver.add_trip(trip2)
 
@@ -133,29 +136,75 @@ describe "Driver class" do
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
-
     it "calculates the total_revenue if there are no trips" do
-      driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 1234567123456781, status: :AVAILABLE, trips: [])
+      driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
       expect(driver.total_revenue).must_equal 0
     end
 
     it "calculate the total_revenue if there is one trip, worth 1.66 usd" do
-      driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 1234567123456781, status: :AVAILABLE, trips: [])
-      trip
-      expect(driver.total_revenue).must_equal 0
+      driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 1,
+          cost: 10.0,
+          driver_id: 5
+      )
+      driver.add_trip(trip)
+      expect(driver.total_revenue).must_equal (10.0-1.65)*0.8
     end
 
     it "calculates the total_revenue if there are more than one trip" do
-
+      driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 1,
+          cost: 10.0,
+          driver_id: 5
+      )
+      driver.add_trip(trip)
+      driver.add_trip(trip)
+      expect(driver.total_revenue).must_equal ((10.0-1.65)*0.8)*2
     end
 
     it "calculates the total_revenue if we have two trips, each with cost inferior to 1.65 usd" do
-
+      driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 1,
+          cost: 1.60,
+          driver_id: 5
+      )
+      driver.add_trip(trip)
+      driver.add_trip(trip)
+      expect(driver.total_revenue).must_equal 0
     end
 
     it "calculates the total_revenue if we have one trip inferior to 1.65 usd" do
-
+      driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 1,
+          cost: 1.60,
+          driver_id: 5
+      )
+      driver.add_trip(trip)
+      expect(driver.total_revenue).must_equal 0
     end
 
 
