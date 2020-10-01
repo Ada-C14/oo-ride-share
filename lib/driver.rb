@@ -52,8 +52,8 @@ module RideShare
     def trip_in_progress(trip)
       # @trips.each do |trip|
       #   if @driver.status = :AVAILABLE
-      self.add_trip(trip)
-      @driver.status = :UNAVAILABLE
+      add_trip(trip)
+      @status = :UNAVAILABLE
     end
 
 

@@ -36,6 +36,16 @@ module RideShare
     end
 
     def request_trip(passenger_id)
+
+      first_available_driver = nil
+
+      @drivers.each do |driver|
+        if driver.status == :AVAILABLE
+          first_available_driver = driver
+          break
+        end
+      end
+
       new_trip = Trip.new(
           id: 10,
           passenger_id: passenger_id,
@@ -43,15 +53,12 @@ module RideShare
           end_time: nil,
           cost: nil,
           rating: nil,
-          driver_id: @driver_id
+          driver_id: first_available_driver.id
       )
+      passenger = find_passenger(passenger_id)
+      passenger.add_trip(new_trip)
 
-      if @drivers.status == :AVAILABLE
-        @driver_id = self.find_driver(@drivers.id)
-      end
-
-      Passenger.add_trip(new_trip)
-      Driver.trip_in_progress(new_trip)
+      first_available_driver.trip_in_progress(new_trip)
       return new_trip
       # connect_trips
     end
