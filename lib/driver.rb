@@ -51,7 +51,7 @@ module RideShare
     end
 
     def start_trip(trip)
-      raise ArgumentError, "Driver status is UNAVAILABLE. Cannot start a new trip." if @status == :UNAVAILABLE
+      raise ArgumentError, "Driver #{@id} is not available." if @status != :AVAILABLE
 
       @status = :UNAVAILABLE
 
