@@ -30,9 +30,7 @@ module RideShare
       end
 
       @start_time = start_time
-      # @end_time = end_time
       @cost = cost
-      # @rating = rating
       @driver_id = driver_id
       @driver = driver
 

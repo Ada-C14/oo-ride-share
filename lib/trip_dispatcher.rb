@@ -36,8 +36,13 @@ module RideShare
     end
 
     def request_trip(passenger_id)
+      if (@drivers.find { |driver| driver.status == :AVAILABLE }).nil?
+        raise ArgumentError, "Wait for next available driver."
+      end
+
       new_trip = RideShare::Trip.new(
           id: @trips[-1].id + 1,
+          #passenger: nil,
           passenger_id: passenger_id,
           start_time: Time.now,
           end_time: nil,
