@@ -36,12 +36,12 @@ describe "TripDispatcher class" do
     end
   end
 
+  before do
+    @dispatcher = build_test_dispatcher
+  end
+
   describe "passengers" do
     describe "find_passenger method" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
-
       it "throws an argument error for a bad ID" do
         expect{ @dispatcher.find_passenger(0) }.must_raise ArgumentError
       end
@@ -53,10 +53,6 @@ describe "TripDispatcher class" do
     end
 
     describe "Passenger & Trip loader methods" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
-
       it "accurately loads passenger information into passengers array" do
         first_passenger = @dispatcher.passengers.first
         last_passenger = @dispatcher.passengers.last
@@ -81,10 +77,6 @@ describe "TripDispatcher class" do
   # TODO: un-skip for Wave 2
   describe "drivers" do
     describe "find_driver method" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
-
       it "throws an argument error for a bad ID" do
         expect { @dispatcher.find_driver(0) }.must_raise ArgumentError
       end
@@ -96,10 +88,6 @@ describe "TripDispatcher class" do
     end
 
     describe "Driver & Trip loader methods" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
-
       it "accurately loads driver information into drivers array" do
         first_driver = @dispatcher.drivers.first
         last_driver = @dispatcher.drivers.last
@@ -120,6 +108,35 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+
+  describe "Request trip method" do
+    it "selects available driver and changes its status to UNAVAILABLE" do
+      available_driver = @dispatcher.drivers.find { |driver| driver.status == :AVAILABLE }
+      expect(available_driver.status).must_equal :AVAILABLE
+
+      selected_driver = @dispatcher.request_trip(4).driver
+      expect(selected_driver.status).must_equal :UNAVAILABLE
+      expect(available_driver.id).must_equal selected_driver.id
+    end
+
+    it "returns an instance of trip" do
+      new_trip = @dispatcher.request_trip(4)
+      expect(new_trip).must_be_kind_of RideShare::Trip
+    end
+
+    it "check if driver and passenger trip lists were updated" do
+      before_passenger_trips = @dispatcher.find_passenger(4).trips
+      before_trips = before_passenger_trips.length
+
+      new_trip = @dispatcher.request_trip(4)
+
+      after_passenger_trips = @dispatcher.find_passenger(4).trips
+      after_trips = after_passenger_trips.length
+
+      expect(after_passenger_trips.include?(new_trip)).must_equal true
+      expect(after_trips - before_trips).must_equal 1
     end
   end
 end

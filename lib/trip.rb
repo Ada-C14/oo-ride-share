@@ -68,7 +68,8 @@ module RideShare
         "start_time=#{start_time} " +
         "end_time=#{end_time} " +
         "cost=#{cost} " +
-        "rating=#{rating}>"
+        "rating=#{rating}> " +
+        "driver_id=#{driver&.id.inspect}>"
     end
 
     def connect(passenger, driver)
