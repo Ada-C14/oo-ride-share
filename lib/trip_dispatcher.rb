@@ -37,7 +37,15 @@ module RideShare
 
     #Wave 3
     def request_trip(passenger_id)
-      @driver = find_first_available_driver # => first_driver is the first  driver instance that's available
+
+      @passenger = self.find_passenger(passenger_id)
+
+      #raises an argument error if there's no available driver
+      if @drivers.find {|driver| driver.status == :AVAILABLE}.nil?
+        raise ArgumentError.new("No available drivers.")
+      else
+        @driver = find_first_available_driver # => first_driver is the first  driver instance that's available
+      end
 
 
       # do I need to create a new instance of Passenger?
@@ -47,12 +55,12 @@ module RideShare
       #     phone_number: "353-533-5334",
       #     trips: []
       # )
-      @passenger = self.find_passenger(passenger_id)
+
 
 
       new_trip = Trip.new(
           # what should the id of this trip be?
-          id: 601,
+          id: @trips.last.id + 1,
           passenger: @passenger,
           passenger_id: passenger_id,
           start_time: Time.now,
@@ -63,7 +71,7 @@ module RideShare
           driver: @driver
       )
 
-      @driver.change_status(new_trip) #=> what is this doing?, adding the new trip to the collection of trips for that driver
+      @driver.change_status #=> what is this doing?, adding the new trip to the collection of trips for that driver
 
       # why wouldn't I do this?
       @passenger.add_trip(new_trip)

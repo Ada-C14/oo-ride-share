@@ -209,4 +209,35 @@ describe "Driver class" do
     end
 
   end
+  # tests for wave 3: change_status
+  describe "change status" do
+    before do
+      @driver = RideShare::Driver.new(
+          id: 60,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      #status: :AVAILABLE
+      )
+
+      def build_test_dispatcher
+        return RideShare::TripDispatcher.new(
+            directory: TEST_DATA_DIRECTORY
+        )
+      end
+
+      @dispatcher = build_test_dispatcher
+
+    end
+
+    #@new_trip =
+
+    it "change the status of driver" do
+      #arrange and act
+      expect(@driver.status).must_equal :AVAILABLE
+
+      expect(@driver.change_status). must_equal :UNAVAILABLE
+
+    end
+  end
+
 end

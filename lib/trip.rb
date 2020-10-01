@@ -47,12 +47,20 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
+      # had to change rating to take into account the nil rating
+      if @rating.nil?
+        @rating = @rating
+      elsif (1..5).include?(@rating)
+        @rating = @rating
+      elsif @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
 
       #raise an agumenterror if end time is before the start time
-      if @start_time > @end_time
+      # change to accomodate end_time being nil
+      if @end_time.nil?
+        @end_time = @end_time
+      elsif @start_time > @end_time
         raise ArgumentError.new("#{@end_time} end time is before the start time #{@start_time}")
       end
 

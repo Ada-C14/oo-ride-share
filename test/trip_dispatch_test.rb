@@ -135,17 +135,42 @@ describe "TripDispatcher class" do
       @dispatcher = build_test_dispatcher
     end
 
-    it "is an instance of Trip" do
+    it "returns an instance of Trip" do
       expect(@dispatcher.request_trip(3)).must_be_kind_of RideShare::Trip
     end
 
-    it "" do
+    it "adds the new trip to the passenger trips array" do
+      expect(@dispatcher.request_trip(5))
 
     end
 
+    it "adds the new trip to the driver trips array" do
 
+    end
+
+    it "adds to the trip array" do
+
+    end
+
+    it "raises an error if no driver available " do
+
+    end
 
   end
 
+  describe "find_first_available_driver" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
 
+    it "returns an instance of driver" do
+      #found_driver = @dispatcher.find_first_available_driver
+      expect(@dispatcher.find_first_available_driver).must_be_kind_of RideShare::Driver
+    end
+
+    it "returns a driver whose status is available" do
+      expect(@dispatcher.find_first_available_driver.status).must_equal :AVAILABLE
+
+    end
+  end
 end

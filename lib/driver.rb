@@ -29,6 +29,13 @@ module RideShare
       @trips << trip
     end
 
+    # driver helper method to change driver status to unavailable
+    def change_status
+      #@trips << new_trip
+      @status = :UNAVAILABLE
+
+    end
+
     # def average_rating
     #   if @trips.empty?
     #     return 0
@@ -64,12 +71,7 @@ module RideShare
     end
 
 
-    # driver helper method to change driver status to unavailable
-    def change_status(new_trip)
-      #@trips << new_trip
-      new_trip.driver.status = :UNAVAILABLE
 
-    end
 
     private
     # implement the from_csv template method
