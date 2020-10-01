@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
+
   describe "drivers" do
     describe "find_driver method" do
       before do
@@ -122,5 +122,31 @@ describe "TripDispatcher class" do
         end
       end
     end
+  end
+
+  xdescribe "Request_trip" do
+    it "Was the trip created properly?" do
+      @dispatcher = build_test_dispatcher
+      passenger = @dispatcher.find_passenger(2)
+      expect(@dispatcher.request_trip(passenger.id)).must_be_instance_of RideShare::Trip
+    end
+    it'Updates trip lists for driver and passenger'do
+      Passenger.trips = 0
+      Driver.trips = 0
+      @dispatcher = build_test_dispatcher
+      passenger = @dispatcher.find_passenger(2)
+      driver = @dispatcher.find_driver(2)
+
+      Trip_Dispatcher.request_trip(passenger.id)
+      expect(@dispatcher.connect_trips(passenger, driver.trips))
+
+      # Passenger.trips
+      # Driver.trips
+
+    end
+    it 'selects an available driver' do
+
+    end
+
   end
 end

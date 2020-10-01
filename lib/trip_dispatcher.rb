@@ -52,7 +52,7 @@ module RideShare
 
       Passenger.add_trip(new_trip)
       Driver.trip_in_progress(new_trip)
-
+      return new_trip
       # connect_trips
     end
 

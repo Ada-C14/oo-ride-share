@@ -18,7 +18,7 @@ module RideShare
 
     def net_expenditures
       sum = 0
-      @trips.each do |trip|
+      @trips.compact.each do |trip|
         sum += trip.cost
       end
       return sum
@@ -29,7 +29,7 @@ module RideShare
 
     def total_time_spent
       total_time = 0
-      @trips.each do |trip|
+      @trips.compact.each do |trip|
        total_time += trip.duration
       end
 
