@@ -121,4 +121,14 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "request trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    it "creates the trip properly" do
+      expect(@dispatcher.request_trip(3)).must_be_kind_of RideShare::Trip
+    end
+  end
 end
