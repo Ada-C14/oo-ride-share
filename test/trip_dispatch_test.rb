@@ -1,11 +1,18 @@
 require_relative 'test_helper'
 
 TEST_DATA_DIRECTORY = 'test/test_data'
+SELECT_DRIVER_TEST_DATA_DIRECTORY = 'test/test_data_select_driver'
 
 describe "TripDispatcher class" do
   def build_test_dispatcher
     return RideShare::TripDispatcher.new(
       directory: TEST_DATA_DIRECTORY
+    )
+  end
+
+  def build_select_driver_test_dispatcher
+    return RideShare::TripDispatcher.new(
+      directory: SELECT_DRIVER_TEST_DATA_DIRECTORY
     )
   end
 
@@ -125,6 +132,7 @@ describe "TripDispatcher class" do
   describe "Request_trip method" do
     before do
       @dispatcher = build_test_dispatcher
+      @correct_driver = @dispatcher.select_driver
     end
 
     let (:trip_1)  {
@@ -134,7 +142,7 @@ describe "TripDispatcher class" do
     it "request trip was created correctly" do
       expect(trip_1.passenger_id).must_equal 1
       expect(trip_1.id).must_equal 6
-      expect(trip_1.driver_id).must_equal 2
+      expect(trip_1.driver_id).must_equal @correct_driver.id
       expect(trip_1.start_time).must_be_kind_of Time
       expect(trip_1.end_time).must_be_nil
       expect(trip_1.cost).must_be_nil
@@ -142,21 +150,19 @@ describe "TripDispatcher class" do
     end
 
     it "Picked an available driver" do
-      first_availible = @dispatcher.drivers.find_index { |driver| driver.status == :AVAILABLE }
-      first_availible += 1 # To get Driver ID
       trip_1
-      expect(trip_1.driver_id).must_equal first_availible
+      expect(trip_1.driver_id).must_equal @correct_driver.id
     end
 
     it "driver status changed to UNAVAILABLE" do
       trip_1
-      expect(@dispatcher.drivers[1].status).must_equal :UNAVAILABLE
+      expect(@correct_driver.status).must_equal :UNAVAILABLE
     end
 
     it "were the trip lists for the driver updated?" do
-      driver_start = @dispatcher.find_driver(2).trips.length
+      driver_start = @correct_driver.trips.length
       trip_1
-      expect(@dispatcher.find_driver(2).trips.length).must_equal driver_start + 1
+      expect(@correct_driver.trips.length).must_equal driver_start + 1
     end
 
     it "were the trip lists for the passenger updated?" do
@@ -171,4 +177,27 @@ describe "TripDispatcher class" do
       expect(@dispatcher.request_trip(1)).must_be_nil
     end
   end
+
+  describe "select_driver method" do
+    before do
+      @dispatcher = build_select_driver_test_dispatcher
+      @correct_driver = @dispatcher.select_driver
+    end
+    it "check there are no in-progress trips selected" do
+
+    end
+
+    it "pick driver that has never driven" do
+
+    end
+
+    it "If all drivers have driven, pick one that's driven last" do
+
+    end
+  end
 end
+
+
+# 1. Driver must not have in progress trips
+# 2. If there are drivers that have never driven, pick one first
+# 3.If all drivers have driven, pick one that's driven last

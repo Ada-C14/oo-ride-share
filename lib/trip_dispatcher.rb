@@ -42,9 +42,10 @@ module RideShare
         return nil unless find_passenger(passenger_id)
       end
 
-      driver_pool = filter_available_drivers
-      trip_driver = select_driver(driver_pool)
+      trip_driver = select_driver
+      return nil unless trip_driver
 
+      # TODO remove
       # # Find a driver, returning nil if there are no available drivers
       # trip_driver = nil
       # driver_index = @drivers.find_index { |driver| driver.status == :AVAILABLE }
@@ -71,6 +72,22 @@ module RideShare
       return new_trip
     end
 
+    def select_driver
+      # Eliminate unavailable drivers and create list of driver IDs
+      driver_pool = @drivers.select { |driver| driver.status == :AVAILABLE }
+      # Find trips in progress
+      in_progress_trips = @trips.select { |trip| trip.end_time.nil? }
+      # Find drivers currently taking a trip
+      currently_driving = in_progress_trips.map { |trip| trip.driver }.uniq
+
+      # Finalize driver pool
+      driver_pool -= currently_driving
+
+      trip_driver = find_driven_least_recently(driver_pool)
+      return trip_driver if trip_driver
+      return nil
+    end
+
     private
 
     def connect_trips
@@ -83,23 +100,23 @@ module RideShare
       return trips
     end
 
-    def filter_available_drivers
-      # Eliminate unavailable drivers and create list of driver IDs
-      driver_pool = @drivers.select { |driver| driver.status == :AVAILABLE }
-      driver_pool = driver_pool.map { |driver| driver.id }
-      # Find trips in progress
-      in_progress_trips = @trips.select { |trip| trip.end_time.nil? }
-      # Find drivers currently taking a trip
-      currently_driving = in_progress_trips.map { |trip| trip.driver_id}.uniq
+    def find_driven_least_recently(driver_pool)
+      return nil if driver_pool.empty?
+      # Tries to find a driver that's never driven
+      new_driver = nil
+      new_driver = driver_pool.find { |driver| driver.trips.empty? }
+      return new_driver if new_driver
 
-      # Finalize driver pool
-      driver_pool -= currently_driving
+      # Create hash of drivers and most recent trip end times
+      drivers_last_trips = {}
+      driver_pool.each do |driver|
+        drivers_last_trips[driver] = driver.trips.max_by { |trip| trip.end_time }
+      end
 
-      return driver_pool
-    end
-
-    def select_driver(driver_pool)
-
+      # Find driver that last drove the longest ago
+      new_driver = drivers_last_trips.min_by { |driver, last_trip| last_trip }[0]
+      return new_driver if new_driver
+      return nil
     end
   end
 end
