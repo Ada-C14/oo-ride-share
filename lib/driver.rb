@@ -41,8 +41,6 @@ module RideShare
     end
 
     def total_revenue
-      # You are already in the passenger class, a passenger knows
-      # how many trips there are.
       total = 0
       fee = 1.65
 
@@ -58,6 +56,15 @@ module RideShare
       return earning.round(2)
 
     end
+
+    def driver_status_updating
+      @trips.each do |trip|
+        if trip.end_time == nil
+          @status = :UNAVAILABLE
+        end
+      end
+    end
+
     
     def self.from_csv(record)
       return new(

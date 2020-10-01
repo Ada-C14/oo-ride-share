@@ -42,9 +42,10 @@ module RideShare
         raise ArgumentError, 'Driver or Driver_id is required'
       end
 
-      # binding.pry
-      if start_time > end_time
-        raise ArgumentError, "Your start time#{start_time} is later than your end time#{end_time} "
+      unless end_time == nil
+        if start_time > end_time
+          raise ArgumentError, "Your start time#{start_time} is later than your end time#{end_time} "
+        end
       end
 
       @start_time = start_time
@@ -80,6 +81,11 @@ module RideShare
     end
 
     def trip_duration
+      if @end_time == nil
+        # raise ArgumentError, 'The trip has not completed yet'
+        return 0
+      end
+
       return  @end_time - @start_time
     end
 

@@ -30,6 +30,7 @@ module RideShare
 
     def total_time_spent
       total = 0
+      # filter out in progress trips
       @trips.each do |trip|
         total += trip.trip_duration
       end

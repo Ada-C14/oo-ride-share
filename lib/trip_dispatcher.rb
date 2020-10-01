@@ -25,7 +25,25 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
 
+    def request_trip(passenger_id)
+      assigned_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
 
+      new_trip = RideShare::Trip.new(
+          id: 5,
+          driver: assigned_driver,
+          passenger: passenger_id,
+          start_time: Time.now,
+          end_time: nil,
+          rating: nil,
+          cost: nil
+      )
+      assigned_driver.add_trip(new_trip) # add trip to driver's trip, need to be in order
+      assigned_driver.driver_status_updating # change driver to unavailable
+      # passenger_id.add_trip(new_trip) # add trip to passenger's trip
+
+      return new_trip
+
+    end
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \

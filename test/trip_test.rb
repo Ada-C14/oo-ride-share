@@ -16,7 +16,7 @@ describe "Trip class" do
         end_time: end_time,
         cost: 23.45,
         rating: 3,
-        driver_id: RideShare::Driver.new(
+        driver: RideShare::Driver.new(
           id: 2,
           name: "Tango",
           vin: "1C9EVBRM0YBC564DZ")
@@ -33,7 +33,7 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
+      # skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
@@ -45,6 +45,18 @@ describe "Trip class" do
       expect do
         RideShare::Trip.new(@trip_data)
       end.must_raise ArgumentError
+    end
+
+    it 'raise an error for in-progress trips' do
+      start_time = Time.now - 60 * 60 # 60 minutes
+      end_time = nil
+      @trip_data[:start_time] = start_time
+      @trip_data[:end_time] = end_time
+      @trip = RideShare::Trip.new(@trip_data)
+      expect do
+        @trip.trip_duration
+      end.must_raise ArgumentError
+      # expect {  }.must_raise ArgumentError
     end
 
     it 'calculate the duration of the trip in seconds' do
