@@ -64,9 +64,9 @@ module RideShare
           "rating=#{rating}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
-      passenger.add_trip
+      passenger.add_trip(self)
     end
 
     def duration
@@ -84,7 +84,8 @@ module RideShare
           start_time: Time.parse(record[:start_time]),
           end_time: Time.parse(record[:end_time]),
           cost: record[:cost],
-          rating: record[:rating]
+          rating: record[:rating],
+          driver_id: record[:driver_id]
       )
     end
   end

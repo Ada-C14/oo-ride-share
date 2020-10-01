@@ -39,10 +39,10 @@
   <component name="ChangeListManager">
     <list default="true" id="bf6ed736-fcd4-43b5-8f49-27781756a54b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/driver.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/driver.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/passenger.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/passenger.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/trip.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/trip.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/trip_dispatcher.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/trip_dispatcher.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/passenger_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/passenger_test.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -216,7 +216,8 @@
       <workItem from="1601487633810" duration="35000" />
       <workItem from="1601487696152" duration="258000" />
       <workItem from="1601488035239" duration="4118000" />
-      <workItem from="1601506182375" duration="8602000" />
+      <workItem from="1601506182375" duration="8954000" />
+      <workItem from="1601574649574" duration="6665000" />
     </task>
     <servers />
   </component>
@@ -233,46 +234,46 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1096" height="255" key="GridCell.Tab.0.bottom" timestamp="1601512399558">
+    <state width="1096" height="255" key="GridCell.Tab.0.bottom" timestamp="1601515239708">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state width="668" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1601425539685" />
-    <state width="1096" height="255" key="GridCell.Tab.0.bottom/0.23.1440.806@0.23.1440.806" timestamp="1601512399558" />
+    <state width="1096" height="255" key="GridCell.Tab.0.bottom/0.23.1440.806@0.23.1440.806" timestamp="1601515239708" />
     <state width="1096" height="205" key="GridCell.Tab.0.bottom/0.23.1440.808@0.23.1440.808" timestamp="1601511678609" />
-    <state width="1096" height="255" key="GridCell.Tab.0.center" timestamp="1601512399557">
+    <state width="1096" height="255" key="GridCell.Tab.0.center" timestamp="1601515239707">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state width="668" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1601425539684" />
-    <state width="1096" height="255" key="GridCell.Tab.0.center/0.23.1440.806@0.23.1440.806" timestamp="1601512399557" />
+    <state width="1096" height="255" key="GridCell.Tab.0.center/0.23.1440.806@0.23.1440.806" timestamp="1601515239707" />
     <state width="1096" height="205" key="GridCell.Tab.0.center/0.23.1440.808@0.23.1440.808" timestamp="1601511678607" />
-    <state width="1096" height="255" key="GridCell.Tab.0.left" timestamp="1601512399557">
+    <state width="1096" height="255" key="GridCell.Tab.0.left" timestamp="1601515239707">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state width="668" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1601425539683" />
-    <state width="1096" height="255" key="GridCell.Tab.0.left/0.23.1440.806@0.23.1440.806" timestamp="1601512399557" />
+    <state width="1096" height="255" key="GridCell.Tab.0.left/0.23.1440.806@0.23.1440.806" timestamp="1601515239707" />
     <state width="1096" height="205" key="GridCell.Tab.0.left/0.23.1440.808@0.23.1440.808" timestamp="1601511678607" />
-    <state width="1096" height="255" key="GridCell.Tab.0.right" timestamp="1601512399558">
+    <state width="1096" height="255" key="GridCell.Tab.0.right" timestamp="1601515239708">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state width="668" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1601425539684" />
-    <state width="1096" height="255" key="GridCell.Tab.0.right/0.23.1440.806@0.23.1440.806" timestamp="1601512399558" />
+    <state width="1096" height="255" key="GridCell.Tab.0.right/0.23.1440.806@0.23.1440.806" timestamp="1601515239708" />
     <state width="1096" height="205" key="GridCell.Tab.0.right/0.23.1440.808@0.23.1440.808" timestamp="1601511678608" />
-    <state width="1096" height="255" key="GridCell.Tab.1.bottom" timestamp="1601512399559">
+    <state width="1096" height="255" key="GridCell.Tab.1.bottom" timestamp="1601515239709">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
-    <state width="1096" height="255" key="GridCell.Tab.1.bottom/0.23.1440.806@0.23.1440.806" timestamp="1601512399559" />
-    <state width="1096" height="255" key="GridCell.Tab.1.center" timestamp="1601512399558">
+    <state width="1096" height="255" key="GridCell.Tab.1.bottom/0.23.1440.806@0.23.1440.806" timestamp="1601515239709" />
+    <state width="1096" height="255" key="GridCell.Tab.1.center" timestamp="1601515239708">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
-    <state width="1096" height="255" key="GridCell.Tab.1.center/0.23.1440.806@0.23.1440.806" timestamp="1601512399558" />
-    <state width="1096" height="255" key="GridCell.Tab.1.left" timestamp="1601512399558">
+    <state width="1096" height="255" key="GridCell.Tab.1.center/0.23.1440.806@0.23.1440.806" timestamp="1601515239708" />
+    <state width="1096" height="255" key="GridCell.Tab.1.left" timestamp="1601515239708">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
-    <state width="1096" height="255" key="GridCell.Tab.1.left/0.23.1440.806@0.23.1440.806" timestamp="1601512399558" />
-    <state width="1096" height="255" key="GridCell.Tab.1.right" timestamp="1601512399559">
+    <state width="1096" height="255" key="GridCell.Tab.1.left/0.23.1440.806@0.23.1440.806" timestamp="1601515239708" />
+    <state width="1096" height="255" key="GridCell.Tab.1.right" timestamp="1601515239708">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
-    <state width="1096" height="255" key="GridCell.Tab.1.right/0.23.1440.806@0.23.1440.806" timestamp="1601512399559" />
+    <state width="1096" height="255" key="GridCell.Tab.1.right/0.23.1440.806@0.23.1440.806" timestamp="1601515239708" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/oo_ride_share@calculate_the_duration_of_t___.rcov" NAME="calculate the duration of t... Coverage Results" MODIFIED="1601425326585" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="oo-ride-share" />

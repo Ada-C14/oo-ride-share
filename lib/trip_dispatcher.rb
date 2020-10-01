@@ -7,7 +7,7 @@ require_relative 'driver'
 
 module RideShare
   class TripDispatcher
-    attr_reader :drivers, :passengers, :trips,
+    attr_reader :drivers, :passengers, :trips
 
     def initialize(directory: './support')
       @passengers = Passenger.load_all(directory: directory)
@@ -23,17 +23,39 @@ module RideShare
 
     def find_driver(id)
       Driver.validate_id(id)
-      return @driver.find { |driver| driver.id == id}
+      return @driver.find { |driver| driver.id == id }
     end
 
 
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
-              #{trips.count} trips, \
-              #{drivers.count} drivers, \
-              #{passengers.count} passengers>"
+      #{trips.count} trips, \
+      #{drivers.count} drivers, \
+      #{passengers.count} passengers>"
     end
+
+    def request_trip(passenger_id)
+      new_trip = Trip.new(
+          id: 10,
+          passenger_id: passenger_id,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+          driver_id: @driver_id
+      )
+
+      if @driver.status == :AVAILABLE
+        @driver_id = self.find_driver(@driver.id)
+      end
+
+      Passenger.add_trip(new_trip)
+      Driver.trip_in_progress(new_trip)
+
+      # connect_trips
+    end
+
 
     private
 
@@ -48,3 +70,4 @@ module RideShare
     end
   end
 end
+
