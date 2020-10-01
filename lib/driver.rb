@@ -43,7 +43,7 @@ module RideShare
     def total_revenue
       revenue = 0
       @trips.each do |trip|
-        revenue += (@trips.cost.to_f - 1.65) * 0.8
+        revenue += (trip.cost.to_f - 1.65) * 0.8
       end
 
       return revenue
