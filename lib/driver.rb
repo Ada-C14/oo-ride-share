@@ -39,6 +39,10 @@ module RideShare
       return (@trips.reduce(0.0) { |driver_revenue, trip| trip.cost > 1.65 ? ( driver_revenue + 0.8 * (trip.cost - 1.65) ) : driver_revenue }).round(2)
     end
 
+    def change_status(status: :UNAVAILABLE)
+      @status = status
+    end
+
     private
 
     def self.from_csv(record)

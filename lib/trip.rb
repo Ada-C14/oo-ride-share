@@ -31,14 +31,19 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
-      raise ArgumentError, 'End time is before start time' if end_time < start_time
-
       @start_time = start_time
-      @end_time = end_time
-      @cost = cost
-      @rating = rating
 
-      if @rating > 5 || @rating < 1
+      if end_time.nil? || end_time.class == Time
+        @end_time = end_time
+      elsif end_time < start_time
+        raise ArgumentError, 'End time is before start time'
+      end
+
+      @cost = cost
+
+      if rating.nil? || ( rating >= 1 && rating <= 5 )
+        @rating = rating
+      else
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
 

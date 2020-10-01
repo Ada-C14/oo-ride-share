@@ -26,12 +26,43 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
 
+    def find_last_trip
+      return @trips.length
+    end
+
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
               #{trips.count} trips, \
               #{drivers.count} drivers, \
               #{passengers.count} passengers>"
+    end
+
+    def request_trip(passenger_id)
+      assigned_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+      raise ArgumentError, "No available drivers" if assigned_driver.nil?
+
+      assigned_passenger = find_passenger(passenger_id)
+
+      new_trip = Trip.new(
+          id: find_last_trip + 1,
+          passenger: assigned_passenger,
+          passenger_id: passenger_id,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+          driver: assigned_driver,
+          driver_id: assigned_driver.id
+      )
+
+      assigned_driver.change_status
+
+      new_trip.connect(assigned_passenger, assigned_driver)
+
+      @trips << new_trip
+
+      return new_trip
     end
 
     private
