@@ -150,7 +150,7 @@ describe "Driver class" do
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 8),
           rating: 5,
-          cost: 15,
+          cost: 15.0,
       )
       @trip_2 = RideShare::Trip.new(
           id: 9,
@@ -189,6 +189,12 @@ describe "Driver class" do
       driver.add_trip(trip)
 
       expect(driver.total_revenue).must_equal 0
+
+
+      # @trip_1.cost = 1.50
+      # @driver.add_trip(@trip_1)
+      #
+      # expect(driver.total_revenue).must_equal 0
 
     end
 

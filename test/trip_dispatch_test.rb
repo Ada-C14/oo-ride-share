@@ -133,29 +133,51 @@ describe "TripDispatcher class" do
   describe "request_trip" do
     before do
       @dispatcher = build_test_dispatcher
+      @passenger = @dispatcher.passengers.first
+      #@passenger_id = @passenger.id
+
     end
 
     it "returns an instance of Trip" do
-      expect(@dispatcher.request_trip(3)).must_be_kind_of RideShare::Trip
+      expect(@dispatcher.request_trip(@passenger.id)).must_be_kind_of RideShare::Trip
     end
 
     it "adds the new trip to the passenger trips array" do
-      expect(@dispatcher.request_trip(5))
+
+      new_trip = @dispatcher.request_trip(@passenger.id)
+      expect(new_trip.passenger.trips).must_include new_trip
 
     end
 
     it "adds the new trip to the driver trips array" do
+      new_trip = @dispatcher.request_trip(@passenger.id)
+      # new_trip is the new trip instance, with a driver read
+
+      #driver = new_trip.driver # => driver instance
+      #make sure that my new trip is inside my driver trips array
+      expect(new_trip.driver.trips).must_include new_trip
 
     end
 
-    it "adds to the trip array" do
+    it "gets added to the trips array" do
+      before_trips_length = @dispatcher.trips.length
+      new_trip = @dispatcher.request_trip(@passenger.id)
+
+      expect(@dispatcher.trips).must_include new_trip
+      expect(@dispatcher.trips.length).must_equal before_trips_length + 1
 
     end
 
-    it "raises an error if no driver available " do
+    it "raises an error if no driver is available " do
+      #arrange
+      @dispatcher.drivers.each {|driver| driver.status = :UNAVAILABLE}
+      #new_trip = @dispatcher.request_trip(@passenger.id)
+
+      expect do
+        @dispatcher.request_trip(@passenger.id)
+      end.must_raise ArgumentError
 
     end
-
   end
 
   describe "find_first_available_driver" do
@@ -170,7 +192,8 @@ describe "TripDispatcher class" do
 
     it "returns a driver whose status is available" do
       expect(@dispatcher.find_first_available_driver.status).must_equal :AVAILABLE
-
     end
+
+    # another test could be to set up three drivers and ensure correct driver is chosen
   end
 end

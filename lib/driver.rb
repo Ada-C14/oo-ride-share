@@ -4,7 +4,8 @@ DRIVER_COMMISSION = 0.8
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :name, :vin, :status, :trips
+    attr_reader :name, :vin, :trips
+    attr_accessor :status
 
     def initialize(id:, name:, vin:, status: :AVAILABLE , trips: [])
       super(id)
@@ -59,6 +60,7 @@ module RideShare
     end
 
     def total_revenue
+      # how to
       sum = @trips.sum {|trip|
         if trip.cost < 1.65
           return 0
@@ -69,9 +71,6 @@ module RideShare
       #total_earned = (sum * DRIVER_COMMISSION) - (@trips.size * FEE)
       return sum
     end
-
-
-
 
     private
     # implement the from_csv template method

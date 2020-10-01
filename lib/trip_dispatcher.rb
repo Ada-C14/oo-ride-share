@@ -87,11 +87,7 @@ module RideShare
     end
 
     def find_first_available_driver
-      if @drivers.find {|driver| driver.status == :AVAILABLE}.nil?
-        raise ArgumentError.new("No available drivers.")
-      else
         return @drivers.find {|driver| driver.status == :AVAILABLE}
-      end
     end
 
     private
