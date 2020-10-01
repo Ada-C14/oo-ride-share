@@ -36,10 +36,11 @@ module RideShare
 
     def request_trip(passenger_id)
       first_available_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+      max_id = @trips.map(&:id).max
 
       if first_available_driver
         trip = Trip.new(
-          id: @trips.length + 1,
+          id: max_id + 1,
           driver_id: first_available_driver.id,
           passenger_id: passenger_id,
           start_time: Time.now,
