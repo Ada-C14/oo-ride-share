@@ -12,7 +12,7 @@ module RideShare
     def initialize(directory: './support')
       @passengers = Passenger.load_all(directory: directory)
       @trips = Trip.load_all(directory: directory)
-      @driver = Driver.load_all(directory: directory)
+      @drivers = Driver.load_all(directory: directory)
       connect_trips
     end
 
@@ -23,7 +23,7 @@ module RideShare
 
     def find_driver(id)
       Driver.validate_id(id)
-      return @driver.find { |driver| driver.id == id }
+      return @drivers.find { |driver| driver.id == id }
     end
 
 
@@ -46,8 +46,8 @@ module RideShare
           driver_id: @driver_id
       )
 
-      if @driver.status == :AVAILABLE
-        @driver_id = self.find_driver(@driver.id)
+      if @drivers.status == :AVAILABLE
+        @driver_id = self.find_driver(@drivers.id)
       end
 
       Passenger.add_trip(new_trip)

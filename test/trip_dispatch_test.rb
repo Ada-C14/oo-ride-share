@@ -1,5 +1,6 @@
 require_relative 'test_helper'
 
+
 TEST_DATA_DIRECTORY = 'test/test_data'
 
 describe "TripDispatcher class" do
