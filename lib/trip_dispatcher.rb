@@ -26,14 +26,32 @@ module RideShare
       return @passengers.find { |passenger| passenger.id == id }
     end
 
-    def request_trip(passenger_id)
-      driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+    def find_driver_for_new_trip
+      drivers = @drivers.find_all { |driver| driver.status == :AVAILABLE }
+      raise ArgumentError.new("No available drivers") if drivers.empty?
 
-      if driver == nil
-        raise ArgumentError.new("No available drivers")
-      else
+      drivers.each do |driver|
+        if driver.trips.empty?
+          selected_driver = driver
+          return selected_driver
+        end
+
+        if driver.trips.each do |trip|
+          if trip.end_time == nil
+            drivers.delete(driver)
+          end
+        end
+      end
+
+        selected_driver = drivers.min_by { |driver| trips.last.end_time }
+        return selected_driver
+      end
+    end
+
+    def request_trip(passenger_id)
         passenger = find_passenger(passenger_id)
         id = (@trips.last.id + 1)
+        driver = find_driver_for_new_trip
         driver_id = driver.id
         new_trip = RideShare::Trip.new(
           id: id,
@@ -49,7 +67,6 @@ module RideShare
         driver.status = :UNAVAILABLE
         return new_trip
       end
-    end
 
     def inspect
       # Make puts output more useful
@@ -67,7 +84,6 @@ module RideShare
         driver = find_driver(trip.driver_id)
         trip.connect(passenger, driver)
       end
-
       return trips
     end
   end
@@ -75,7 +91,8 @@ end
 
 td = RideShare::TripDispatcher.new
 #pp td.trips
-pp td.find_driver(1)
-pp td.request_trip(40)
-pp td.trips.last.driver.status
-pp td.trips.last.passenger
+# pp td.find_driver(1)
+# pp td.request_trip(40)
+# pp td.trips.last.driver.status
+# pp td.trips.last.passenger
+# pp td.find_driver_for_new_trip
