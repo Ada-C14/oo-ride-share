@@ -74,9 +74,8 @@ module RideShare
 
     def connect(passenger, driver)
       @passenger = passenger
-      passenger.add_trip(self)
-
       @driver = driver
+      passenger.add_trip(self)
       driver.add_trip(self)
     end
 

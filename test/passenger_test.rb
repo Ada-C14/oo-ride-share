@@ -85,7 +85,7 @@ describe "Passenger class" do
       end
     end
 
-    it "all Trips must have the same passenger's passenger id and same driver's driver id" do
+    it "all Trips must have the same passenger's passenger id" do
       @passenger.trips.each do |trip|
         expect(trip.passenger.id).must_equal 9
       end
@@ -94,7 +94,7 @@ describe "Passenger class" do
 
   describe "net expenditures" do
 
-    it "returns instance of Integer and calculates the correct net expenditures" do
+    it "returns instance of Integer and correctly calculates net expenditures" do
       @passenger.add_trip(trip_1)
       @passenger.add_trip(trip_2)
 
@@ -109,7 +109,7 @@ describe "Passenger class" do
 
   describe "total time spent" do
 
-    it "returns instance of Float and calculates the total time for all trips" do
+    it "returns instance of Float and correctly calculates total time for all trips" do
       @passenger.add_trip(trip_1)
       @passenger.add_trip(trip_2)
 

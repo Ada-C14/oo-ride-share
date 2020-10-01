@@ -118,15 +118,16 @@ describe "TripDispatcher class" do
 
       selected_driver = @dispatcher.request_trip(4).driver
       expect(selected_driver.status).must_equal :UNAVAILABLE
-      expect(available_driver.id).must_equal selected_driver.id
+      expect(selected_driver.id).must_equal available_driver.id
     end
 
     it "returns an instance of trip" do
       new_trip = @dispatcher.request_trip(4)
+
       expect(new_trip).must_be_kind_of RideShare::Trip
     end
 
-    it "check if driver and passenger trip lists were updated" do
+    it "updates driver and passenger trip lists" do
       before_passenger_trips = @dispatcher.find_passenger(4).trips
       before_trips = before_passenger_trips.length
 
@@ -135,7 +136,7 @@ describe "TripDispatcher class" do
       after_passenger_trips = @dispatcher.find_passenger(4).trips
       after_trips = after_passenger_trips.length
 
-      expect(after_passenger_trips.include?(new_trip)).must_equal true
+      expect(after_passenger_trips).must_include new_trip
       expect(after_trips - before_trips).must_equal 1
     end
   end

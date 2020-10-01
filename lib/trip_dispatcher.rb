@@ -26,7 +26,7 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
 
-    def find_last_trip
+    def find_last_trip_id
       return @trips.length
     end
 
@@ -45,7 +45,7 @@ module RideShare
       assigned_passenger = find_passenger(passenger_id)
 
       new_trip = Trip.new(
-          id: find_last_trip + 1,
+          id: find_last_trip_id + 1,
           passenger: assigned_passenger,
           passenger_id: passenger_id,
           start_time: Time.now,
