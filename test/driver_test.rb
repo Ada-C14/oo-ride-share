@@ -108,6 +108,18 @@ describe "Driver class" do
     )
   }
 
+  let (:in_progress_trip) {
+    RideShare::Trip.new(
+      id: 9,
+      driver: @driver,
+      passenger_id: 4,
+      start_time: Time.new(2016, 8, 8),
+      end_time: nil,
+      cost: nil,
+      rating: nil
+    )
+  }
+
   describe "average_rating method" do
     it "returns a float" do
       expect(@driver.average_rating).must_be_kind_of Float
@@ -130,6 +142,13 @@ describe "Driver class" do
 
     it "correctly calculates the average rating" do
       @driver.add_trip(trip_2)
+
+      expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
+    end
+
+    it "ignores in progress trip with no rating" do
+      @driver.add_trip(trip_2)
+      @driver.add_trip(in_progress_trip)
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
@@ -169,6 +188,13 @@ describe "Driver class" do
       @driver.add_trip(trip_3)
 
       expect(@driver.total_revenue).must_equal 0.8 * (10 - 1.65)
+    end
+
+    it "ignores in progress trips with no cost" do
+      @driver.add_trip(trip_2)
+      @driver.add_trip(in_progress_trip)
+
+      expect(@driver.total_revenue).must_equal 0.8 * (10 + 5 - 2 * 1.65)
     end
   end
 end

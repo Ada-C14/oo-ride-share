@@ -28,19 +28,22 @@ module RideShare
     def average_rating
       return 0 if @trips.empty?
 
-      sum_ratings = @trips.reduce(0.0) { |total_ratings, trip| total_ratings + trip.rating }
+      valid_ratings = @trips.select { |trip| ! trip.rating.nil? }
+      ratings_sum = valid_ratings.sum(0.0) { |trip| trip.rating }
 
-      return (sum_ratings / @trips.length).round(1)
+      return (ratings_sum / valid_ratings.length).round(1)
     end
 
     def total_revenue
       return 0 if @trips.empty?
 
-      return (@trips.reduce(0.0) { |driver_revenue, trip| trip.cost > 1.65 ? ( driver_revenue + 0.8 * (trip.cost - 1.65) ) : driver_revenue }).round(2)
+      sum_revenue = @trips.select.sum { |trip| ! trip.cost.nil? && trip.cost > 1.65 ? 0.8 * (trip.cost - 1.65) : 0 }
+
+      return sum_revenue.round(2)
     end
 
-    def change_status(status: :UNAVAILABLE)
-      @status = status
+    def change_status
+      @status = :UNAVAILABLE
     end
 
     private

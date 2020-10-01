@@ -111,9 +111,10 @@ describe "TripDispatcher class" do
     end
   end
 
+  # pulls data from test/test_data
   describe "Request trip method" do
-    it "selects available driver and changes its status to UNAVAILABLE" do
-      available_driver = @dispatcher.drivers.find { |driver| driver.status == :AVAILABLE }
+    it "selects first available driver and changes its status to UNAVAILABLE" do
+      available_driver = @dispatcher.find_driver(2)
       expect(available_driver.status).must_equal :AVAILABLE
 
       selected_driver = @dispatcher.request_trip(4).driver
@@ -121,23 +122,41 @@ describe "TripDispatcher class" do
       expect(selected_driver.id).must_equal available_driver.id
     end
 
-    it "returns an instance of trip" do
+    it "creates trip that is in progress" do
       new_trip = @dispatcher.request_trip(4)
 
       expect(new_trip).must_be_kind_of RideShare::Trip
+      expect(new_trip.end_time).must_be_nil
+      expect(new_trip.cost).must_be_nil
+      expect(new_trip.rating).must_be_nil
     end
 
-    it "updates driver and passenger trip lists" do
-      before_passenger_trips = @dispatcher.find_passenger(4).trips
-      before_trips = before_passenger_trips.length
-
+    it "updates passenger trip list" do
+      previous_trips = @dispatcher.find_passenger(4).trips
+      num_previous_trips = previous_trips.length
       new_trip = @dispatcher.request_trip(4)
+      current_trips = @dispatcher.find_passenger(4).trips
 
-      after_passenger_trips = @dispatcher.find_passenger(4).trips
-      after_trips = after_passenger_trips.length
+      expect(current_trips).must_include new_trip
+      expect(current_trips.length).must_equal num_previous_trips + 1
+    end
 
-      expect(after_passenger_trips).must_include new_trip
-      expect(after_trips - before_trips).must_equal 1
+    it "updates driver trip list" do
+      previous_trips = @dispatcher.find_driver(2).trips
+      num_previous_trips = previous_trips.length
+      new_trip = @dispatcher.request_trip(4)
+      current_trips = @dispatcher.find_driver(2).trips
+
+      expect(current_trips).must_include new_trip
+      expect(current_trips.length).must_equal num_previous_trips + 1
+    end
+
+    it "raises an error if there are no available drivers" do
+      @dispatcher.drivers.each { |driver| driver.change_status }
+
+      expect{
+        @dispatcher.request_trip(4)
+      }.must_raise ArgumentError
     end
   end
 end

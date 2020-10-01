@@ -27,7 +27,7 @@ module RideShare
     end
 
     def find_last_trip_id
-      return @trips.length
+      return @trips.last.id
     end
 
     def inspect

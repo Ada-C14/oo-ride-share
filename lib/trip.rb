@@ -33,9 +33,9 @@ module RideShare
 
       @start_time = start_time
 
-      if end_time.nil? || end_time.class == Time
+      if end_time.nil? || end_time >= start_time
         @end_time = end_time
-      elsif end_time < start_time
+      else
         raise ArgumentError, 'End time is before start time'
       end
 
