@@ -187,4 +187,54 @@ describe "Driver class" do
       expect(@driver.total_revenue).must_equal 0
     end
   end
+
+  describe "start_trip method" do
+    before do
+      @driver_1 = RideShare::Driver.new(
+          id: 25,
+          name: "Bob Belcher",
+          vin: "1C9EVBRM0YBC564DZ",
+      )
+
+      @driver_2 = RideShare::Driver.new(
+          id: 30,
+          name: "Jimmy Pesto",
+          vin: "1C9EVBRM0YBC564DZ",
+          status: :UNAVAILABLE
+      )
+    end
+
+
+    it 'properly updates the drivers status' do
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver_1,
+          passenger_id: 3,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil
+      )
+
+      @driver_1.start_trip(trip)
+
+      expect(@driver_1.status).must_equal :UNAVAILABLE
+      expect(@driver_1.trips[0]).must_be_instance_of RideShare::Trip
+      expect(@driver_1.trips[0]).must_equal trip
+    end
+
+    it 'throws an error if driver is unavailable' do
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver_2,
+          passenger_id: 3,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil
+      )
+
+      expect{ @driver_2.start_trip(trip) }.must_raise ArgumentError
+    end
+  end
 end
