@@ -47,16 +47,18 @@ describe "Trip class" do
       end.must_raise ArgumentError
     end
 
-    it 'raise an error for in-progress trips' do
+    it 'return 0  for in-progress trips' do
       start_time = Time.now - 60 * 60 # 60 minutes
       end_time = nil
       @trip_data[:start_time] = start_time
       @trip_data[:end_time] = end_time
+      @trip_data[:cost] = nil
+      @trip_data[:rating] = nil
       @trip = RideShare::Trip.new(@trip_data)
       expect do
         @trip.trip_duration
-      end.must_raise ArgumentError
-      # expect {  }.must_raise ArgumentError
+      end.must_equal 0
+
     end
 
     it 'calculate the duration of the trip in seconds' do

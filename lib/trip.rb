@@ -42,7 +42,7 @@ module RideShare
         raise ArgumentError, 'Driver or Driver_id is required'
       end
 
-      unless end_time == nil
+      unless end_time.nil?
         if start_time > end_time
           raise ArgumentError, "Your start time#{start_time} is later than your end time#{end_time} "
         end
@@ -54,8 +54,10 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      unless @rating.nil?
+        if @rating > 5 || @rating < 1
+          raise ArgumentError, "Invalid rating #{@rating}"
+        end
       end
     end
 
@@ -81,12 +83,11 @@ module RideShare
     end
 
     def trip_duration
-      if @end_time == nil
-        # raise ArgumentError, 'The trip has not completed yet'
+      if @end_time.nil?
         return 0
+      else
+        return  @end_time - @start_time
       end
-
-      return  @end_time - @start_time
     end
 
     private

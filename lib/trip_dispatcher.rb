@@ -27,11 +27,11 @@ module RideShare
 
     def request_trip(passenger_id)
       assigned_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
-
+      new_passenger = @passengers.find_passenger(passenger_id)
       new_trip = RideShare::Trip.new(
           id: 5,
           driver: assigned_driver,
-          passenger: passenger_id,
+          passenger: new_passenger,
           start_time: Time.now,
           end_time: nil,
           rating: nil,
@@ -39,7 +39,7 @@ module RideShare
       )
       assigned_driver.add_trip(new_trip) # add trip to driver's trip, need to be in order
       assigned_driver.driver_status_updating # change driver to unavailable
-      # passenger_id.add_trip(new_trip) # add trip to passenger's trip
+      new_passenger.add_trip(new_trip) # add trip to passenger's trip, need to initialize a passenger in find passenger
 
       return new_trip
 
