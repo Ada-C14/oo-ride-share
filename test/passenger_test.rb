@@ -87,12 +87,19 @@ describe "Passenger class" do
     describe "net_expenditures" do
       it "adds up all costs for passenger's trips" do
         expect(@passenger.net_expenditures).must_equal 300
-    end
+      end
 
       it "raises error if passenger has no trips" do
         expect { @no_rider.net_expenditures }.must_raise ArgumentError
       end
-    # You add tests for the net_expenditures method
+
+      it "ignores in progress trips in calculating total spent by passenger" do
+        current_expenditures = @passenger.net_expenditures
+        trip5 = RideShare::Trip.new(id: 2398, passenger_id: 6, start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: 17)
+        @passenger.add_trip(trip5)
+
+        expect(@passenger.net_expenditures).must_equal current_expenditures
+      end
     end
 
     describe "total_time_spent" do
@@ -102,6 +109,14 @@ describe "Passenger class" do
 
       it "adds up all the time for a passenger's trips" do
         expect(@passenger.total_time_spent).must_equal 4800
+      end
+
+      it "ignores in progress trips" do
+        current_time = @passenger.total_time_spent
+        trip5 = RideShare::Trip.new(id: 2398, passenger_id: 6, start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: 17)
+        @passenger.add_trip(trip5)
+
+        expect(@passenger.total_time_spent).must_equal current_time
       end
     end
   end

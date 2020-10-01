@@ -18,12 +18,14 @@ module RideShare
 
     def net_expenditures
       raise ArgumentError.new("no trips found for this passenger") if @trips.empty?
-      return @trips.sum { |trip| trip.cost }
+      complete_trips = @trips.find_all { |trip| trip.end_time != nil }
+      return complete_trips.sum { |trip| trip.cost }
     end
 
     def total_time_spent
       raise ArgumentError.new("no trips found for this passenger") if @trips.empty?
-      return @trips.sum { |trip| trip.duration }
+      complete_trips = @trips.find_all { |trip| trip.end_time != nil }
+      return complete_trips.sum { |trip| trip.duration }
     end
 
     private
