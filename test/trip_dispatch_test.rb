@@ -151,6 +151,10 @@ describe "TripDispatcher class" do
 
     end
 
+    #test that end_time is nil
+    # test that cost & rating are 0 --> return 0 when called .ave_rating?
+    #
+
   end
 
 end

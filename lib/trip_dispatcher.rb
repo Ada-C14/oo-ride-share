@@ -26,15 +26,15 @@ module RideShare
     def request_trip(passenger_id)
       id = (@trips.last.id) + 1
       new_trip = Trip.new(
-            id: id,
-            driver: assign_driver, #helper method
-            driver_id: nil,
-            passenger: self.find_passenger(passenger_id),
-            passenger_id: passenger_id,
-            start_time: Time.now,
-            end_time: nil,
-            cost: nil,
-            rating: nil,
+        id: id,
+        driver: assign_driver, #helper method
+        driver_id: nil,
+        passenger: self.find_passenger(passenger_id),
+        passenger_id: passenger_id,
+        start_time: Time.now,
+        end_time: nil,
+        cost: nil,
+        rating: nil,
           )
 
       new_trip.driver.make_unavailable
