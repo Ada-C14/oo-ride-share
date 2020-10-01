@@ -7,7 +7,7 @@ module RideShare
 
     attr_reader :id, :name, :vin, :status, :trips
 
-    def initialize(id:, name:, vin:, status:, trips: [])
+    def initialize(id:, name:, vin:, status: :AVAILABLE, trips: [])
       super(id)
 
       validate_status(status)
@@ -29,6 +29,31 @@ module RideShare
       else
         raise ArgumentError.new("Invalid status.")
       end
+    end
+
+    def add_trip(trip)
+      @trips << trip
+    end
+
+    def average_rating
+      return 0 if @trips == []
+      sum = 0
+      @trips.each do |trip|
+        sum += trip.rating.to_f
+      end
+      average = sum / @trips.length
+      return average
+    end
+
+    def total_revenue
+      return 0 if @trips == []
+      sum = 0
+      @trips.each do |trip|
+        if trip.cost.to_f >= 1.65
+          sum += trip.cost.to_f - 1.65
+        end
+      end
+      return (sum * 0.8).round(2)
     end
 
     private

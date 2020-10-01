@@ -22,10 +22,8 @@ module RideShare
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
       elsif passenger_id
         @passenger_id = passenger_id
-
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
@@ -33,10 +31,8 @@ module RideShare
       if driver
         @driver = driver
         @driver_id = driver.id
-
       elsif driver_id
         @driver_id = driver_id
-
       else
         raise ArgumentError, 'Driver or driver_id is required'
       end
@@ -76,6 +72,11 @@ module RideShare
       passenger.add_trip(self)
     end
 
+    def connect_driver(driver)
+      @driver = driver
+      driver.add_trip(self)
+    end
+
     def trip_duration
       return @end_time - @start_time
     end
@@ -83,7 +84,7 @@ module RideShare
     private
 
     def self.from_csv(record)
-      return self.new(
+               return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
                start_time: Time.parse(record[:start_time]),

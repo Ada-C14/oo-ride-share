@@ -20,6 +20,15 @@ module RideShare
       return @passengers.find { |passenger| passenger.id == id }
     end
 
+    def find_driver(id)
+      @drivers.each do |driver|
+        if driver.id == id
+          return driver
+        end
+      end
+      return nil
+    end
+
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
