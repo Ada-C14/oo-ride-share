@@ -91,6 +91,7 @@ describe "Driver class" do
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
+        cost: 10,
         rating: 5
       )
       @driver.add_trip(trip)
@@ -117,16 +118,31 @@ describe "Driver class" do
 
     it "correctly calculates the average rating" do
       trip2 = RideShare::Trip.new(
-        id: 8,
+        id: 9,
         driver: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
+        cost: 10,
         rating: 1
       )
       @driver.add_trip(trip2)
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
+    end
+
+    it "does not include in-progress trips in average rating" do
+      trip2 = RideShare::Trip.new(
+          id: 9,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil
+      )
+      @driver.add_trip(trip2)
+      expect(@driver.average_rating).must_equal 5
     end
   end
 
@@ -155,7 +171,7 @@ describe "Driver class" do
 
     it "doesn't count a trip that earned less than $1.65 into the total_revenue" do
       trip3 = RideShare::Trip.new(
-          id: 8,
+          id: 9,
           driver_id: 4,
           passenger_id: 5,
           start_time: Time.new(2018, 8, 8),
@@ -180,7 +196,7 @@ describe "Driver class" do
 
     it "correctly calculates the total revenue" do
       trip2 = RideShare::Trip.new(
-          id: 8,
+          id: 9,
           driver_id: 4,
           passenger_id: 5,
           start_time: Time.new(2017, 8, 8),
@@ -191,6 +207,20 @@ describe "Driver class" do
       @driver.add_trip(trip2)
 
       expect(@driver.total_revenue).must_be_close_to 21.36, 0.1
+    end
+
+    it "does not count an in-progress trip in total revenue" do
+      trip2 = RideShare::Trip.new(
+          id: 9,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil
+      )
+      @driver.add_trip(trip2)
+      expect(@driver.total_revenue).must_be_close_to 6.68, 0.1
     end
   end
 end

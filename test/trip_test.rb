@@ -74,9 +74,28 @@ describe "Trip class" do
           rating: 3
       }
         @trip = RideShare::Trip.new(@trip_data)
-      end
+    end
+
     it "can calculate the duration of a ride in seconds" do
       expect(@trip.duration).must_equal 1500
     end
+
+    it "returns nil for an in-progress trip" do #TODO: how would we add this trip to 'before' passenger?
+      new_trip_data = {
+          id: 9,
+          driver_id: 4,
+          passenger: RideShare::Passenger.new(
+              id: 2,
+              name: "Polly",
+              phone_number: "412-432-7650"
+          ),
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil
+      }
+      trip = RideShare::Trip.new(new_trip_data)
+      expect(trip.duration).must_be_nil
     end
+  end
 end
