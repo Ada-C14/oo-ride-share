@@ -139,7 +139,6 @@ describe "TripDispatcher class" do
     end
 
     it "checks that requested trip has the right parameters" do
-
       passenger_id = 6
       trip = @dispatcher.request_trip(passenger_id)
 
@@ -148,24 +147,9 @@ describe "TripDispatcher class" do
       expect(trip.end_time).must_be_nil
       expect(trip.cost).must_be_nil
       expect(trip.rating).must_be_nil
-
     end
 
     it "checks that trip id increments by 1" do
-
-      # passenger_id = 1
-      # trip = @dispatcher.request_trip(passenger_id)
-      #
-      # expect(trip.passenger_id).must_equal 1
-      # expect(trip.id).must_equal 6
-      #
-      # passenger_id = 2
-      # trip = @dispatcher.request_trip(passenger_id)
-      #
-      # expect(trip.passenger_id).must_equal 2
-      # expect(trip.id).must_equal 7
-
-
       array = [6, 7]
       trip_id = 5
 
@@ -173,7 +157,6 @@ describe "TripDispatcher class" do
         trip = @dispatcher.request_trip(pass)
         expect(trip.id).must_equal trip_id += 1
       end
-
     end
 
     it "raises an error for no driver available" do
@@ -183,14 +166,39 @@ describe "TripDispatcher class" do
         array.each do |pass|
           @dispatcher.request_trip(pass)
         end}.must_raise ArgumentError
+    end
+
+    it "checks a trip is added to passenger trips" do
+      passenger_id = 6
+      trip = @dispatcher
+      expect(trip.find_passenger(passenger_id).trips.count).must_equal 1
+
+      # after request a trip
+      trip.request_trip(passenger_id)
+      expect(trip.find_passenger(passenger_id).trips.count).must_equal 2
 
     end
 
+    it "checks a trip is added to driver trips" do
+
+      passenger_id = 6
+      driver_id = 2
+
+      trip = @dispatcher
+
+      # trip = @dispatcher.request_trip(passenger_id)
+      expect(trip.find_driver(driver_id).trips.count).must_equal 3
+
+      # after request a trip
+      trip.request_trip(passenger_id)
+      expect(trip.find_driver(driver_id).trips.count).must_equal 4
+
+    end
   end
 end
 
 # TESTS NEEDED FOR WAVE 3 #
 
-# - adds trip to passenger trip list
-# - and adds trip to driver's trip list
+# - checks if adds trip to passenger trip list
+# - checks if and adds trip to driver's trip list
 

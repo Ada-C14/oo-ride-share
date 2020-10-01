@@ -115,7 +115,7 @@ describe "Driver class" do
       expect(driver.average_rating).must_equal 0
     end
 
-    it "correctly calculates the average rating for a driver with an in-progress trip" do
+    it "correctly calculates the average rating for a driver" do
       trip2 = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -127,8 +127,17 @@ describe "Driver class" do
       @driver.add_trip(trip2)
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
+    end
 
-      # add in-progress riding with rating = nil
+    it "correctly calculates the average rating for a driver with an in-progress trip" do
+      trip2 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 1
+      )
       trip3 = RideShare::Trip.new(
         id: 9,
         driver: @driver,
@@ -138,6 +147,8 @@ describe "Driver class" do
         rating: nil,
         cost: nil
       )
+
+      @driver.add_trip(trip2)
       @driver.add_trip(trip3)
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
