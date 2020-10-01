@@ -130,15 +130,14 @@ describe "TripDispatcher class" do
 
     it "creates a trip properly" do
       expect(@trip.passenger_id).must_equal 1
-      expect(@trip.driver_id).must_equal 1
-      expect(@trip.id).must_equal 1
-      expect(@trip.start_time).must_equal Time.now
-      expect(@trip.end_time).must_equal nil
-      expect(@trip.rating).must_equal nil
+      expect(@trip.driver_id).must_equal 2
+      expect(@trip.id).must_equal @dispatcher.trips.last.id
+      expect(@trip.start_time).must_be_close_to Time.now
+      expect(@trip.end_time).must_be_nil
+      expect(@trip.rating).must_be_nil
     end
 
     it "updates the passenger lists" do
-      # expect(@dispatcher.passengers[1].trips.length).must_equal 2
       expect(@dispatcher.passengers[0].trips).must_include @trip
     end
 
