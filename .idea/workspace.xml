@@ -40,8 +40,8 @@
     <list default="true" id="bf6ed736-fcd4-43b5-8f49-27781756a54b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/driver.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/driver.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/passenger.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/passenger.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/trip.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/trip.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/driver_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/driver_test.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/passenger_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/passenger_test.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -63,7 +63,25 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.ruby.settings.RubyActiveModuleSdkConfigurable" />
   </component>
-  <component name="RunManager" selected="Test::Unit/Shoulda/Minitest.has a default status of :AV...">
+  <component name="RunManager" selected="Ruby.passenger">
+    <configuration name="passenger" type="RubyRunConfigurationType" factoryName="Ruby" temporary="true">
+      <module name="oo-ride-share" />
+      <RUBY_RUN_CONFIG NAME="RUBY_ARGS" VALUE="" />
+      <RUBY_RUN_CONFIG NAME="WORK DIR" VALUE="$MODULE_DIR$/lib" />
+      <RUBY_RUN_CONFIG NAME="SHOULD_USE_SDK" VALUE="false" />
+      <RUBY_RUN_CONFIG NAME="ALTERN_SDK_NAME" VALUE="" />
+      <RUBY_RUN_CONFIG NAME="myPassParentEnvs" VALUE="true" />
+      <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="true" />
+      <EXTENSION ID="JRubyRunConfigurationExtension" NailgunExecEnabled="false" />
+      <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov">
+        <COVERAGE_PATTERN ENABLED="true">
+          <PATTERN REGEXPS="/.rvm/" INCLUDED="false" />
+        </COVERAGE_PATTERN>
+      </EXTENSION>
+      <RUBY_RUN_CONFIG NAME="SCRIPT_PATH" VALUE="$MODULE_DIR$/lib/passenger.rb" />
+      <RUBY_RUN_CONFIG NAME="SCRIPT_ARGS" VALUE="" />
+      <method v="2" />
+    </configuration>
     <configuration name="trip" type="RubyRunConfigurationType" factoryName="Ruby" temporary="true">
       <module name="oo-ride-share" />
       <RUBY_RUN_CONFIG NAME="RUBY_ARGS" VALUE="" />
@@ -169,42 +187,13 @@
       <RTEST_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_OPTIONS" VALUE="" />
       <method v="2" />
     </configuration>
-    <configuration name="total amount of time the pa..." type="TestUnitRunConfigurationType" factoryName="Test::Unit/Shoulda/Minitest" temporary="true" nameIsGenerated="true">
-      <module name="oo-ride-share" />
-      <predefined_log_file enabled="true" id="RUBY_TESTUNIT" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="-Ilib:test" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
-      <envs>
-        <env name="JRUBY_OPTS" value="-X+O" />
-      </envs>
-      <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="true" />
-      <EXTENSION ID="JRubyRunConfigurationExtension" NailgunExecEnabled="false" />
-      <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov">
-        <COVERAGE_PATTERN ENABLED="true">
-          <PATTERN REGEXPS="/.rvm/" INCLUDED="false" />
-        </COVERAGE_PATTERN>
-      </EXTENSION>
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$MODULE_DIR$/test/passenger_test.rb" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="TEST_METHOD_NAME" VALUE="^Passenger class::total time spent#test_\d+_total\ amount\ of\ time\ the\ passenger\ has\ spent\ on\ their\ trips$" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_METHOD" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="ZEUS" VALUE="false" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="SPRING" VALUE="false" />
-      <RTEST_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_OPTIONS" VALUE="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Ruby.passenger" />
         <item itemvalue="Test::Unit/Shoulda/Minitest.has a default status of :AV..." />
         <item itemvalue="Test::Unit/Shoulda/Minitest.Trip class::initialize" />
         <item itemvalue="Ruby.trip" />
         <item itemvalue="Test::Unit/Shoulda/Minitest.Passenger has 0 trips in Pa..." />
-        <item itemvalue="Test::Unit/Shoulda/Minitest.total amount of time the pa..." />
       </list>
     </recent_temporary>
   </component>
@@ -227,7 +216,7 @@
       <workItem from="1601487633810" duration="35000" />
       <workItem from="1601487696152" duration="258000" />
       <workItem from="1601488035239" duration="4118000" />
-      <workItem from="1601506182375" duration="3736000" />
+      <workItem from="1601506182375" duration="6821000" />
     </task>
     <servers />
   </component>
@@ -244,37 +233,54 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="937" height="205" key="GridCell.Tab.0.bottom" timestamp="1601508428628">
+    <state width="1096" height="255" key="GridCell.Tab.0.bottom" timestamp="1601512399558">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state width="668" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1601425539685" />
-    <state width="937" height="205" key="GridCell.Tab.0.bottom/0.23.1440.806@0.23.1440.806" timestamp="1601508428628" />
-    <state width="1098" height="205" key="GridCell.Tab.0.bottom/0.23.1440.808@0.23.1440.808" timestamp="1601430536039" />
-    <state width="937" height="205" key="GridCell.Tab.0.center" timestamp="1601508428627">
+    <state width="1096" height="255" key="GridCell.Tab.0.bottom/0.23.1440.806@0.23.1440.806" timestamp="1601512399558" />
+    <state width="1096" height="205" key="GridCell.Tab.0.bottom/0.23.1440.808@0.23.1440.808" timestamp="1601511678609" />
+    <state width="1096" height="255" key="GridCell.Tab.0.center" timestamp="1601512399557">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state width="668" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1601425539684" />
-    <state width="937" height="205" key="GridCell.Tab.0.center/0.23.1440.806@0.23.1440.806" timestamp="1601508428627" />
-    <state width="1098" height="205" key="GridCell.Tab.0.center/0.23.1440.808@0.23.1440.808" timestamp="1601430536038" />
-    <state width="937" height="205" key="GridCell.Tab.0.left" timestamp="1601508428627">
+    <state width="1096" height="255" key="GridCell.Tab.0.center/0.23.1440.806@0.23.1440.806" timestamp="1601512399557" />
+    <state width="1096" height="205" key="GridCell.Tab.0.center/0.23.1440.808@0.23.1440.808" timestamp="1601511678607" />
+    <state width="1096" height="255" key="GridCell.Tab.0.left" timestamp="1601512399557">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state width="668" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1601425539683" />
-    <state width="937" height="205" key="GridCell.Tab.0.left/0.23.1440.806@0.23.1440.806" timestamp="1601508428627" />
-    <state width="1098" height="205" key="GridCell.Tab.0.left/0.23.1440.808@0.23.1440.808" timestamp="1601430536038" />
-    <state width="937" height="205" key="GridCell.Tab.0.right" timestamp="1601508428628">
+    <state width="1096" height="255" key="GridCell.Tab.0.left/0.23.1440.806@0.23.1440.806" timestamp="1601512399557" />
+    <state width="1096" height="205" key="GridCell.Tab.0.left/0.23.1440.808@0.23.1440.808" timestamp="1601511678607" />
+    <state width="1096" height="255" key="GridCell.Tab.0.right" timestamp="1601512399558">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state width="668" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1601425539684" />
-    <state width="937" height="205" key="GridCell.Tab.0.right/0.23.1440.806@0.23.1440.806" timestamp="1601508428628" />
-    <state width="1098" height="205" key="GridCell.Tab.0.right/0.23.1440.808@0.23.1440.808" timestamp="1601430536038" />
+    <state width="1096" height="255" key="GridCell.Tab.0.right/0.23.1440.806@0.23.1440.806" timestamp="1601512399558" />
+    <state width="1096" height="205" key="GridCell.Tab.0.right/0.23.1440.808@0.23.1440.808" timestamp="1601511678608" />
+    <state width="1096" height="255" key="GridCell.Tab.1.bottom" timestamp="1601512399559">
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state width="1096" height="255" key="GridCell.Tab.1.bottom/0.23.1440.806@0.23.1440.806" timestamp="1601512399559" />
+    <state width="1096" height="255" key="GridCell.Tab.1.center" timestamp="1601512399558">
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state width="1096" height="255" key="GridCell.Tab.1.center/0.23.1440.806@0.23.1440.806" timestamp="1601512399558" />
+    <state width="1096" height="255" key="GridCell.Tab.1.left" timestamp="1601512399558">
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state width="1096" height="255" key="GridCell.Tab.1.left/0.23.1440.806@0.23.1440.806" timestamp="1601512399558" />
+    <state width="1096" height="255" key="GridCell.Tab.1.right" timestamp="1601512399559">
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state width="1096" height="255" key="GridCell.Tab.1.right/0.23.1440.806@0.23.1440.806" timestamp="1601512399559" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/oo_ride_share@calculate_the_duration_of_t___.rcov" NAME="calculate the duration of t... Coverage Results" MODIFIED="1601425326585" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="oo-ride-share" />
     <SUITE FILE_PATH="coverage/oo_ride_share@Trip_class__initialize.rcov" NAME="Trip class::initialize Coverage Results" MODIFIED="1601491477301" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="oo-ride-share" />
     <SUITE FILE_PATH="coverage/oo_ride_share@trip.rcov" NAME="trip Coverage Results" MODIFIED="1601490718170" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lib" MODULE_NAME="oo-ride-share" />
     <SUITE FILE_PATH="coverage/oo_ride_share@total_amount_of_time_the_pa___.rcov" NAME="total amount of time the pa... Coverage Results" MODIFIED="1601430074845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="oo-ride-share" />
+    <SUITE FILE_PATH="coverage/oo_ride_share@passenger.rcov" NAME="passenger Coverage Results" MODIFIED="1601512360244" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lib" MODULE_NAME="oo-ride-share" />
     <SUITE FILE_PATH="coverage/oo_ride_share@Passenger_has_0_trips_in_Pa___.rcov" NAME="Passenger has 0 trips in Pa... Coverage Results" MODIFIED="1601430527737" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="oo-ride-share" />
-    <SUITE FILE_PATH="coverage/oo_ride_share@has_a_default_status_of__AV___.rcov" NAME="has a default status of :AV... Coverage Results" MODIFIED="1601508399768" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="oo-ride-share" />
+    <SUITE FILE_PATH="coverage/oo_ride_share@has_a_default_status_of__AV___.rcov" NAME="has a default status of :AV... Coverage Results" MODIFIED="1601511613773" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="oo-ride-share" />
   </component>
 </project>

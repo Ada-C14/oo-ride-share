@@ -125,25 +125,25 @@ describe "Passenger class" do
         end_time: Time.parse("2018-11-04 12:00:30 -0800"),
         cost: 23.45,
         rating: 5,
-        driver:  RideShare::Driver.new(
+        driver: RideShare::Driver.new(
           id: 54,
           name: "Stacy",
           vin: "12345678901234567",
           status: :AVAILABLE
-      )),
-      trip2 = RideShare::Trip.new(
-        id: 8,
-        passenger: @passenger,
-        start_time: Time.parse("2018-11-04 12:00:00 -0800"),
-        end_time: Time.parse("2018-11-04 12:00:45 -0800"),
-        cost: 27.45,
-        rating: 5,
-      driver: RideShare::Driver.new(
-          id: 54,
-          name: "Ida",
-          vin: "12345678901234567",
-          status: :AVAILABLE
-      ))
+        )),
+          trip2 = RideShare::Trip.new(
+            id: 8,
+            passenger: @passenger,
+            start_time: Time.parse("2018-11-04 12:00:00 -0800"),
+            end_time: Time.parse("2018-11-04 12:00:45 -0800"),
+            cost: 27.45,
+            rating: 5,
+            driver: RideShare::Driver.new(
+              id: 54,
+              name: "Ida",
+              vin: "12345678901234567",
+              status: :AVAILABLE
+            ))
       # trip3 = RideShare::Trip.new(
       #   id: 8,
       #   passenger: @passenger,
@@ -156,6 +156,7 @@ describe "Passenger class" do
       @passenger.add_trip(trip2)
       # @passenger.add_trip(trip3)
     end
+
     it "total amount of time the passenger has spent on their trips" do
 
 

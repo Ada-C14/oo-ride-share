@@ -15,7 +15,7 @@ module RideShare
       #   raise ArgumentError, "must have valid status"
       # end
       unless valid_status.include?(status)
-        raise ArgumentError("Must have valid status")
+         raise ArgumentError("Must have valid status")
       end
       @status = status
 

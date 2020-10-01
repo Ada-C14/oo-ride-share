@@ -47,11 +47,9 @@ module RideShare
         @driver_id = driver.id
       elsif driver_id
         @driver_id = driver_id
-      else
-        raise ArgumentError.new("Driver information needed.")
+        #else
+        # raise ArgumentError.new, "Driver information needed."
       end
-
-
     end
 
     def inspect
@@ -72,11 +70,9 @@ module RideShare
     end
 
     def duration
-
-      total = (@end_time - @start_time)
+      total = (end_time - start_time)
       #TimeDifference.between(@start_time, @end_time).in_seconds
-
-      return total
+      return total.to_i
     end
 
     private
