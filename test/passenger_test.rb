@@ -68,7 +68,7 @@ describe "Passenger class" do
     end
   end
 
-  describe "net_expenditures" do
+  describe "net_expenditures PLUS TOTAL DURATION" do
     before do
       @passenger = RideShare::Passenger.new(
           id: 9,
@@ -92,6 +92,16 @@ describe "Passenger class" do
       expect(@passenger.net_expenditures).must_equal 4
       # Return and add exception for a passenger with 0 trips. returns nil.
     end
+
+    it "returns total duration of all a passenger's trips" do
+      expect(@passenger.total_time_spent).must_equal 86400.00
+      # Check how to say floats should be within a margin of error
+      # Margin of Error in Epsilon (use helper function from MiniTest. Must be within perhaps)
+      # Never use floats for currencies
+      # When you have an array of sutff, you can't call instance methods on those things, but map allows us to call an instance method on a bunch of objects in an array
+      #
+    end
+
 
   end
 

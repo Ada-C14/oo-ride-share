@@ -1,4 +1,5 @@
 require_relative 'csv_record'
+require_relative 'trip'
 
 module RideShare
   class Passenger < CsvRecord
@@ -17,14 +18,13 @@ module RideShare
     end
 
     def net_expenditures
-      array_trip_costs = @trips.map(&:cost)
-      total_expenditure = array_trip_costs.reduce(:+)
+      total_expenditure = @trips.sum(&:cost)
       return total_expenditure
     end
 
-    # def total_time_spent
-    #   array_time_spent = @trips.duration
-    # end
+    def total_time_spent
+      return @trips.sum(&:duration_trip)
+    end
 
     private
 
