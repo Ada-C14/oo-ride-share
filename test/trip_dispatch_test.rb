@@ -126,17 +126,18 @@ describe "TripDispatcher class" do
       @trip_dispatcher = build_test_dispatcher
     end
     it "returns Trip instance" do
-      expect(@trip_dispatcher.request_trip(1)).must_be_instance_of Trip
+      expect(@trip_dispatcher.request_trip(1)).must_be_instance_of RideShare::Trip
     end
 
     it "creates a unique instance of Trip" do
-      before_request = @trip_dispatcher
+      before_request = @trip_dispatcher.dup
       new_trip = @trip_dispatcher.request_trip(1)
+      expect(before_request.trips.length).must_equal @trip_dispatcher.trips.length - 1
       expect(before_request.trips).wont_include new_trip
     end
 
     it "updates all trip collections appropriately" do
-      before_request = @trip_dispatcher
+      before_request = @trip_dispatcher.dup
       new_trip = @trip_dispatcher.request_trip(1)
       passenger = @trip_dispatcher.find_passenger(1)
       driver = new_trip.driver
@@ -161,9 +162,11 @@ describe "TripDispatcher class" do
     end
 
     it "raises an ArgumentError if there are no available drivers" do
-      none_available = @trip_dispatcher.drivers.delete_if { |driver| driver.status == :AVAILABLE}
+      @trip_dispatcher.drivers.delete_if { |driver| driver.status == :AVAILABLE }
 
-      expect(none_available.request_trip(1)).must_raise ArgumentError
+      expect{
+        @trip_dispatcher.request_trip(1)
+      }.must_raise ArgumentError
     end
   end
 end

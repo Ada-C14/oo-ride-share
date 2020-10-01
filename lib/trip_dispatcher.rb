@@ -35,15 +35,20 @@ module RideShare
     end
 
     def request_trip(passenger_id)
+      selected_driver = assign_driver
+      if selected_driver.nil?
+        raise ArgumentError, "No available drivers!"
+      end
+
       new_trip = Trip.new(
           id: assign_id,
           passenger_id: passenger_id,
           start_time: Time.now,
           end_time: nil,
           rating: nil,
-          driver: assign_driver
+          driver: selected_driver
       )
-      connect_new_trip(new_trip)
+      connect_new_trip(new_trip, passenger_id, selected_driver)
       return new_trip
     end
 
@@ -68,20 +73,15 @@ module RideShare
     end
 
     def assign_driver
-      driver = drivers.find { |driver| driver.status == :AVAILABLE }
-      if driver.nil?
-        raise ArgumentError, "No available drivers!"
-      else
-        return driver
-      end
+      driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+      return driver
     end
 
-    def connect_new_trip(new_trip)
-      requesting_passenger = new_trip.passenger
-      requesting_passenger.add_trip(new_trip)
+    def connect_new_trip(new_trip, passenger_id, selected_driver)
+      passenger = find_passenger(passenger_id)
+      passenger.add_trip(new_trip)
 
-      assigned_driver = new_trip.driver
-      assigned_driver.add_trip(new_trip)
+      selected_driver.add_trip(new_trip)
 
       @trips << new_trip
     end
