@@ -18,15 +18,13 @@ module RideShare
     end
 
     def net_expenditures
-      all_cost = @trips.map { |trip| trip.cost }
-
-      all_cost.nil? ? 0 : all_cost.sum
+      all_cost = @trips.map { |trip| trip.cost}
+      return all_cost.compact.sum
     end
 
     def total_time_spent
       all_times = @trips.map {|trip| trip.duration}
-
-      all_times.nil? ? 0 : all_times.sum
+      return all_times.compact.sum
     end
 
 
