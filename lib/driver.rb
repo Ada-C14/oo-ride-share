@@ -49,6 +49,10 @@ module RideShare
       return @trips.reduce(0) { |total_revenue, trip| total_revenue + (fee_charge_on_trip_cost(trip) * 0.8) }
     end
 
+    def make_unavailable
+      @status = :UNAVAILABLE
+    end
+
     private
     def self.from_csv(record)
       new(
