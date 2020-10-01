@@ -18,13 +18,25 @@ module RideShare
 
     def net_expenditures
       all_trip_cost = 0.00
-       @trips.map { |trip| all_trip_cost += trip.cost.to_f }
+       @trips.map do |trip|
+         if trip.cost == nil
+           next
+         else
+         all_trip_cost += trip.cost.to_f
+         end
+       end
       return all_trip_cost
     end
 
     def total_time_spent
       all_time_spent = 0.00
-      @trips.map { |trip| all_time_spent += trip.duration}
+      @trips.map do |trip|
+        if trip.duration == nil
+          next
+        else
+        all_time_spent += trip.duration
+        end
+      end
       return all_time_spent
     end
 

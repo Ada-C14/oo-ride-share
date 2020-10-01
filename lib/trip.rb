@@ -80,7 +80,11 @@ module RideShare
     end
 
     def duration
+      if @end_time == nil
+        duration_in_seconds = nil
+      else
       duration_in_seconds = @end_time - @start_time
+      end
       return duration_in_seconds
     end
 
