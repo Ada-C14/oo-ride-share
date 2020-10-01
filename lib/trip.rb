@@ -64,10 +64,10 @@ module RideShare
     def inspect
       # Prevent infinite loop when puts-ing a Trip
       # trip contains a passenger contains a trip contains a passenger...
-      # TODO: do we want to add driver to this?
       "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
         "id=#{id.inspect} " +
         "passenger_id=#{passenger&.id.inspect} " +
+        "driver_id=#{driver&.id.inspect} " +
         "start_time=#{start_time} " +
         "end_time=#{end_time} " +
         "cost=#{cost} " +

@@ -136,9 +136,11 @@ describe "TripDispatcher class" do
         expect(@fake_dispatcher.first_available_driver.status).must_equal :AVAILABLE
       end
 
-      it "raises and error if no drivers are available" do
-        # come back to this one when we have a method for making
-        # driver unavailable
+      it "raises an error if no drivers are available" do
+        @fake_dispatcher.request_trip(1)
+        @fake_dispatcher.request_trip(2)
+
+        expect { @fake_dispatcher.request_trip(3) }.must_raise ArgumentError
       end
     end
 
