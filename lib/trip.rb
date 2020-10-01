@@ -96,7 +96,11 @@ module RideShare
 
 
     def duration
-      duration_in_secs = @end_time - @start_time
+      if @end_time.nil?
+        raise ArgumentError.new("Trip is still in progress")
+      else
+        duration_in_secs = @end_time - @start_time
+      end
       return duration_in_secs
     end
 

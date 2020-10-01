@@ -32,9 +32,7 @@ module RideShare
 
     # driver helper method to change driver status to unavailable
     def change_status
-      #@trips << new_trip
       @status = :UNAVAILABLE
-
     end
 
     # def average_rating

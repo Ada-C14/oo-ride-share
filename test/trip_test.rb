@@ -78,5 +78,31 @@ describe "Trip class" do
 
     end
 
+    it "should raise an error if trip is still in progress" do
+      trip_data = {
+          id: 8,
+          passenger: RideShare::Passenger.new(
+              id: 1,
+              name: "Ada",
+              phone_number: "412-432-7640"
+          ),
+          start_time: Time.now,
+          end_time: nil,
+          cost: 23.45,
+          rating: 3,
+          driver: RideShare::Driver.new(
+              id: 2,
+              name: "Tram",
+              vin: "WBS76FYD47DJF7206",
+              status: :AVAILABLE
+          )
+      }
+
+      expect {
+        RideShare::Trip.new(trip_data).duration
+      }.must_raise ArgumentError
+
+    end
+
   end
 end

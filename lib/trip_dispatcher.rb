@@ -35,59 +35,40 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+    def find_first_available_driver
+      return @drivers.find {|driver| driver.status == :AVAILABLE}
+    end
+
     #Wave 3
     def request_trip(passenger_id)
 
-      @passenger = self.find_passenger(passenger_id)
+      #@passenger = self.find_passenger(passenger_id)
+      driver = find_first_available_driver
 
-      #raises an argument error if there's no available driver
-      if @drivers.find {|driver| driver.status == :AVAILABLE}.nil?
+      if driver.nil?
         raise ArgumentError.new("No available drivers.")
-      else
-        @driver = find_first_available_driver # => first_driver is the first  driver instance that's available
       end
-
-
-      # do I need to create a new instance of Passenger?
-      # new_passenger = Passenger.new(
-      #     id: passenger_id,
-      #     name: "Smithy",
-      #     phone_number: "353-533-5334",
-      #     trips: []
-      # )
-
-
 
       new_trip = Trip.new(
           # what should the id of this trip be?
-          id: @trips.last.id + 1,
-          passenger: @passenger,
+          id: @trips.size + 1,
+          passenger: find_passenger(passenger_id),
           passenger_id: passenger_id,
           start_time: Time.now,
           end_time: nil,
           cost: nil,
           rating: nil,
-          driver_id: @driver.id,
-          driver: @driver
+          driver: driver,
+          driver_id: driver.id
       )
 
-      @driver.change_status #=> what is this doing?, adding the new trip to the collection of trips for that driver
+      driver.change_status #=> what is this doing?, adding the new trip to the collection of trips for that driver
 
-      # why wouldn't I do this?
-      @passenger.add_trip(new_trip)
-      @driver.add_trip(new_trip)
-
-      # or something like this?
-      # how to add the new_trip instance to the Passenger's list of trips?
+      new_trip.passenger.add_trip(new_trip)
+      new_trip.driver.add_trip(new_trip)
       @trips << new_trip
 
       return new_trip
-
-
-    end
-
-    def find_first_available_driver
-        return @drivers.find {|driver| driver.status == :AVAILABLE}
     end
 
     private
