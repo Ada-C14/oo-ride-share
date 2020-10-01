@@ -2,6 +2,7 @@ require 'csv'
 require 'time'
 
 require_relative 'csv_record'
+require_relative 'driver'
 
 module RideShare
   class Trip < CsvRecord
@@ -68,9 +69,11 @@ module RideShare
         "rating=#{rating}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
+      @driver = driver
       passenger.add_trip(self)
+      driver.add_trip(self)
     end
 
     def duration
