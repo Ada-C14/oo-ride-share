@@ -54,17 +54,23 @@ module RideShare
         no_ip_drivers << driver unless nil_trip
       end
       raise ArgumentError, 'No drivers available' if no_ip_drivers.empty?
+
       # find drivers with no trips
-      driver = no_ip_drivers.find{|driver| driver.trips.empty?}
+      idle_driver = no_ip_drivers.find { |driver| driver.trips.empty? }
       # if result nil, all drivers have at least one trip, must compare for most "stale"
-      if driver.nil?
-        driver = no_ip_drivers.min_by{|driver| driver.trips.max_by{|trip| trip.end_time}}
+      if idle_driver.nil?
+        idle_driver = no_ip_drivers[0]
+        driver_last_trip = idle_driver.trips.max_by(&:end_time)
+        no_ip_drivers.each do |driver|
+          last_trip = driver.trips.max_by(&:end_time)
+          idle_driver = driver if last_trip.end_time < driver_last_trip.end_time
+        end
       end
 
-      new_trip = Trip.new(id: @trips.length + 1, passenger: passenger, driver: driver, start_time: Time.now, end_time: nil, rating: nil)
+      new_trip = Trip.new(id: @trips.length + 1, passenger: passenger, driver: idle_driver, start_time: Time.now, end_time: nil, rating: nil)
 
-      new_trip.connect(passenger, driver)
-      driver.unavailable_driver
+      new_trip.connect(passenger, idle_driver)
+      idle_driver.unavailable_driver
       @trips << new_trip
       new_trip
     end

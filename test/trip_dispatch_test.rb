@@ -3,6 +3,7 @@
 require_relative 'test_helper'
 
 TEST_DATA_DIRECTORY = 'test/test_data'
+TEST_DATA_DIRECTORY_WAVE4 = 'test/test_data_wave4'
 
 describe 'TripDispatcher class' do
   def build_test_dispatcher
@@ -132,7 +133,7 @@ describe 'TripDispatcher class' do
         expect(@dispatcher.request_trip(@passenger_id)).must_be_instance_of RideShare::Trip
       end
 
-      it 'accurately creates a trip' do
+      it 'accurately creates a trip with first available driver, preferably with no trips' do
         new_trip = @dispatcher.request_trip(@passenger_id)
         expect(new_trip.id).must_equal @dispatcher.trips.length
         expect(new_trip.passenger).must_equal @dispatcher.find_passenger(@passenger_id)
@@ -172,8 +173,29 @@ describe 'TripDispatcher class' do
         expect(@dispatcher.trips.length).must_equal 6
       end
 
-      it "driver must not have any in progress trips" do
+      it "assigns most stale driver when all drivers have trips" do
+        td_w4 = RideShare::TripDispatcher.new(directory: TEST_DATA_DIRECTORY_WAVE4)
+        new_trip = td_w4.request_trip(@passenger_id)
+        expect(new_trip.driver_id).must_equal 3
+      end
 
+      it "driver must not have any in progress trips" do
+        # load td for wave4 testing
+        td_w4 = RideShare::TripDispatcher.new(directory: TEST_DATA_DIRECTORY_WAVE4)
+        # set passenger
+        assigned_passenger = td_w4.find_passenger(@passenger_id)
+        # created driver to add to @drivers for now
+        td_w4.drivers.append(RideShare::Driver.new(id: 4, name: "Nil Trip Driver 4", vin: "123456ABCDEF12345"))
+        assigned_driver = td_w4.find_driver(4)
+
+        # add trip to @trips
+        nil_trip = RideShare::Trip.new(id: 7, passenger: assigned_passenger, start_time: Time.now, end_time: nil, rating: nil, driver: assigned_driver)
+        td_w4.trips.append(nil_trip)
+        # connect trips manually
+        nil_trip.connect(assigned_passenger, assigned_driver)
+        # request trip
+        new_trip = td_w4.request_trip(@passenger_id)
+        expect(new_trip.driver_id).must_equal 3
       end
     end
   end
