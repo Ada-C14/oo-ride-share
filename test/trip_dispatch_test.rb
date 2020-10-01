@@ -136,7 +136,7 @@ describe "TripDispatcher class" do
       driver = @dispatcher.find_driver(2)
       #passenger.trips = 0
       #driver.trips = 0
-
+      expect(driver.status).must_equal :AVAILABLE
       new_trip = @dispatcher.request_trip(passenger.id)
       # expect that passenger.trips includes new_trip
       # expect that driver's in progress trip is the new_trip
@@ -151,7 +151,13 @@ describe "TripDispatcher class" do
       # Driver.trips
 
     end
-    it 'selects an available driver' do
+    it 'What happens if you try to request a trip when there are no AVAILABLE drivers?' do
+      @dispatcher = build_test_dispatcher
+      @dispatcher.request_trip(2)
+      @dispatcher.request_trip(1)
+      trip3 = @dispatcher.request_trip(3)
+
+      expect(trip3).must_be_nil
 
     end
 

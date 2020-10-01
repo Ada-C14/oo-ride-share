@@ -46,6 +46,10 @@ module RideShare
         end
       end
 
+      if first_available_driver == nil
+        return nil
+      end
+
       new_trip = Trip.new(
           id: 10,
           passenger_id: passenger_id,
@@ -59,6 +63,7 @@ module RideShare
       passenger.add_trip(new_trip)
 
       first_available_driver.trip_in_progress(new_trip)
+
       return new_trip
       # connect_trips
     end
