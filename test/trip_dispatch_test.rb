@@ -130,26 +130,26 @@ describe "TripDispatcher class" do
     end
 
     it "creates a unique instance of Trip" do
-      before_request = @trip_dispatcher.dup
+      before_request = @trip_dispatcher.trips.dup
       new_trip = @trip_dispatcher.request_trip(1)
-      expect(before_request.trips.length).must_equal @trip_dispatcher.trips.length - 1
-      expect(before_request.trips).wont_include new_trip
+      expect(before_request.length).must_equal @trip_dispatcher.trips.length - 1
+      expect(before_request).wont_include new_trip
     end
 
     it "updates all trip collections appropriately" do
-      before_request = @trip_dispatcher.dup
+      # This test will break if wave 4 is implemented b/c the first driver is being selected
+      previous_trips_qty = @trip_dispatcher.trips.length
+      prev_passenger_trip_qty = @trip_dispatcher.passengers[0].trips.length
+      prev_driver_trips_qty = @trip_dispatcher.drivers[1].trips.length
       new_trip = @trip_dispatcher.request_trip(1)
       passenger = @trip_dispatcher.find_passenger(1)
       driver = new_trip.driver
-      driver_id = driver.id
-      driver_before = before_request.find_driver(driver_id)
-      passenger_before = before_request.find_passenger(1)
 
-      expect(driver_before.trips.length).must_equal driver.trips.length - 1
-      expect(passenger_before.trips.length).must_equal passenger.trips.length - 1
+      expect(prev_driver_trips_qty).must_equal driver.trips.length - 1
+      expect(prev_passenger_trip_qty).must_equal passenger.trips.length - 1
+      expect(previous_trips_qty).must_equal @trip_dispatcher.trips.length - 1
       expect(driver.trips).must_include new_trip
       expect(passenger.trips).must_include new_trip
-      expect(before_request.trips.length).must_equal @trip_dispatcher.trips.length - 1
       expect(@trip_dispatcher.trips).must_include new_trip
     end
 
