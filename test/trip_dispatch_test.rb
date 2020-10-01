@@ -122,4 +122,19 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe " passenger request trips" do
+    before do
+      @dispatcher = build_test_dispatcher
+      @new_trip = @dispatcher.request_trip(1)
+    end
+    it " instance of trip " do
+      expect(@new_trip).must_be_kind_of RideShare::Trip
+    end
+
+    it " driver is unavailable" do
+      expect(@new_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+  end
 end

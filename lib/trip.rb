@@ -30,18 +30,24 @@ module RideShare
       end
 
       @start_time = start_time
-      @end_time = end_time
+      # @end_time = end_time
       @cost = cost
-      @rating = rating
+      # @rating = rating
       @driver_id = driver_id
       @driver = driver
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      if rating.nil?
+        @rating = rating
+      elsif rating > 5 || rating < 1
+        raise ArgumentError.new("Invalid rating #{rating}")
+      else @rating = rating
       end
 
-      if @start_time > @end_time
+      if end_time.nil?
+        @end_time = end_time
+      elsif @start_time > end_time
         raise ArgumentError.new("Invalid trip time")
+      else @end_time = end_time
       end
 
       if @driver == nil && @driver_id == nil
@@ -87,6 +93,5 @@ module RideShare
                rating: record[:rating]
              )
     end
-
   end
 end

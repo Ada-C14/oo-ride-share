@@ -30,12 +30,21 @@ module RideShare
         return 0
       else
         total_ratings = 0
+        in_progress_trip = 0
         trips.each do |trip|
-          total_ratings += trip.rating.to_f
+          if trip.rating.nil?
+            in_progress_trip += 1
+          else
+            total_ratings += trip.rating.to_f
+          end
         end
       end
-
-      return total_ratings / trips.length
+      #binding.pry
+      if trips.length == in_progress_trip
+        return 0
+      else
+        return total_ratings / (trips.length - in_progress_trip)
+      end
     end
 
     def total_revenue
