@@ -40,14 +40,21 @@ module RideShare
     end
 
     def request_trip(passenger_id)
-      # create new instance of Trip
-      # current start time
-      # passenger that requested
-      # first available driver
-      # end time, cost, rating are nil
-      # add new in progress trip to passenger's trips array
-      # add new trip to tripdispatcher trips array
-      # returns the new trip
+      current_passenger = find_passenger(passenger_id)
+      current_driver = first_available_driver
+      current_trip = RideShare::Trip.new(
+          id: @trips.length + 1,
+          driver: current_driver,
+          passenger: current_passenger,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil
+      )
+      current_passenger.add_trip(current_trip)
+      current_driver.assign_new_trip(current_trip)
+      @trips << current_trip
+      return current_trip
     end
 
     private

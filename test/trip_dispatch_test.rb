@@ -149,12 +149,12 @@ describe "TripDispatcher class" do
       end
 
       it "returns an instance of Trip" do
-        expect(@fake_trip).must_be_instance_of Trip
+        expect(@fake_trip).must_be_instance_of RideShare::Trip
       end
 
       it "creates a trip with current start time" do
-        current_time = Time.now
-        expect(@fake_trip.start_time).must_equal current_time
+        current_time = Time.now.to_s
+        expect(@fake_trip.start_time.to_s).must_equal current_time
       end
 
       it "creates a trip with nil values for end time, cost, rating" do
