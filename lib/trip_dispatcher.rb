@@ -37,9 +37,11 @@ module RideShare
             rating: nil,
           )
 
-      new_trip.driver.trips << new_trip #this does not work?  tested with pry, creates trip, but trips.last is unchanged
+      new_trip.driver.make_unavailable
+      @trips << new_trip
+      new_trip.connect(new_trip.passenger, new_trip.driver)
 
-    #   call another method on driver --> go to driver to write that instance method to change the status
+      return new_trip
     end
 
     def find_passenger(id)
