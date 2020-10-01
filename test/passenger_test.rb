@@ -44,8 +44,13 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+      @driver = RideShare::Driver.new(
+          id: 1,
+          name: "Bob Bobston",
+          vin: "WBS76FYD47DJF7206")
       trip = RideShare::Trip.new(
         id: 8,
+        driver: @driver,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
@@ -70,32 +75,35 @@ describe "Passenger class" do
 
   describe "net_expenditures" do # check accurate return of total amount of money that passenger has spent on their trips
     before do
-        @passenger = RideShare::Passenger.new(id: 3, name: "Sammy", phone_number: "353-076-5334")
+      @passenger = RideShare::Passenger.new(id: 3, name: "Sammy", phone_number: "353-076-5334")
+      @driver = RideShare::Driver.new(id: 1, name: "Bob Bobston", vin: "WBS76FYD47DJF7206")
       end
 
-  it "returns accurate net_expenditures" do
+    it "returns accurate net_expenditures" do
       trip = RideShare::Trip.new(
-          id: 8,
-          passenger: @passenger,
-          start_time: Time.new(2016, 8, 8),
-          end_time: Time.new(2016, 8, 9),
-          rating: 5,
-          cost: 14
+        id: 8,
+        driver: @driver,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        rating: 5,
+        cost: 14
       )
       @passenger.add_trip(trip)
       total_cost = @passenger.net_expenditures
       expect(total_cost).must_equal 14
 
 
-      trip = RideShare::Trip.new(
-          id: 9,
-          passenger: @passenger,
-          start_time: Time.new(2016, 8, 8),
-          end_time: Time.new(2016, 8, 9),
-          rating: 5,
-          cost: 10
+      trip2 = RideShare::Trip.new(
+        id: 9,
+        driver: @driver,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        rating: 5,
+        cost: 10
       )
-      @passenger.add_trip(trip)
+      @passenger.add_trip(trip2)
       total_cost = @passenger.net_expenditures
       expect(total_cost).must_equal 24
     end
@@ -108,29 +116,32 @@ describe "Passenger class" do
   describe "total_time_spent" do
     before do
       @passenger = RideShare::Passenger.new(id: 3, name: "Sammy", phone_number: "353-076-5334")
+      @driver = RideShare::Driver.new(id: 1, name: "Bob Bobston", vin: "WBS76FYD47DJF7206")
     end
 
     it "returns total amount of time passenger has spent on trips" do
       start_time = Time.now - 60 * 60
       end_time = start_time + 25 * 60
       trip1 = RideShare::Trip.new(
-          id: 8,
-          passenger: @passenger,
-          start_time: start_time,
-          end_time: end_time,
-          rating: 5,
-          cost: 14
+        id: 8,
+        driver: @driver,
+        passenger: @passenger,
+        start_time: start_time,
+        end_time: end_time,
+        rating: 5,
+        cost: 14
       )
 
       start_time2 = Time.now - 60 * 60
       end_time2 = start_time + 10 * 60
       trip2 = RideShare::Trip.new(
-          id: 9,
-          passenger: @passenger,
-          start_time: start_time2,
-          end_time: end_time2,
-          rating: 5,
-          cost: 10
+        id: 9,
+        driver: @driver,
+        passenger: @passenger,
+        start_time: start_time2,
+        end_time: end_time2,
+        rating: 5,
+        cost: 10
       )
       @passenger.add_trip(trip1)
       @passenger.add_trip(trip2)
