@@ -5,6 +5,7 @@ require 'pry'
 require_relative 'passenger'
 require_relative 'trip'
 
+
 module RideShare
   class TripDispatcher
     attr_reader :drivers, :passengers, :trips
@@ -12,6 +13,7 @@ module RideShare
     def initialize(directory: './support')
       @passengers = Passenger.load_all(directory: directory)
       @trips = Trip.load_all(directory: directory)
+      @drivers = Driver.load_all(directory: directory)
       connect_trips
     end
 
@@ -35,7 +37,6 @@ module RideShare
         passenger = find_passenger(trip.passenger_id)
         trip.connect(passenger)
       end
-
       return trips
     end
   end
