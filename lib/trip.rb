@@ -35,17 +35,6 @@ module RideShare
       @driver = driver
       @driver.nil? ? @driver_id = driver_id : @driver_id = driver.id
 
-      # if driver
-      #   @driver = driver
-      #   @driver_id = driver.id
-
-      # elsif driver_id
-      #   @driver_id = driver_id
-
-      # else
-      #   raise ArgumentError, 'Driver or driver_id is required'
-      # end
-
       @start_time = start_time
       @end_time = end_time
       raise ArgumentError.new("Start time should occur before the end time") if @start_time > @end_time unless @end_time.nil?

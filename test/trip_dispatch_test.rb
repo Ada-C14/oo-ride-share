@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -78,7 +78,6 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
   describe "drivers" do
     describe "find_driver method" do
       before do
@@ -199,9 +198,8 @@ describe "TripDispatcher class" do
 
       trip = @dispatcher
 
-      # trip = @dispatcher.request_trip(passenger_id)
+      # before request a trip
       expect(trip.find_driver(driver_id).trips.count).must_equal 0
-
       # after request a trip
       trip.request_trip(passenger_id)
       expect(trip.find_driver(driver_id).trips.count).must_equal 1
@@ -209,15 +207,4 @@ describe "TripDispatcher class" do
     end
   end
 end
-# describe "Intelligent dispatching wave 4" do
-#   before do
-#     @dispatcher = build_test_dispatcher
-#   end
-#
-#   passenger_id = 6
-
-# TESTS NEEDED FOR WAVE 3 #
-
-# - checks if adds trip to passenger trip list
-# - checks if and adds trip to driver's trip list
 

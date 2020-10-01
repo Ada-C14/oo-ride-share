@@ -84,7 +84,7 @@ describe "Driver class" do
         id: 54,
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ"
-      )
+        )
       trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -92,7 +92,7 @@ describe "Driver class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
         rating: 5
-      )
+        )
       @driver.add_trip(trip)
     end
 
@@ -111,7 +111,7 @@ describe "Driver class" do
         id: 54,
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ"
-      )
+        )
       expect(driver.average_rating).must_equal 0
     end
 
@@ -123,7 +123,7 @@ describe "Driver class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         rating: 1
-      )
+        )
       @driver.add_trip(trip2)
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
@@ -131,13 +131,13 @@ describe "Driver class" do
 
     it "correctly calculates the average rating for a driver with an in-progress trip" do
       trip2 = RideShare::Trip.new(
-          id: 8,
-          driver: @driver,
-          passenger_id: 3,
-          start_time: Time.new(2016, 8, 8),
-          end_time: Time.new(2016, 8, 9),
-          rating: 1
-      )
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        rating: 1
+        )
       trip3 = RideShare::Trip.new(
         id: 9,
         driver: @driver,
@@ -146,7 +146,7 @@ describe "Driver class" do
         end_time: nil,
         rating: nil,
         cost: nil
-      )
+        )
 
       @driver.add_trip(trip2)
       @driver.add_trip(trip3)
@@ -188,7 +188,7 @@ describe "Driver class" do
     end
 
     it "can calculate the total revenue for a driver with a trip in-progress" do
-    trip3 = RideShare::Trip.new(
+      trip_3 = RideShare::Trip.new(
         id: 10,
         driver: @driver,
         passenger_id: 6,
@@ -197,7 +197,7 @@ describe "Driver class" do
         rating: nil,
         cost: nil
     )
-    @driver.add_trip(trip3)
+    @driver.add_trip(trip_3)
 
     expect(@driver.total_revenue).must_equal 7.48
     end

@@ -27,7 +27,6 @@ module RideShare
 
     def request_trip(passenger_id)
       passenger = find_passenger(passenger_id)
-      # do we need "find_driver" to validate driver_id?
       drivers_available = @drivers.select { |driver| driver.status == :AVAILABLE }
 
       raise ArgumentError.new("No available drivers") if drivers_available.empty?
@@ -62,8 +61,7 @@ module RideShare
         driver = find_driver(trip.driver_id)
         trip.connect(passenger, driver)
       end
-      # this was trips as a local variable before
-      return @trips
+      return trips
     end
   end
 end

@@ -22,7 +22,6 @@ module RideShare
       @trips << trip
     end
 
-
     def average_rating
       length = @trips.length
       return 0 if length == 0
