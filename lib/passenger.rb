@@ -16,12 +16,21 @@ module RideShare
       @trips << trip
     end
 
-    def net_expenditures #will break for in progress trips "in progress trip - cost not available"
+    def net_expenditures
       return nil if @trips.empty?
-      @trips.reduce(0) {|total, trip| total + trip.cost}
+      total = 0
+      @trips.each do |trip| #why didn't this work with .reduce?
+        if trip.cost.nil?
+          puts "There is a trip in progress that will not be included in total."
+          next
+        end
+
+        total += trip.cost
+      end
+      return total
     end
 
-    def total_time_spent  #will break for in progress trips - s/b error "in progress trip - duration not available"
+    def total_time_spent  #"in progress trip is 0"
       return 0 if @trips.empty?
       @trips.reduce(0){ |total_time, trip| total_time + trip.duration}
     end
