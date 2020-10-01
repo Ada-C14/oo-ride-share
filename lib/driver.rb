@@ -72,6 +72,22 @@ module RideShare
       @status = :UNAVAILABLE
     end
 
+    # returns driver with earlier end time on more recent trip
+    # if self and driver2 both have no trips or both have same, return self
+    # def more_idle(driver2)
+    #  if self.trips.empty? && driver2.trips.empty?
+    #    return self
+    #  elsif self.trips.empty?
+    #     return self
+    #   elsif driver2.trips.empty?
+    #     return driver2
+    #   else
+    #     self_latest_trip = self.trips.max_by{|trip| trip.end_time}
+    #     driver2_latest_trip = driver2.trips.max_by{|trip| trip.end_time}
+    #     return self_latest_trip >= driver2_latest_trip ? self : driver2
+    #   end
+    # end
+
     # class methods
     def self.from_csv(record)
       new(

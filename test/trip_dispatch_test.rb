@@ -141,21 +141,21 @@ describe 'TripDispatcher class' do
         expect(new_trip.end_time).must_be_nil
         expect(new_trip.cost).must_be_nil
         expect(new_trip.rating).must_be_nil
-        expect(new_trip.driver_id).must_equal 2
-        expect(new_trip.driver).must_equal @dispatcher.find_driver(2)
+        expect(new_trip.driver_id).must_equal 3
+        expect(new_trip.driver).must_equal @dispatcher.find_driver(3)
       end
 
       it "updates the trips list for driver and passenger" do
         new_trip = @dispatcher.request_trip(@passenger_id)
-        assigned_driver = @dispatcher.find_driver(2)
+        assigned_driver = @dispatcher.find_driver(3)
         assigned_passenger = @dispatcher.find_passenger(@passenger_id)
-        expect(assigned_driver.trips.length).must_equal 4
+        expect(assigned_driver.trips.length).must_equal 1
         expect(assigned_passenger.trips.length).must_equal 2
       end
 
       it "selected driver becomes unavailable" do
         new_trip = @dispatcher.request_trip(@passenger_id)
-        assigned_driver = @dispatcher.find_driver(2)
+        assigned_driver = @dispatcher.find_driver(3)
         expect(assigned_driver.status).must_equal :UNAVAILABLE
       end
 
@@ -170,6 +170,10 @@ describe 'TripDispatcher class' do
       it "adds new trip to trips list" do
         new_trip = @dispatcher.request_trip(@passenger_id)
         expect(@dispatcher.trips.length).must_equal 6
+      end
+
+      it "driver must not have any in progress trips" do
+
       end
     end
   end
