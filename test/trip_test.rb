@@ -52,7 +52,7 @@ describe "Trip class" do
 
     # raises an error for an incorrect time
     it "raises an error when end time is before start time" do
-      @trip_data[:end_time] = @trip_data[:start_time]
+      @trip_data[:end_time] = @trip_data[:start_time] - 1
       expect do
         RideShare::Trip.new(@trip_data)
       end.must_raise ArgumentError

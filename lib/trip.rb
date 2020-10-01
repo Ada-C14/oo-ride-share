@@ -2,6 +2,7 @@ require 'csv'
 require 'time'
 
 require_relative 'csv_record'
+require_relative 'driver'
 
 module RideShare
   class Trip < CsvRecord
@@ -51,7 +52,7 @@ module RideShare
       end
 
       # raises an ArgumentError if the end time is before the start time
-      if @start_time >= @end_time
+      if @start_time > @end_time
         raise ArgumentError.new("invalid format! #{@end_time} end time is before the start time #{@start_time}")
       end
 
@@ -69,9 +70,11 @@ module RideShare
         "rating=#{rating}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
+      @driver = driver
       passenger.add_trip(self)
+      driver.add_trip(self)
     end
 
     # method to calculate the duration of the trip

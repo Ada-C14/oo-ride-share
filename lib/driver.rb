@@ -22,7 +22,30 @@ module RideShare
       @trips << trip
     end
 
+    def average_rating
+      if @trips.empty?
+        return 0
+      else
+        total_rating = @trips.sum { |trip| trip.rating }
+        average = (total_rating / @trips.length).to_f
+        return average
+      end
+    end
 
+    def total_revenue
+      commission = 0.8
+      fee = 1.65
+      return 0 if @trips.empty?
+
+      revenue = @trips.sum do |trip|
+        if trip.cost < 1.65
+          return 0
+        else
+          trip.cost * commission - fee
+        end
+      end
+      return revenue.round(2)
+    end
 
     private
 
