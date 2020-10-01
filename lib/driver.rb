@@ -30,8 +30,9 @@ module RideShare
 
     def average_rating
       return 0 if @trips.length == 0
-      total_rating = @trips.sum { |trip| trip.rating }
-      return (total_rating.to_f/@trips.length).round(1)
+      complete_trips = @trips.find_all { |trip| trip.end_time != nil }
+      total_rating = complete_trips.sum { |trip| trip.rating }
+      return (total_rating.to_f/complete_trips.length).round(1)
     end
 
     def total_revenue
@@ -39,7 +40,8 @@ module RideShare
       drivers_cut = 0.8
       subtotal = 0
 
-      @trips.each do |trip|
+      complete_trips = @trips.find_all { |trip| trip.end_time != nil }
+      complete_trips.each do |trip|
         if trip.cost <= fee
           subtotal += trip.cost * drivers_cut
         else
@@ -48,6 +50,11 @@ module RideShare
       end
 
       return subtotal.round(2)
+    end
+
+    def assign_new_trip(trip)
+      add_trip(trip)
+      @status = :UNAVAILABLE
     end
 
     private
