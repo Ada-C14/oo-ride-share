@@ -33,8 +33,20 @@ module RideShare
     def average_rating
       return 0 if trips.empty?
 
-      rating_sum = trips.inject(0) { |sum, trip| sum + trip.rating }
-      num_ratings = trips.length
+      rating_sum = trips.inject(0) do |sum, trip|
+        if trip.rating.nil?
+          sum + 0
+        else
+          sum + trip.rating
+        end
+      end
+
+      if trips[-1].rating.nil?
+        num_ratings = trips.length - 1
+      else
+        num_ratings = trips.length
+      end
+
       average = (rating_sum/num_ratings.to_f).round(1)
       return average
     end
@@ -43,7 +55,7 @@ module RideShare
       return 0 if trips.empty?
 
       net_fee = trips.inject(0) do |sum, trip|
-        if trip.cost <= 1.65
+        if trip.cost.nil? || trip.cost <= 1.65
           sum + 0
         else
           sum + trip.cost - 1.65

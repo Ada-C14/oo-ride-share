@@ -128,6 +128,21 @@ describe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
+    it "it ignores any in-progress trips" do
+      in_progress_trip = RideShare::Trip.new(
+          id: 9,
+          passenger_id: 71,
+          start_time: Time.new(2019, 10, 10, 10, 0),
+          end_time: nil,
+          rating: nil,
+          cost: nil,
+          driver: @driver
+      )
+      @driver.add_trip(in_progress_trip)
+
+      expect(@driver.average_rating).must_equal 5.0
+    end
   end
 
   describe "total_revenue" do
@@ -206,6 +221,21 @@ describe "Driver class" do
           cost: 0.75
       )
       @driver.add_trip(trip)
+
+      expect(@driver.total_revenue).must_be_close_to 10.6
+    end
+
+    it "it ignores any in-progress trips" do
+      in_progress_trip = RideShare::Trip.new(
+          id: 9,
+          passenger_id: 71,
+          start_time: Time.new(2019, 10, 10, 10, 0),
+          end_time: nil,
+          rating: nil,
+          cost: nil,
+          driver: @driver
+      )
+      @driver.add_trip(in_progress_trip)
 
       expect(@driver.total_revenue).must_be_close_to 10.6
     end
