@@ -45,37 +45,43 @@ module RideShare
       if available_drivers.nil? || available_drivers == []
         raise ArgumentError, "There is no available drivers"
       end
-
       return available_drivers
     end
 
-    def choose_driver(available_drivers)
-      chosen_driver = available_drivers.find do |driver|
-        driver.trips.length == 0
-      end
+    def get_latest_trip(driver)
+      return driver.trips.max_by {|trip| trip.end_time}
+    end
 
-      driver_old = available_drivers.first
+    def choose_driver(available_drivers)
+
+      driver_oldest_trip = nil
       oldest_time = Time.now
+
       available_drivers.each do |driver|
-        driver.trips.each do |trip|
-          if trip.end_time < oldest_time
-            oldest_time = trip.end_time
-            driver_old = driver
+        if driver.trips.length == 0
+          return driver
+        else
+          latest_trip = get_latest_trip(driver)
+          if latest_trip.end_time < oldest_time
+            oldest_time = latest_trip.end_time
+            driver_oldest_trip = driver
           end
         end
       end
-
-      return chosen_driver || driver_old
+      return driver_oldest_trip
     end
 
     def request_trip(passenger_id)
       available_drivers = get_available_drivers
-
       chosen_driver = choose_driver(available_drivers)
       passenger = find_passenger(passenger_id)
-
-
-      new_trip = Trip.new(id: @trips.length + 1, passenger: passenger, driver: chosen_driver, start_time: Time.now, end_time: nil, cost: nil, rating: nil)
+      new_trip = Trip.new(id: @trips.length + 1,
+                          passenger: passenger,
+                          driver: chosen_driver,
+                          start_time: Time.now,
+                          end_time: nil,
+                          cost: nil,
+                          rating: nil)
 
       chosen_driver.request_trip_helper(new_trip)
 
@@ -91,7 +97,6 @@ module RideShare
         driver = find_driver(trip.driver_id)
         trip.connect(passenger, driver)
       end
-
       return trips
     end
   end
