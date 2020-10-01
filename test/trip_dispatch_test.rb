@@ -158,12 +158,5 @@ describe "TripDispatcher class" do
       expect(@new_trip.rating).must_be_nil
       expect(@new_trip.cost).must_be_nil
     end
-    #test that end_time is nil
-    # test that cost & rating are 0 --> return 0 when called .ave_rating?
-    #
-
-
-
   end
-
 end
