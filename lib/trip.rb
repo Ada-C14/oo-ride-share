@@ -11,6 +11,8 @@ module RideShare
           id:,
           passenger: nil,
           passenger_id: nil,
+          driver: nil,
+          driver_id: nil,
           start_time:,
           end_time:,
           cost: nil,
@@ -28,6 +30,18 @@ module RideShare
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
+
+      if driver
+        @driver = driver
+        @driver_id = driver.id
+
+      elsif driver_id
+        @driver_id = driver_id
+
+      else
+        raise ArgumentError, "Driver or driver_id is required"
+      end
+
       if end_time < start_time
         raise ArgumentError, "This trip could not have ended before it started."
       end

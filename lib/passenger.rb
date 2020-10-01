@@ -34,7 +34,7 @@ module RideShare
 
     private
 
-    def self.from_csv(record)   # {id: 1, name: Paul Pollich, phone_number: "(358) 263-9381"},
+    def self.from_csv(record)
       return new(
         id: record[:id],
         name: record[:name],
