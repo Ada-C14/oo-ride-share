@@ -130,5 +130,19 @@ describe "TripDispatcher class" do
     it "creates the trip properly" do
       expect(@dispatcher.request_trip(3)).must_be_kind_of RideShare::Trip
     end
+
+    it "updates driver trip list" do
+      expect(@dispatcher.trips.length).must_equal 5
+      expect(@dispatcher.request_trip(3)).must_be_kind_of RideShare::Trip
+      expect(@dispatcher.trips.length).must_equal 6
+
+      expect(@dispatcher.trips.last.id).must_equal 6
+      expect(@dispatcher.trips.last.driver_id).must_equal 2
+      expect(@dispatcher.trips.last.passenger_id).must_equal 3
+      expect(@dispatcher.trips.last.start_time).must_be_close_to Time.now
+      expect(@dispatcher.trips.last.end_time).must_be_nil
+      expect(@dispatcher.trips.last.cost).must_be_nil
+      expect(@dispatcher.trips.last.rating).must_be_nil
+    end
   end
 end
