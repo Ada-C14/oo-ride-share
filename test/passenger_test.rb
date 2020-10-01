@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'test_helper'
 
 describe 'Passenger class' do
@@ -147,13 +149,19 @@ describe 'Passenger class' do
     end
 
     it 'will return the total amount of time that passenger has spent on their trips' do
+      @driver_id = RideShare::Driver.new(
+          id: 2,
+          name: "Tango",
+          vin: "1C9EVBRM0YBC564DZ")
+
       trip1 = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         cost: 25,
-        rating: 5
+        rating: 5,
+      driver_id: @driver_id
       )
       trip2 = RideShare::Trip.new(
         id: 8,
@@ -161,7 +169,8 @@ describe 'Passenger class' do
         start_time: Time.new(2016, 7, 7),
         end_time: Time.new(2016, 7, 8),
         cost: 15,
-        rating: 5
+        rating: 5,
+        driver_id: @driver_id
       )
 
       @passenger.add_trip(trip1)

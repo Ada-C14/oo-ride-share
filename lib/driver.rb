@@ -33,11 +33,30 @@ module RideShare
         total_rating += trip.rating
       end
       average_rating = total_rating.to_f / @trips.length
-      if @trip.length == 0
+      if @trips.length == 0
         return 0
       else
         return average_rating.round(2)
       end
+    end
+
+    def total_revenue
+      # You are already in the passenger class, a passenger knows
+      # how many trips there are.
+      total = 0
+      fee = 1.65
+
+      @trips.each do |trip|
+        total += trip.cost
+      end
+
+      earning = (total - fee) * 0.8
+      if earning < 0
+        return 0
+      end
+
+      return earning.round(2)
+
     end
     
     def self.from_csv(record)
