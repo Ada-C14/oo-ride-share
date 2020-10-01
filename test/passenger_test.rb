@@ -43,9 +43,9 @@ describe "Passenger class" do
         trips: []
     )
     @driver = RideShare::Driver.new(
-        id: 123,
-        name: "Sally",
-        vin: "456GE554DHE234DFW"
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
     )
   end
 
@@ -77,17 +77,26 @@ describe "Passenger class" do
     before do
       # TODO: you'll need to add a driver at some point here.
       @passenger.add_trip(trip_1)
+      @driver.add_trip(trip_1)
     end
 
     it "each item in array is a Trip instance" do
       @passenger.trips.each do |trip|
         expect(trip).must_be_kind_of RideShare::Trip
       end
+
+      @driver.trips.each do |trip|
+        expect(trip).must_be_kind_of RideShare::Trip
+      end
     end
 
-    it "all Trips must have the same passenger's passenger id" do
+    it "all Trips must have the same passenger's passenger id and same driver's driver id" do
       @passenger.trips.each do |trip|
         expect(trip.passenger.id).must_equal 9
+      end
+
+      @driver.trips.each do |trip|
+        expect(trip.driver.id).must_equal 54
       end
     end
   end
