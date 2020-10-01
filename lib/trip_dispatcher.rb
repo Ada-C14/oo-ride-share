@@ -52,6 +52,10 @@ module RideShare
       driver = available_driver[0]
       passenger = find_passenger(passenger_id)
 
+      if driver == nil
+        raise ArgumentError.new("No available drivers")
+      end
+
       new_trip = Trip.new(
           id: trip_id_generator,
           driver_id: driver.id,
