@@ -51,7 +51,9 @@ module RideShare
     end
 
     def start_trip(trip)
-      self.status = :UNAVAILABLE # raise ArgumentError if driver's status is already UNAVAILABLE
+      raise ArgumentError, "Driver status is UNAVAILABLE. Cannot start a new trip." if @status == :UNAVAILABLE
+
+      @status = :UNAVAILABLE
 
       self.add_trip(trip)
     end
