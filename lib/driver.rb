@@ -50,6 +50,12 @@ module RideShare
       return (cost - fee) * 0.8
     end
 
+    def start_trip(trip)
+      self.status = :UNAVAILABLE # raise ArgumentError if driver's status is already UNAVAILABLE
+
+      self.add_trip(trip)
+    end
+
     private
 
     def self.from_csv(record)
