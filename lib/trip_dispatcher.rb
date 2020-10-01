@@ -39,6 +39,7 @@ module RideShare
 
     def request_trip(passenger_id)
       passenger = find_passenger(passenger_id)
+
       available_driver = nil
       @drivers.each do |driver|
         if driver.status == :AVAILABLE
@@ -46,7 +47,9 @@ module RideShare
           break
         end
       end
-      trip_id = @trips.length + 1
+
+      trip_id = @trips.length + 1  #creating an id for a trip
+
       new_trip = RideShare::Trip.new(
           id: trip_id,
           passenger: passenger,
@@ -55,10 +58,10 @@ module RideShare
           rating: nil,
           driver: available_driver)
 
-      available_driver.add_trip(new_trip)
-      available_driver.status = :UNAVAILABLE
-      passenger.add_trip(new_trip)
-      @trips << new_trip
+      available_driver.add_trip(new_trip) #adding a new trip to the driver
+      available_driver.status = :UNAVAILABLE #setting his status to unavailable
+      passenger.add_trip(new_trip) #adding a new trip to the passenger
+      @trips << new_trip #adding a new trip to the trips array
       return new_trip
     end
 
