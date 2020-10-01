@@ -24,24 +24,18 @@ module RideShare
     end
 
     def average_rating
-      if trips.length == 0
-        return 0
-      end
-
+      return 0 if trips.length == 0
       sum = @trips.sum {|trip| trip.rating}
       average = sum / trips.length.to_f
       average.round(1)
     end
 
     def total_revenue
-      if trips.length == 0
-        return 0
-      end
-
+      return 0 if trips.length == 0
       sum = @trips.sum {|trip| trip.cost}
-      if sum < 1.65
-        return 0
-      end
+
+      # we decided that the rider wouldn't get any money if the cost of the trip was less than 1.65
+      return 0 if sum < 1.65
       fee = 1.65 * trips.count
       return 0.8 * sum - fee
     end
