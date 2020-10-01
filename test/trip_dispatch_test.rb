@@ -121,4 +121,49 @@ describe "TripDispatcher class" do
       end
     end
   end
+  describe "request_trip" do
+    before do
+      @trip_dispatcher = build_test_dispatcher
+    end
+    it "returns Trip instance" do
+      expect(@trip_dispatcher.request_trip(1)).must_be_instance_of Trip
+    end
+
+    it "creates a unique instance of Trip" do
+      before_request = @trip_dispatcher
+      new_trip = @trip_dispatcher.request_trip(1)
+      expect(before_request.trips).wont_include new_trip
+    end
+
+    it "updates all trip collections appropriately" do
+      before_request = @trip_dispatcher
+      new_trip = @trip_dispatcher.request_trip(1)
+      passenger = @trip_dispatcher.find_passenger(1)
+      driver = new_trip.driver
+      driver_id = driver.id
+      driver_before = before_request.find_driver(driver_id)
+      passenger_before = before_request.find_passenger(1)
+
+      expect(driver_before.trips.length).must_equal driver.trips.length - 1
+      expect(passenger_before.trips.length).must_equal passenger.trips.length - 1
+      expect(driver.trips).must_include new_trip
+      expect(passenger.trips).must_include new_trip
+      expect(before_request.trips.length).must_equal @trip_dispatcher.trips.length - 1
+      expect(@trip_dispatcher.trips).must_include new_trip
+    end
+
+    it "selects and available driver" do
+      before_request = @trip_dispatcher
+      new_trip = @trip_dispatcher.request_trip(1)
+      available_drivers = before_request.drivers.select { |driver| driver.status == :AVAILABLE}
+
+      expect(available_drivers).must_include new_trip.driver
+    end
+
+    it "raises an ArgumentError if there are no available drivers" do
+      none_available = @trip_dispatcher.drivers.delete_if { |driver| driver.status == :AVAILABLE}
+
+      expect(none_available.request_trip(1)).must_raise ArgumentError
+    end
+  end
 end
