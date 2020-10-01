@@ -118,6 +118,25 @@ describe "Passenger class" do
     it "returns sum of all trip costs for passenger" do
       expect(@passenger.net_expenditures).must_equal 65
     end
+
+    it "it ignores any in-progress trips" do
+      in_progress_trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2019, 10, 10, 10, 0),
+          end_time: nil,
+          rating: nil,
+          cost: nil,
+          driver: RideShare::Driver.new(
+              id: 1,
+              name: "Jill",
+              vin: "12345678901234567",
+              )
+      )
+      @passenger.add_trip(in_progress_trip)
+
+      expect(@passenger.net_expenditures).must_equal 65
+    end
   end
   describe "total_time_spent" do
     before do
@@ -159,6 +178,24 @@ describe "Passenger class" do
     end
 
     it "returns the sum of all trip durations for a passenger" do
+      expect(@passenger.total_time_spent).must_equal 600
+    end
+
+    it "ignores any in-progress trip" do
+      in_progress_trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2019, 10, 10, 10, 0),
+          end_time: nil,
+          rating: nil,
+          cost: nil,
+          driver: RideShare::Driver.new(
+              id: 1,
+              name: "Jill",
+              vin: "12345678901234567",
+              )
+      )
+      @passenger.add_trip(in_progress_trip)
       expect(@passenger.total_time_spent).must_equal 600
     end
   end
