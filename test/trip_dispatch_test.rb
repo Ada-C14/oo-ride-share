@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -121,5 +121,46 @@ describe "TripDispatcher class" do
         end
       end
     end
+  end
+
+  describe "passenger request trips" do
+    it "instance of trip " do
+      @dispatcher = build_test_dispatcher
+      @new_trip = @dispatcher.request_trip(1)
+      expect(@new_trip).must_be_kind_of RideShare::Trip
+    end
+
+    it "driver is unavailable" do
+      @dispatcher = build_test_dispatcher
+      @new_trip = @dispatcher.request_trip(1)
+      expect(@new_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "adds trip to trips for driver and passenger" do
+      @dispatcher = build_test_dispatcher
+      passenger_trips_before = @dispatcher.find_passenger(1).trips.size
+      driver_trips_before = @dispatcher.find_driver(2).trips.size
+
+      @dispatcher.request_trip(1)
+
+      passenger_trips_after = @dispatcher.find_passenger(1).trips.size
+      driver_trips_after = @dispatcher.find_driver(2).trips.size
+
+      expect(passenger_trips_after - passenger_trips_before).must_equal 1
+      expect(driver_trips_after - driver_trips_before).must_equal 1
+    end
+
+    it "raise error for not available drivers" do
+      @dispatcher = build_test_dispatcher
+      @dispatcher.request_trip(1)
+      @dispatcher.request_trip(2)
+      expect { @dispatcher.request_trip(3) }.must_raise ArgumentError
+    end
+
+    it " selects the first Available driver" do
+      @dispatcher = build_test_dispatcher
+      expect(@dispatcher.request_trip(1).driver.id).must_equal 2
+    end
+
   end
 end

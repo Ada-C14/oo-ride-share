@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -55,7 +55,8 @@ xdescribe "Driver class" do
       @driver = RideShare::Driver.new(
         id: 3,
         name: "Test Driver",
-        vin: "12345678912345678"
+        vin: "12345678912345678",
+        status: :AVAILABLE
       )
       @trip = RideShare::Trip.new(
         id: 8,
@@ -132,5 +133,26 @@ xdescribe "Driver class" do
 
   describe "total_revenue" do
     # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          rating: 5,
+          cost: 25
+      )
+      @driver.add_trip(trip)
+    end
+
+    it "return total revenue for driver" do
+      expect(@driver.total_revenue).must_be_within_delta 18.68, 0.01
+    end
   end
 end

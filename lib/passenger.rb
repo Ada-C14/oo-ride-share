@@ -6,7 +6,6 @@ module RideShare
 
     def initialize(id:, name:, phone_number:, trips: [])
       super(id)
-
       @name = name
       @phone_number = phone_number
       @trips = trips
@@ -14,6 +13,32 @@ module RideShare
 
     def add_trip(trip)
       @trips << trip
+    end
+
+    def net_expenditures
+      if @trips.empty?
+        return nil
+      end
+
+      total = 0
+      @trips.each do |trip|
+        total += trip.cost
+      end
+
+      return total
+    end
+
+    def total_time_spent
+      if @trips.empty?
+        return nil
+      end
+
+      total = 0
+      @trips.each do |trip|
+        total += trip.duration
+      end
+
+      return total
     end
 
     private

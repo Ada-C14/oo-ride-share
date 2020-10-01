@@ -15,7 +15,14 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        # driver_id: 45
+        driver: RideShare::Driver.new(
+            id: 3,
+            name: "Gessica",
+            vin: "WBS76FYD47DJF7206",
+            status: :AVAILABLE
+        )
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -40,6 +47,17 @@ describe "Trip class" do
           RideShare::Trip.new(@trip_data)
         end.must_raise ArgumentError
       end
+    end
+
+    it "returns an error when start time is after end time" do
+      @trip_data[:end_time] = @trip_data[:start_time] - 25 * 60
+      expect do
+        RideShare::Trip.new(@trip_data)
+      end.must_raise ArgumentError
+    end
+
+    it 'returns duration of the trip' do
+      expect(@trip.duration).must_equal 1500
     end
   end
 end
