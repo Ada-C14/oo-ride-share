@@ -122,4 +122,35 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "request_trip methods" do
+
+    before do
+      @dispatcher = build_test_dispatcher
+      @new_trip = @dispatcher.request_trip(7)
+    end
+
+    it "instantiates a new Trip instance" do
+      expect(@new_trip).must_be_kind_of RideShare::Trip
+    end
+
+    it "adds the new trip to the dispatch trips array" do
+      expect(@dispatcher.trips.length).must_equal 6
+    end
+    
+    it "updates the Passenger trips array" do
+      expect(@dispatcher.passengers[6].trips.length).must_equal 2
+    end
+
+    it "updates the Drivers trips array" do
+      expect(@dispatcher.drivers[1].trips.length).must_equal 4
+    end
+
+    it "changes Driver's status to :UNAVAILABLE" do
+      #what is Driver's status before .request_trip?
+
+    end
+
+  end
+
 end
