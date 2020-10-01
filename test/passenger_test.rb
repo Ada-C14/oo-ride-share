@@ -67,8 +67,94 @@ describe "Passenger class" do
       end
     end
   end
-
+  ################################################################################
   describe "net_expenditures" do
     # You add tests for the net_expenditures method
+    it "total costs with no rides" do
+      passenger = RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+      )
+      expect(passenger.net_expenditures).must_equal 0
+    end
+
+    it "total cost calculates sum" do
+      start_time = Time.now - 60 * 60 # 60 minutes
+      end_time = start_time + 25 * 60 # 25 minutes
+      passenger = RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+      )
+      trip_data = {
+          id: 8,
+          passenger: passenger,
+          start_time: start_time,
+          end_time: end_time,
+          cost: 23.45,
+          rating: 3
+      }
+      trip = RideShare::Trip.new(trip_data)
+      trip_data2 = {
+          id: 8,
+          passenger: passenger,
+          start_time: start_time,
+          end_time: end_time,
+          cost: 100.00,
+          rating: 3
+      }
+      trip2 = RideShare::Trip.new(trip_data2)
+
+      passenger.add_trip(trip)
+      passenger.add_trip(trip2)
+
+      expect(passenger.net_expenditures).must_equal 123.45
+    end
+
+  end
+
+  describe "total_time_spent" do
+    it "total time with no trips" do
+      passenger = RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+      )
+      expect(passenger.total_time_spent).must_equal 0
+    end
+
+    it "total time calculates sum" do
+      start_time = Time.now - 60 * 60 # 60 minutes
+      end_time = start_time + 25 * 60 # 25 minutes
+      passenger = RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+      )
+      trip_data = {
+          id: 8,
+          passenger: passenger,
+          start_time: start_time,
+          end_time: end_time,
+          cost: 23.45,
+          rating: 3
+      }
+      trip = RideShare::Trip.new(trip_data)
+      trip_data2 = {
+          id: 8,
+          passenger: passenger,
+          start_time: start_time,
+          end_time: end_time,
+          cost: 100.00,
+          rating: 3
+      }
+      trip2 = RideShare::Trip.new(trip_data2)
+
+      passenger.add_trip(trip)
+      passenger.add_trip(trip2)
+
+      expect(passenger.total_time_spent).must_equal 50*60
+    end
   end
 end
