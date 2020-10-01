@@ -41,7 +41,7 @@ module RideShare
       else
         raise ArgumentError, 'Driver or Driver_id is required'
       end
-      
+
       # binding.pry
       if start_time > end_time
         raise ArgumentError, "Your start time#{start_time} is later than your end time#{end_time} "
@@ -67,7 +67,9 @@ module RideShare
         "start_time=#{start_time} " +
         "end_time=#{end_time} " +
         "cost=#{cost} " +
-        "rating=#{rating}>"
+        "rating=#{rating} " +
+        "driver_id = #{driver&.id.inspect}>"
+
     end
 
     def connect(passenger)
