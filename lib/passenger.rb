@@ -1,4 +1,5 @@
 require_relative 'csv_record'
+#require_relative 'trip'
 
 module RideShare
   class Passenger < CsvRecord
@@ -15,6 +16,17 @@ module RideShare
     def add_trip(trip)
       @trips << trip
     end
+
+    def net_expenditures
+      all_cost = @trips.map { |trip| trip.cost}
+      return all_cost.compact.sum
+    end
+
+    def total_time_spent
+      all_times = @trips.map {|trip| trip.duration}
+      return all_times.compact.sum
+    end
+
 
     private
 
