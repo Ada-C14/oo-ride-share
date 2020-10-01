@@ -127,14 +127,27 @@ describe "TripDispatcher class" do
     before do
       @dispatcher = build_test_dispatcher
     end
-
     passenger_id = 6
+
     it "works for request_trip" do
       expect(@dispatcher.request_trip(passenger_id)).must_be_kind_of RideShare::Trip
     end
 
-    it "finds the first available driver and changes status to :UNAVAILABLE" do
+    xit "finds the first available driver" do
       expect(@dispatcher.request_trip(passenger_id).driver_id).must_equal 2
+    end
+
+    it "(Wave 4) verify selected driver is :AVAILABLE, and change driver status to :UNAVAILABLE when trip is in-progress" do
+      driver_id = 3
+      # before request a trip
+      expect(@dispatcher.find_driver(driver_id).status).must_equal :AVAILABLE
+      # after request the trip
+      @dispatcher.request_trip(passenger_id)
+      expect(@dispatcher.find_driver(driver_id).status).must_equal :UNAVAILABLE
+    end
+
+    it "(Wave 4) Intelligent Dispatching: selects the available driver with 0 trips first" do
+      expect(@dispatcher.request_trip(passenger_id).driver_id).must_equal 3
       expect(@dispatcher.request_trip(passenger_id).driver.status).must_equal :UNAVAILABLE
     end
 
@@ -182,20 +195,26 @@ describe "TripDispatcher class" do
     it "checks a trip is added to driver trips" do
 
       passenger_id = 6
-      driver_id = 2
+      driver_id = 3
 
       trip = @dispatcher
 
       # trip = @dispatcher.request_trip(passenger_id)
-      expect(trip.find_driver(driver_id).trips.count).must_equal 3
+      expect(trip.find_driver(driver_id).trips.count).must_equal 0
 
       # after request a trip
       trip.request_trip(passenger_id)
-      expect(trip.find_driver(driver_id).trips.count).must_equal 4
+      expect(trip.find_driver(driver_id).trips.count).must_equal 1
 
     end
   end
 end
+# describe "Intelligent dispatching wave 4" do
+#   before do
+#     @dispatcher = build_test_dispatcher
+#   end
+#
+#   passenger_id = 6
 
 # TESTS NEEDED FOR WAVE 3 #
 

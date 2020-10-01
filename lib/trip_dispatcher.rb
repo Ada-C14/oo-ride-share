@@ -28,9 +28,15 @@ module RideShare
     def request_trip(passenger_id)
       passenger = find_passenger(passenger_id)
       # do we need "find_driver" to validate driver_id?
-      driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+      drivers_available = @drivers.select { |driver| driver.status == :AVAILABLE }
 
-      raise ArgumentError.new("No available drivers") if driver.nil?
+      raise ArgumentError.new("No available drivers") if drivers_available.empty?
+
+      if drivers_available.any? { |candidate| candidate.trips.count == 0 }
+        driver = drivers_available.find { |candidate| candidate.trips.count == 0 }
+      else
+        driver = drivers_available.min_by { |candidate| candidate.trips.last.end_time }
+      end
 
       trip = Trip.new(id: @trips.last.id + 1, passenger: passenger, passenger_id: passenger_id, driver: driver, driver_id: driver.id, start_time: Time.now, end_time: nil, cost: nil, rating: nil)
       @trips << trip
