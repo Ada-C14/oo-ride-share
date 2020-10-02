@@ -19,8 +19,10 @@ module RideShare
     end
 
     def assign_driver
-      #how to handle no available drivers...
-      return @drivers.find { |driver| driver.status == :AVAILABLE }
+      assigned_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+      raise ArgumentError.new("No drivers available") if assigned_driver.nil?
+
+      return assigned_driver
     end
 
     def request_trip(passenger_id)

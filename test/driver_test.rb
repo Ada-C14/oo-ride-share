@@ -163,27 +163,27 @@ describe 'Driver class' do
 
     it 'does not charge a fee if total cost is less than 1.65' do
       driver = RideShare::Driver.new(
-          id: 54,
-          name: 'Rogers Bartell IV',
-          vin: '1C9EVBRM0YBC564DZ'
+        id: 54,
+        name: 'Rogers Bartell IV',
+        vin: '1C9EVBRM0YBC564DZ'
       )
       trip1 = RideShare::Trip.new(
-          id: 8,
-          driver: driver,
-          passenger_id: 3,
-          start_time: Time.new(2016, 8, 8),
-          end_time: Time.new(2016, 8, 8),
-          rating: 5,
-          cost: 1
+        id: 8,
+        driver: driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 5,
+        cost: 1
       )
       trip2 = RideShare::Trip.new(
-          id: 8,
-          driver: driver,
-          passenger_id: 3,
-          start_time: Time.new(2016, 8, 8),
-          end_time: Time.new(2016, 8, 9),
-          cost: 1,
-          rating: 1
+        id: 8,
+        driver: driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 1,
+        rating: 1
       )
       driver.add_trip(trip1)
       driver.add_trip(trip2)
@@ -193,9 +193,9 @@ describe 'Driver class' do
 
     it 'returns 0 if the driver has not made any trips' do
       driver = RideShare::Driver.new(
-          id: 54,
-          name: 'Rogers Bartell IV',
-          vin: '1C9EVBRM0YBC564DZ'
+        id: 54,
+        name: 'Rogers Bartell IV',
+        vin: '1C9EVBRM0YBC564DZ'
       )
       expect(driver.total_revenue).must_equal 0
     end

@@ -30,7 +30,7 @@ module RideShare
       return total
     end
 
-    def total_time_spent  #"in progress trip is 0"
+    def total_time_spent  #in progress trip is 0 so that the total is returned without it
       return 0 if @trips.empty?
       @trips.reduce(0){ |total_time, trip| total_time + trip.duration}
     end

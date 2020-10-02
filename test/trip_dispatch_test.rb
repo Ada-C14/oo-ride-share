@@ -1,5 +1,7 @@
 require_relative 'test_helper'
 
+require 'pry'
+
 TEST_DATA_DIRECTORY = 'test/test_data'
 
 describe "TripDispatcher class" do
@@ -123,8 +125,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  describe "request_trip methods" do
-
+  describe "Requesting a new trip" do
     before do
       @dispatcher = build_test_dispatcher
       @new_trip = @dispatcher.request_trip(7)
@@ -132,6 +133,16 @@ describe "TripDispatcher class" do
 
     it "instantiates a new Trip instance" do
       expect(@new_trip).must_be_kind_of RideShare::Trip
+    end
+
+    it "changes Driver's status to :UNAVAILABLE" do
+      expect(@new_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "returns nil for end_time, rating & cost" do
+      expect(@new_trip.end_time).must_be_nil
+      expect(@new_trip.rating).must_be_nil
+      expect(@new_trip.cost).must_be_nil
     end
 
     it "adds the new trip to the dispatch trips array" do
@@ -146,17 +157,15 @@ describe "TripDispatcher class" do
       expect(@dispatcher.drivers[1].trips.length).must_equal 4
     end
 
-    it "changes Driver's status to :UNAVAILABLE" do
-      #Wondering if we should also show the driver's status PRIOR to calling request_trip... i guess this would answered if we test the driver.make_unavailable method...
-      #Showing Driver's status in both the trips array & from the new_trips's instance
-      expect(@new_trip.driver.status).must_equal :UNAVAILABLE
-      expect(@dispatcher.trips.last.driver.status).must_equal :UNAVAILABLE
-    end
+    it "there are no available drivers, argument error is expected" do
+      #there is only 1 driver currently available (because of the trip requested in before block, line 131)
+      @dispatcher.request_trip(1)
 
-    it "returns nil for end_time, rating & cost" do
-      expect(@new_trip.end_time).must_be_nil
-      expect(@new_trip.rating).must_be_nil
-      expect(@new_trip.cost).must_be_nil
+      expect { @dispatcher.request_trip(2) }.must_raise ArgumentError
     end
+    #more tests we may write:
+    # driver.average_rating --> return average rating excluding any in progress trips
+    # passenger.net_expenditures --> return total skipping any in progress trips (and give message)
+    # trip.duration & passenger.total_time_spent --> skips any in progress (where end_time is nil)
   end
 end
