@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -78,8 +78,8 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  # TODO: un-skip for Wave 2 DONE
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -120,6 +120,51 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+
+  describe "request_trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+      @trip = @dispatcher.request_trip(1)
+    end
+
+    it "creates a trip properly" do
+      expect(@trip.passenger_id).must_equal 1
+      expect(@trip.driver_id).must_equal 2
+      expect(@trip.id).must_equal @dispatcher.trips.last.id
+      expect(@trip.start_time).must_be_close_to Time.now
+      expect(@trip.end_time).must_be_nil
+      expect(@trip.rating).must_be_nil
+    end
+
+    it "updates the passenger lists" do
+      expect(@dispatcher.passengers[0].trips).must_include @trip
+    end
+
+    it "updates the driver lists" do
+      expect(@dispatcher.drivers[1].trips).must_include @trip
+    end
+
+    it "updates the trip dispatcher lists" do
+      expect(@dispatcher.trips).must_include @trip
+    end
+
+    it "selects an available driver, then makes them unavailable after new trip" do
+      expect(@dispatcher.drivers[2].status).must_equal :AVAILABLE
+      @dispatcher.request_trip(1)
+      expect(@dispatcher.drivers[2].status).must_equal :UNAVAILABLE
+    end
+
+    it "raises an error if there are no available drivers" do
+      @dispatcher.drivers[1].status = :UNAVAILABLE
+      @dispatcher.drivers[2].status = :UNAVAILABLE
+
+      expect { @dispatcher.request_trip(1) }.must_raise ArgumentError
+    end
+
+    it "returns a trip" do
+      expect(@trip).must_be_kind_of RideShare::Trip
     end
   end
 end
