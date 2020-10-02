@@ -42,7 +42,7 @@ module RideShare
     #Wave 3
     def request_trip(passenger_id)
 
-      #@passenger = self.find_passenger(passenger_id)
+      # @passenger = self.find_passenger(passenger_id)
       driver = find_first_available_driver
 
       if driver.nil?
@@ -50,7 +50,6 @@ module RideShare
       end
 
       new_trip = Trip.new(
-          # what should the id of this trip be?
           id: @trips.size + 1,
           passenger: find_passenger(passenger_id),
           passenger_id: passenger_id,
@@ -62,13 +61,14 @@ module RideShare
           driver_id: driver.id
       )
 
-      driver.change_status #=> what is this doing?, adding the new trip to the collection of trips for that driver
+      driver.change_status
 
       new_trip.passenger.add_trip(new_trip)
       new_trip.driver.add_trip(new_trip)
       @trips << new_trip
 
       return new_trip
+
     end
 
     private
@@ -81,6 +81,7 @@ module RideShare
         trip.connect(passenger, driver)
       end
       return trips
+
     end
   end
 end

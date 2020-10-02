@@ -124,17 +124,11 @@ describe "TripDispatcher class" do
     end
   end
   # tests for the request_trip method for wave 3
-  # What should I test?
-  # That the return value is an instance of the trip class (in-progess trip)
-  # That the driver status is changed to unavailable
-  # that we added the new_trip to the @trips array and to the #trips array in the passenger
-  # Update the driver trips also
-  # Was the driver who was selected available?
   describe "request_trip" do
     before do
       @dispatcher = build_test_dispatcher
       @passenger = @dispatcher.passengers.first
-      #@passenger_id = @passenger.id
+      # @passenger_id = @passenger.id
 
     end
 
@@ -146,7 +140,6 @@ describe "TripDispatcher class" do
 
       test_trip = @dispatcher.request_trip(@passenger.id)
 
-
       expect(test_trip.end_time).must_be_nil
       expect(test_trip.cost).must_be_nil
       expect(test_trip.rating).must_be_nil
@@ -154,9 +147,9 @@ describe "TripDispatcher class" do
     end
 
     it "adds the new trip to the passenger trips array" do
-      #act
+      # act
       new_trip = @dispatcher.request_trip(@passenger.id)
-      #assert
+      # assert
       expect(new_trip.passenger.trips).must_include new_trip
 
     end
@@ -165,8 +158,7 @@ describe "TripDispatcher class" do
       new_trip = @dispatcher.request_trip(@passenger.id)
       # new_trip is the new trip instance, with a driver read
 
-
-      #make sure that my new trip is inside my driver trips array
+      # make sure that my new trip is inside my driver trips array
       expect(new_trip.driver.trips).must_include new_trip
 
     end
@@ -181,15 +173,13 @@ describe "TripDispatcher class" do
     end
 
     it "raises an error if no driver is available " do
-      #arrange
+      # arrange
       @dispatcher.drivers.each {|driver| driver.status = :UNAVAILABLE}
-      #new_trip = @dispatcher.request_trip(@passenger.id)
+      # new_trip = @dispatcher.request_trip(@passenger.id)
 
       expect {@dispatcher.request_trip(@passenger.id)}.must_raise ArgumentError
 
     end
-
-
   end
 
   describe "find_first_available_driver" do
