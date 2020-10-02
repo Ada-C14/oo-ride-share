@@ -1,15 +1,48 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
+  before do "Passenger"
+  @passenger = RideShare::Passenger.new(
+      id: 9,
+      name: "Merl Glover III",
+      phone_number: "1-602-620-2330 x3723",
+      trips: []
+  )
+  @driver = RideShare::Driver.new(
+      id: 54,
+      name: "Test Driver",
+      vin: "12345678901234567",
+      status: :AVAILABLE
+  )
+  @trip1 = RideShare::Trip.new(
+      id: 8,
+      passenger: @passenger,
+      start_time: Time.parse("2018-11-04 12:00:00 -0800"),
+      end_time: Time.parse("2018-11-04 12:00:30 -0800"),
+      cost: 23.45,
+      rating: 5,
+      driver: @driver
+  )
+  @trip2 = RideShare::Trip.new(
+      id: 8,
+      passenger: @passenger,
+      start_time: Time.parse("2018-11-04 12:00:00 -0800"),
+      end_time: Time.parse("2018-11-04 12:00:45 -0800"),
+      cost: 27.45,
+      rating: 5,
+      driver: @driver
+  )
+  @trip3 = RideShare::Trip.new(
+      id: 8,
+      passenger_id: 1,
+      start_time: Time.parse("2018-11-04 12:00:00 -0800"),
+      end_time: nil,
+      cost: nil,
+      rating: nil,
+      driver: @driver
+  )
+  end
   describe "Driver instantiation" do
-    before do
-      @driver = RideShare::Driver.new(
-        id: 54,
-        name: "Test Driver",
-        vin: "12345678901234567",
-        status: :AVAILABLE
-      )
-    end
 
     it "is an instance of Driver" do
       expect(@driver).must_be_kind_of RideShare::Driver
@@ -47,20 +80,10 @@ xdescribe "Driver class" do
 
   describe "add_trip method" do
     before do
-      pass = RideShare::Passenger.new(
-        id: 1,
-        name: "Test Passenger",
-        phone_number: "412-432-7640"
-      )
-      @driver = RideShare::Driver.new(
-        id: 3,
-        name: "Test Driver",
-        vin: "12345678912345678"
-      )
       @trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
-        passenger: pass,
+        passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2018, 8, 9),
         rating: 5
@@ -80,20 +103,12 @@ xdescribe "Driver class" do
 
   describe "average_rating method" do
     before do
-      @driver = RideShare::Driver.new(
-        id: 54,
-        name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ"
-      )
-      trip = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
-        passenger_id: 3,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 8),
-        rating: 5
-      )
-      @driver.add_trip(trip)
+      @driver.add_trip(@trip1)
+    end
+
+    it "Ignores an in progress trip" do
+      @driver.add_trip(@trip3)
+      expect(@driver.average_rating).must_be_close_to 5
     end
 
     it "returns a float" do
@@ -116,21 +131,34 @@ xdescribe "Driver class" do
     end
 
     it "correctly calculates the average rating" do
-      trip2 = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
-        passenger_id: 3,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        rating: 1
-      )
-      @driver.add_trip(trip2)
+      @driver.add_trip(@trip2)
 
-      expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
+      expect(@driver.average_rating).must_be_close_to (5.0 + 5.0) / 2.0, 0.01
     end
+
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+
+    it 'returns 0 for no trips taken' do
+      expect(@driver.total_revenue).must_equal 0
+    end
+
+    it 'returns the sum of one trip' do
+      @driver.add_trip(@trip1)
+
+      expect(@driver.total_revenue).must_be_close_to 17.44
+    end
+
+    it 'returns the sum of many trips' do
+      @driver.add_trip(@trip1)
+      @driver.add_trip(@trip2)
+      expect(@driver.total_revenue).must_be_close_to 38.08
+    end
+
+    it "Ignores an in progress trip" do
+      @driver.add_trip(@trip3)
+      expect(@driver.total_revenue).must_equal 0
+    end
   end
 end

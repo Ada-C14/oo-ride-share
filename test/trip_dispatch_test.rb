@@ -1,5 +1,6 @@
 require_relative 'test_helper'
 
+
 TEST_DATA_DIRECTORY = 'test/test_data'
 
 describe "TripDispatcher class" do
@@ -78,8 +79,8 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -121,5 +122,37 @@ describe "TripDispatcher class" do
         end
       end
     end
+  end
+
+  describe "Request_trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+
+    end
+    it "Was the trip created properly?" do
+      passenger = @dispatcher.find_passenger(2)
+      expect(@dispatcher.request_trip(passenger.id)).must_be_instance_of RideShare::Trip
+    end
+
+    it 'Updates trip lists for driver and passenger, and sets driver status to unavailable' do
+      passenger = @dispatcher.find_passenger(2)
+      driver = @dispatcher.find_driver(2)
+
+      expect(driver.status).must_equal :AVAILABLE
+      new_trip = @dispatcher.request_trip(passenger.id)
+      expect(passenger.trips).must_include new_trip
+      expect(driver.trips).must_include new_trip
+      expect(driver.status).must_equal :UNAVAILABLE
+    end
+
+    it 'What happens if you try to request a trip when there are no AVAILABLE drivers?' do
+      @dispatcher.request_trip(2)
+      @dispatcher.request_trip(1)
+      trip3 = @dispatcher.request_trip(3)
+
+      expect(trip3).must_be_nil
+
+    end
+
   end
 end
