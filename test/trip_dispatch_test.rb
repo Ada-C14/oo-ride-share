@@ -1,6 +1,7 @@
 require_relative 'test_helper'
 
 TEST_DATA_DIRECTORY = 'test/test_data'
+#TEST_DATA_DIRECTORY = './test_data'
 
 describe "TripDispatcher class" do
   def build_test_dispatcher
@@ -26,16 +27,8 @@ describe "TripDispatcher class" do
       expect(trip.id).must_equal dispatcher.trips.length
     end
 
-    it "updated the driver trip list" do
 
-    end
-
-    it "updated the driver trip list" do
-
-    end
-
-
-  end
+   end
 
   describe "Initializer" do
     it "is an instance of TripDispatcher" do

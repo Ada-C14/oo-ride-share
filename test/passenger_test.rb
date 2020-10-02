@@ -45,6 +45,7 @@ describe "Passenger class" do
           phone_number: "1-602-620-2330 x3723",
           trips: []
       )
+      @driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
       trip = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
@@ -52,7 +53,7 @@ describe "Passenger class" do
           end_time: Time.new(2016, 8, 9),
           rating: 5,
           driver_id: 3,
-          driver: "Matisse"
+          driver: @driver
       )
 
       @passenger.add_trip(trip)
@@ -77,7 +78,8 @@ describe "Passenger class" do
 
     before do
       @passenger_random = RideShare::Passenger.new(id: 500, name: "TestName", phone_number: "test_phone_number", trips: [])
-      @trip_random = RideShare::Trip.new(id: 5, passenger: @passenger_random, start_time: Time.new(2016, 8, 8), end_time: Time.new(2016, 8, 9), rating: 5, driver_id: 3, driver: "Matisse")
+      @driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
+      @trip_random = RideShare::Trip.new(id: 5, passenger: @passenger_random, start_time: Time.new(2016, 8, 8), end_time: Time.new(2016, 8, 9), rating: 5, driver_id: 3, driver: @driver)
     end
 
     it "Evaluates to zero if the passenger didn't do any trips" do
@@ -102,6 +104,7 @@ describe "Passenger class" do
       )
     end
     it "calculates the single trip " do
+      @driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
       trip = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
@@ -110,7 +113,7 @@ describe "Passenger class" do
           rating: 5,
           cost: 22,
           driver_id: 3,
-          driver: "Matisse"
+          driver: @driver
       )
       @passenger.add_trip(trip)
       expect(@passenger.net_expenditures).must_equal 22
@@ -118,7 +121,9 @@ describe "Passenger class" do
     it "calulates for no trips " do
       expect(@passenger.net_expenditures).must_equal 0
     end
+
     it "calulates for multiple trips " do
+      @driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
       trip = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
@@ -127,7 +132,7 @@ describe "Passenger class" do
           rating: 5,
           cost: 22,
           driver_id: 3,
-          driver: "Matisse"
+          driver: @driver
       )
       @passenger.add_trip(trip)
       @passenger.add_trip(trip)

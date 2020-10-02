@@ -8,7 +8,7 @@ describe "Trip class" do
 
     @start_time = start_time
     @end_time = end_time
-
+    @driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
     @trip_data = {
         id: 8,
         passenger: RideShare::Passenger.new(
@@ -21,7 +21,7 @@ describe "Trip class" do
         cost: 23.45,
         rating: 3,
         driver_id: 3,
-        driver: "Matisse"
+        driver: @driver
     }
     @trip = RideShare::Trip.new(@trip_data)
   end
