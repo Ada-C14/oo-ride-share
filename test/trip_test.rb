@@ -54,19 +54,6 @@ describe "Trip class" do
       expect{ RideShare::Trip.new(@trip_data) }.must_raise ArgumentError
 
     end
-
-
-    # my test for
-    # it "raises an error when end time is before start time" do
-    #   #arrange
-    #   @trip_data[:end_time] = @trip_data[:start_time] - 180 * 60
-    #   #act and assert
-    #   expect{
-    #     RideShare::Trip.new(@trip_data)
-    #   }.must_raise ArgumentError
-    #
-    # end
-
   end
 
   describe "trip_duration_in_secs" do
@@ -103,6 +90,5 @@ describe "Trip class" do
       }.must_raise ArgumentError
 
     end
-
   end
 end

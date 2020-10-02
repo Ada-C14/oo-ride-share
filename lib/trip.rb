@@ -9,7 +9,7 @@ module RideShare
 
     def initialize(
           id:,
-          passenger: nil, #why is this nil?
+          passenger: nil,
           passenger_id: nil,
           start_time:,
           end_time:,
@@ -32,7 +32,7 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
-      #do the same as above for driver?
+      # do the same as above for driver
       if driver
         @driver = driver
         @driver_id = driver.id
@@ -67,8 +67,6 @@ module RideShare
     end
 
 
-
-
     def inspect
       # Prevent infinite loop when puts-ing a Trip
       # trip contains a passenger contains a trip contains a passenger...
@@ -89,12 +87,6 @@ module RideShare
       driver.add_trip(self)
     end
 
-    # def connect_driver(driver)
-    #   @driver = driver
-    #   driver.add_trip(self)
-    # end
-
-
     def duration
       if @end_time.nil?
         raise ArgumentError.new("Trip is still in progress")
@@ -103,11 +95,6 @@ module RideShare
       end
       return duration_in_secs
     end
-
-
-    # def trip_duration_in_secs
-    #   return @end_time - @start_time
-    # end
 
     private
 
