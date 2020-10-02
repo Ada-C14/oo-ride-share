@@ -13,7 +13,6 @@ module RideShare
       @passengers = Passenger.load_all(directory: directory)
       @trips = Trip.load_all(directory: directory)
       connect_trips
-
     end
 
     def find_passenger(id)
@@ -32,6 +31,49 @@ module RideShare
       #{trips.count} trips, \
       #{drivers.count} drivers, \
       #{passengers.count} passengers>"
+    end
+
+    def request_trip(passenger_id)
+
+      selected_driver = nil
+
+      @drivers.each do |driver_instance|
+        if driver_instance.status == :AVAILABLE
+          selected_driver = driver_instance
+          break
+        end
+      end
+
+      passenger_identified = find_passenger(passenger_id)
+
+      trip_id = @trips.length + 1
+
+      trip_created = Trip.new(
+          id: trip_id,
+          passenger: passenger_identified,
+          # passenger_id: passenger_id,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+          #driver_id:,
+          driver: selected_driver
+          )
+      #BLOCK OF CODE TO FIND THE FIRST AVAILABLE DRIVER/ ASSIGNING DRIVER
+      # CSV.read('support/drivers.csv').each do |row|
+      #   driver_instance = Driver.new(row[0].to_i, row[1], row[2], row[3].to_sym)
+      #   if driver_instance.status == :AVAILABLE
+      #     trip_created.driver = driver_instance
+      #     break
+      #   end
+      # end
+      selected_driver.accept_trip_request(trip_created)
+
+      passenger_identified.add_trip(trip_created)
+
+      @trips << trip_created
+
+      return trip_created
     end
 
     private

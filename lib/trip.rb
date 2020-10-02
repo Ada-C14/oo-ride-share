@@ -6,7 +6,7 @@ module RideShare
   class Trip < CsvRecord
 
     # we ask attr_reader to create the following methods using the input from initialize
-    attr_reader :id, :passenger_id, :start_time, :end_time, :rating, :cost, :driver_id
+    attr_reader :id, :passenger_id, :start_time, :end_time, :driver_id
     attr_accessor :passenger, :driver
     def initialize(
         id:,
@@ -16,8 +16,8 @@ module RideShare
         end_time:,
         cost: nil,
         rating:,
-        driver_id:,
-        driver:
+        driver_id: nil,
+        driver: nil
     )
       super(id)
       # either define methods below OR if method is from parameter/ and attr_reader, save them below
@@ -25,8 +25,6 @@ module RideShare
       # must save those variable so that the methods by the same name can access them
       @cost = cost
       @rating = rating
-      @driver_id = driver_id
-      @driver = driver
 
       if passenger
         @passenger = passenger
@@ -37,6 +35,15 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
+      if driver
+        @driver = driver
+        @driver_id = driver.id
+      elsif driver_id
+        @driver_id = driver_id
+      else
+        raise ArgumentError, 'Driver or driver_id is required'
+      end
+
       # Modify Trip.from_csv to turn start_time and end_time into Time instances
       # before passing them to Trip#initialize
       if start_time.class == Time
@@ -44,33 +51,55 @@ module RideShare
       elsif start_time.class == String
         @start_time = Time.parse(start_time)
       else
-        raise ArgumentError, ('Time should be entered as a String or a Time Instance, Thanks so much.')
+        raise ArgumentError, ('Start time should be entered as a String or a Time Instance, Thanks so much.')
       end
 
-      if end_time.class == Time
-        @end_time = end_time
-      elsif end_time.class == String
-        @end_time = Time.parse(end_time)
-      else
-        raise ArgumentError, ('Time should be entered as a String or a Time Instance, Thanks so much.')
+      unless end_time == nil
+        if end_time.class == Time
+          @end_time = end_time
+        elsif end_time.class == String
+          @end_time = Time.parse(end_time)
+        else
+          raise ArgumentError, ('End time should be entered as a String or a Time Instance, Thanks so much.')
+        end
+
+        # Add a check in Trip#initialize that raises an ArgumentError if the end time
+        # is before the start time, and a corresponding test
+        if @end_time < @start_time
+          raise ArgumentError, 'End time is less than start time'
+        end
       end
 
-      # Add a check in Trip#initialize that raises an ArgumentError if the end time
-      # is before the start time, and a corresponding test
-      if @end_time < @start_time
-        raise ArgumentError, 'End time is less than start time'
+      unless rating == nil
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
-      end
     end
 
     # Add an instance method to the Trip class to calculate the duration of the trip
     # in seconds, and a corresponding test
+
+    # we could write the inside of the code below as:
+    # def duration
+    # @end_time == nil ? 0 : @end_time - @start_time
+    # end
     def duration
-      trip_duration = @end_time - @start_time
-      return trip_duration
+      if @end_time == nil
+        trip_duration = 0
+      else
+        trip_duration = @end_time - @start_time
+      end
+        return trip_duration
+    end
+
+    def cost
+      @cost == nil ? 0 : @cost
+    end
+
+    def rating
+      @rating == nil ? 0 : @rating
     end
 
     def inspect

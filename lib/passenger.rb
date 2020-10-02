@@ -34,17 +34,6 @@ module RideShare
       return total_time_spent_by_this_passenger
     end
 
-    # def total_time_spent
-    #   total_time_spent_by_this_passenger = 0
-    #   if @trips == []
-    #        total_time_spent_by_this_passenger = 0
-    #   else
-    #     time_arr = @trips.map{|trip|trip.duration}
-    #     total_time_spent_by_this_passenger = (time_arr.sum).to_i
-    #   end
-    #   return total_time_spent_by_this_passenger
-    #   end
-
     private
 
     def self.from_csv(record)

@@ -9,6 +9,34 @@ describe "TripDispatcher class" do
     )
   end
 
+  describe "Requesting Trips" do
+
+    it "created trip properly" do
+      dispatcher = build_test_dispatcher
+      trip = dispatcher.request_trip(1)
+      expect(trip).must_be_kind_of RideShare::Trip
+      expect(trip.passenger_id).must_equal 1
+      expect(trip.driver).must_be_kind_of RideShare::Driver
+      expect(trip.driver.name).must_equal "Driver 2"
+      expect(trip.cost).must_equal 0
+      expect(trip.end_time).must_be_nil
+      expect(trip.passenger).must_be_kind_of RideShare::Passenger
+      expect(trip.rating).must_equal 0
+      expect(trip.start_time).must_be_kind_of Time
+      expect(trip.id).must_equal dispatcher.trips.length
+    end
+
+    it "updated the driver trip list" do
+
+    end
+
+    it "updated the driver trip list" do
+
+    end
+
+
+  end
+
   describe "Initializer" do
     it "is an instance of TripDispatcher" do
       dispatcher = build_test_dispatcher
@@ -122,4 +150,6 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+
 end

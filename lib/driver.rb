@@ -39,10 +39,11 @@ module RideShare
         return 0
       else
         sum_of_ratings = 0.00
+        number_of_ratings = 0
       @trips.each do |trip|
         sum_of_ratings += trip.rating
+        number_of_ratings += 1 unless trip.rating == 0
       end
-      number_of_ratings = @trips.length
         average = sum_of_ratings / number_of_ratings
       return average.round(2)
       end
@@ -56,6 +57,12 @@ module RideShare
         end
       end
       return total
+    end
+
+    #CHANGING THE DRIVER'S STATUS TO UNAVAILABLE
+    def accept_trip_request(trip)
+    @trips << trip
+    self.status = :UNAVAILABLE
     end
 
     private
