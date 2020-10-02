@@ -36,7 +36,9 @@ module RideShare
     def average_rating
       return 0 if @trips.empty?
 
-      return @trips.reduce(0) { |average_rating, trip| average_rating + trip.rating }.to_f / @trips.length
+      all_ratings = @trips.map(&:rating).compact  # array of all Driver ratings; compact removes nil values.
+
+      return all_ratings.sum.to_f / all_ratings.length
     end
 
     def total_revenue
