@@ -44,7 +44,7 @@ module RideShare
       if rating.nil? || ( rating >= 1 && rating <= 5 )
         @rating = rating
       else
-        raise ArgumentError.new("Invalid rating #{@rating}")
+        raise ArgumentError.new("Invalid rating #{rating}")
       end
 
       if driver
