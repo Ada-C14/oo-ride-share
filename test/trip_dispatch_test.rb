@@ -159,10 +159,14 @@ describe "TripDispatcher class" do
       expect(@dispatcher.trips).must_include new_trip
     end
 
-    # it "raise error if there is no available driver " do
-    #   @dispatcher.drivers.each { |driver| driver.status = :UNAVAILABLE }
-    #
-    #   expect {@dispatcher.request_trip(@passenger.id)}.must_raise ArgumentError
-    # end
+    it "raise error if there is no available driver " do
+      # @dispatcher.drivers.each { |driver| driver.status = :UNAVAILABLE }
+
+      # arr
+      @dispatcher.request_trip(@passenger.id)
+      @dispatcher.request_trip(@passenger.id)
+
+      expect {@dispatcher.request_trip(@passenger.id)}.must_raise ArgumentError
+    end
   end
 end
