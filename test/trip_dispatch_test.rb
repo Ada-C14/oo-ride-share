@@ -122,4 +122,74 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "Request trip" do
+
+    it "returns an instance of Trip class" do
+      dispatcher = RideShare::TripDispatcher.new
+      expect(dispatcher.request_trip(1)).must_be_kind_of RideShare::Trip
+    end
+
+    it "returns 'nil' for end_time of trip" do
+      dispatcher = RideShare::TripDispatcher.new
+      trip = dispatcher.request_trip(1)
+
+      expect(trip.end_time).must_equal nil
+    end
+    it "Trip lists were updated" do
+      dispatcher = RideShare::TripDispatcher.new
+      original_length = dispatcher.trips.length
+      trip = dispatcher.request_trip(1)
+      new_length = original_length + 1
+      check = dispatcher.trips.length
+
+
+      expect(check).must_equal new_length
+    end
+
+    it "Driver lists were updated" do
+      dispatcher = RideShare::TripDispatcher.new
+      driver = dispatcher.first_available_driver
+      original_length = driver.trips.length
+      result = dispatcher.request_trip(1)
+      new_length = original_length + 1
+
+      check = result.driver.trips.length
+
+      expect(check).must_equal new_length
+    end
+
+    it "Passenger lists were updated" do
+      dispatcher = RideShare::TripDispatcher.new
+      passenger = dispatcher.find_passenger(1)
+      original_length = passenger.trips.length
+      result = dispatcher.request_trip(1)
+      new_length = original_length + 1
+
+      check = result.passenger.trips.length
+
+      expect(check).must_equal new_length
+    end
+
+
+    it "The selected driver was AVAILABLE" do
+      dispatcher = RideShare::TripDispatcher.new
+      dispatcher.drivers.each do |driver|
+        driver.status = :UNAVAILABLE
+      end
+      dispatcher.drivers.last.status = :AVAILABLE
+      trip = dispatcher.request_trip(1)
+      expect(trip.driver).must_equal dispatcher.drivers.last
+    end
+  end
+
+  # it "Return nil when there are no available drivers" do
+  #   dispatcher = RideShare::TripDispatcher.new
+  #   dispatcher.drivers.each do |driver|
+  #     driver.status = :UNAVAILABLE
+  #   end
+  #   trip = dispatcher.request_trip(1)
+  #   expect(trip).must_equal nil
+  # end
+
 end

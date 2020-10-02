@@ -6,11 +6,13 @@ module RideShare
     VALID_STATUSES = [:AVAILABLE , :UNAVAILABLE]
 
     attr_reader :id, :name, :vin, :status, :trips
+    attr_writer :status
 
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: [])
       super(id)
 
       validate_status(status)
+      @status = status
       @name = name
       validate_vin(vin)
       @vin = vin
@@ -24,9 +26,7 @@ module RideShare
     end
 
     def validate_status(status)
-      if VALID_STATUSES.include?(status)
-        @status = status
-      else
+      if !VALID_STATUSES.include?(status)
         raise ArgumentError.new("Invalid status.")
       end
     end

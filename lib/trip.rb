@@ -25,7 +25,7 @@ module RideShare
       elsif passenger_id
         @passenger_id = passenger_id
       else
-        raise ArgumentError, 'Passenger or passenger_id is required'
+        raise ArgumentError, 'Either a passenger or passenger_id is required'
       end
 
       if driver
@@ -38,8 +38,10 @@ module RideShare
       end
 
       ##################
-      if start_time > end_time
-        raise ArgumentError, 'Start time is later than end time'
+      if end_time != nil
+        if start_time > end_time
+          raise ArgumentError, 'Start time is later than end time'
+        end
       end
       ###################
 
@@ -47,11 +49,13 @@ module RideShare
       @end_time = end_time
       @cost = cost
       @rating = rating
-      # @driver_id = driver_id
-      # @driver = driver
+      @driver_id = driver_id
+      @driver = driver
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      if @rating != nil
+        if @rating > 5 || @rating < 1
+          raise ArgumentError, "Invalid rating #{@rating}"
+        end
       end
     end
 
@@ -78,7 +82,11 @@ module RideShare
     end
 
     def trip_duration
-      return @end_time - @start_time
+      if end_time == nil
+        return 0
+      else
+        return @end_time - @start_time
+      end
     end
 
     private
@@ -91,7 +99,9 @@ module RideShare
                end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating],
-               driver_id: record[:driver_id]
+               driver_id: record[:driver_id],
+               driver: record[:driver]
+
              )
     end
   end
