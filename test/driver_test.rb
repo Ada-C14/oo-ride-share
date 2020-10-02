@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -24,8 +24,13 @@ xdescribe "Driver class" do
       expect { RideShare::Driver.new(id: 100, name: "George", vin: "33133313331333133extranums") }.must_raise ArgumentError
     end
 
+    #Driver.status changed to an optional parameter per interpretation of this test
     it "has a default status of :AVAILABLE" do
       expect(RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567").status).must_equal :AVAILABLE
+    end
+
+    it "raises ArgumentError for status other than :AVAILABLE, :UNAVAILABLE" do
+      expect{ RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567", status: :boogers).status }.must_raise ArgumentError
     end
 
     it "sets driven trips to an empty array if not provided" do
@@ -96,6 +101,21 @@ xdescribe "Driver class" do
       @driver.add_trip(trip)
     end
 
+    let(:in_progress_trip) {
+      RideShare::Trip.new(id: 1, passenger_id: 54, start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: 4)
+    }
+
+    let(:trip2){
+      RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 1
+      )
+    }
+
     it "returns a float" do
       expect(@driver.average_rating).must_be_kind_of Float
     end
@@ -116,21 +136,85 @@ xdescribe "Driver class" do
     end
 
     it "correctly calculates the average rating" do
-      trip2 = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
-        passenger_id: 3,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        rating: 1
-      )
       @driver.add_trip(trip2)
+      expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
+    end
 
+    it "excludes in progress trips" do
+      @driver.add_trip(in_progress_trip)
+      @driver.add_trip(trip2)
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
   end
 
   describe "total_revenue" do
     # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip1 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 5,
+        cost: 7
+      )
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 5,
+        cost: 10
+      )
+      @driver.add_trip(trip1)
+      @driver.add_trip(trip2)
+    end
+
+    let(:in_progress_trip) {
+      RideShare::Trip.new(id: 1, passenger_id: 54, start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: 4)
+    }
+
+    it "returns float" do
+      expect(@driver.total_revenue).must_be_kind_of Float
+    end
+
+    it "returns correct calculation for only long trips" do
+      expect(@driver.total_revenue).must_be_close_to 10.96, 0.01
+    end
+
+    it "returns correct calculation including short trips" do
+      trip3 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          rating: 5,
+          cost: 1.50
+      )
+      @driver.add_trip(trip3)
+      expect(@driver.total_revenue).must_be_close_to 12.16, 0.01
+    end
+
+    it "return 0 if no driven trips" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      expect(driver.total_revenue).must_equal 0
+    end
+
+    it "excludes in progress trips" do
+      @driver.add_trip(in_progress_trip)
+      expect(@driver.total_revenue).must_be_close_to 10.96, 0.01
+    end
   end
 end

@@ -78,8 +78,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -107,8 +106,8 @@ describe "TripDispatcher class" do
         expect(first_driver.name).must_equal "Driver 1 (unavailable)"
         expect(first_driver.id).must_equal 1
         expect(first_driver.status).must_equal :UNAVAILABLE
-        expect(last_driver.name).must_equal "Driver 3 (no trips)"
-        expect(last_driver.id).must_equal 3
+        expect(last_driver.name).must_equal "Driver 4 (longest time since last trip)"
+        expect(last_driver.id).must_equal 4
         expect(last_driver.status).must_equal :AVAILABLE
       end
 
@@ -122,4 +121,61 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "request trip" do
+
+    before do
+      @dispatcher = build_test_dispatcher
+      #driver3 is second AVAILABLE in test/test_date/drivers.csv, but with no trips, and should be selected to drive first
+      @first_trip = @dispatcher.request_trip(1)
+      #select driver 4
+      @second_trip = @dispatcher.request_trip(1)
+    end
+
+    it "returns a trip object" do
+      expect(@first_trip).must_be_instance_of RideShare::Trip
+    end
+
+    it "updates the passenger list with new trip" do
+      passenger1 = @dispatcher.find_passenger(1)
+      expect(passenger1.trips.last).must_equal @second_trip
+    end
+
+   it "updates the driver list with new trip" do
+     driver3 = @dispatcher.find_driver(3)
+     expect(driver3.trips.last).must_equal @first_trip
+   end
+
+    it "selects new drivers first from AVAILABLE drivers" do
+      expect(@first_trip.driver_id).must_equal 3
+    end
+
+    it "selects based on time from last trip" do
+      # driver4 added to test/test_data/drivers.csv and a trip added to test/test_data/trip.csv
+      # driver4 last trip ended before driver2's last trip so driver4 should be selected to driver after driver3
+      driver4 = @dispatcher.find_driver(4)
+      expect(@second_trip.driver).must_equal driver4
+
+    end
+
+    it "changes driver status" do
+      #driver2 also AVAILABLE in test/test_data/drivers.csv and should be selected last
+      driver2 = @dispatcher.find_driver(2)
+      before_status = driver2.status
+      #select driver2
+      @dispatcher.request_trip(1)
+      after_status = driver2.status
+      expect(before_status).must_equal :AVAILABLE
+      expect(after_status).must_equal :UNAVAILABLE
+    end
+
+    it "raises an Argument Error if no available drivers" do
+      #in test/test_data/drivers.csv, there are three AVAILABLE drivers
+      #select driver2
+      @dispatcher.request_trip(1)
+      expect{@dispatcher.request_trip(1)}.must_raise ArgumentError
+    end
+
+  end
+
 end

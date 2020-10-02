@@ -49,7 +49,8 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver_id: 1
         )
 
       @passenger.add_trip(trip)
@@ -68,7 +69,48 @@ describe "Passenger class" do
     end
   end
 
-  describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+  describe "net_expenditures AND total_time_spent" do
+    before do
+      trips = RideShare::Trip.load_all(directory: "support", file_name: "trips.csv")
+      pass_trips = trips.select{|trip| trip.passenger_id == 54}
+      @passenger_54 = RideShare::Passenger.new(id: 54, name: "Fifty-Four", phone_number: "123456789", trips: pass_trips)
+      @passenger_empty = RideShare::Passenger.new(id: 54, name: "Fifty-Four", phone_number: "123456789", trips: [])
+    end
+
+    let(:in_progress_trip) {
+      RideShare::Trip.new(id: 1, passenger_id: 54, start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: 4)
+    }
+
+    describe "net_expenditures" do
+
+      it "calculates net expenditures" do
+        expect(@passenger_54.net_expenditures).must_equal 40
+      end
+
+      it "returns 0 expenditures for no trips" do
+        expect(@passenger_empty.net_expenditures).must_equal 0
+      end
+
+      it "excludes in progress trips" do
+        @passenger_54.add_trip(in_progress_trip)
+        expect(@passenger_54.net_expenditures).must_equal 40
+      end
+    end
+
+    describe "total_time_spent" do
+      it "calculates total duration" do
+        expect(@passenger_54.total_time_spent).must_equal 4228.0
+      end
+
+      it "returns a duration of 0 seconds for no trips" do
+        expect(@passenger_empty.total_time_spent).must_equal 0
+      end
+
+      it "exludes in progress trips" do
+        @passenger_54.add_trip(in_progress_trip)
+        expect(@passenger_54.total_time_spent).must_equal 4228.0
+      end
+
+    end
   end
 end

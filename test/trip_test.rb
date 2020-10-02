@@ -15,7 +15,13 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver: RideShare::Driver.new(
+          id: 1,
+          name: "Boogerton",
+          vin: "12345678912345678",
+          status: :AVAILABLE
+        )
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -29,8 +35,13 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
+      # skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
+    end
+
+    it "raises an error for start times that are after end times" do
+      @trip_data[:start_time], @trip_data[:end_time] = @trip_data[:end_time], @trip_data[:start_time]
+      expect { RideShare::Trip.new(@trip_data) }.must_raise ArgumentError
     end
 
     it "raises an error for an invalid rating" do
@@ -41,5 +52,34 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "correctly calculates duration" do
+      expect(@trip.duration).must_equal 1500
+    end
+
+    it "raises an error for trip costs that are a negative value" do
+      start_time = Time.now - 60 * 60 # 60 minutes
+      end_time = start_time + 25 * 60 # 25 minutes
+      new_trip_data = {
+          id: 8,
+          passenger: RideShare::Passenger.new(
+              id: 1,
+              name: "Ada",
+              phone_number: "412-432-7640"
+          ),
+          start_time: start_time,
+          end_time: end_time,
+          cost: -23.45,
+          rating: 3,
+          driver: RideShare::Driver.new(
+              id: 1,
+              name: "Boogerton",
+              vin: "12345678912345678",
+              status: :AVAILABLE
+          )
+      }
+      expect { RideShare::Trip.new(new_trip_data) }.must_raise ArgumentError
+    end
+
   end
 end
