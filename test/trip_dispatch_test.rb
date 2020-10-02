@@ -160,5 +160,21 @@ describe "TripDispatcher class" do
 
       expect(@dispatcher.find_passenger(1).net_expenditures).must_equal net_expenditures
     end
+
+    it "Correctly calculates Passenger's total_time_spent excluding nil values (in-progress trips)" do
+      total_time_spent = @dispatcher.find_passenger(1).total_time_spent
+
+      @dispatcher.request_trip(1)  #this trip has no cost since it's in progress. net_expenditures should exclude this
+
+      expect(@dispatcher.find_passenger(1).total_time_spent).must_equal total_time_spent
+    end
+
+    it "Correctly calculates Passenger's total_time_spent excluding nil values (in-progress trips)" do
+      total_time_spent = @dispatcher.find_passenger(1).total_time_spent
+
+      @dispatcher.request_trip(1)  #this trip has no cost since it's in progress. net_expenditures should exclude this
+
+      expect(@dispatcher.find_passenger(1).total_time_spent).must_equal total_time_spent
+    end
   end
 end
