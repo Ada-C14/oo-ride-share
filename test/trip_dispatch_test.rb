@@ -78,8 +78,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -122,4 +121,49 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "test request_trip and find_available_drivers methods" do
+    before do
+      @dispatcher = build_test_dispatcher
+      @passenger_id = rand(1..8)
+    end
+
+    it "throws an argument error if there is no available driver" do
+      @dispatcher.drivers.select! { |driver| driver.status == :UNAVAILABLE }
+      expect{ @dispatcher.find_available_drivers }.must_raise ArgumentError
+    end
+
+    it "returns an available driver when a new trip is requested" do
+      @dispatcher.drivers.select! { |driver| driver.status == :AVAILABLE }
+      available_drivers = @dispatcher.find_available_drivers
+      expect(available_drivers[0].status).must_equal :AVAILABLE
+    end
+
+    it "returns driver status as unavailable when new trip is created" do
+      @dispatcher.drivers.select! { |driver| driver.status == :AVAILABLE }
+      available_drivers = @dispatcher.find_available_drivers
+      new_trip = @dispatcher.request_trip(available_drivers[0].id)
+      expect(new_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "create a new trip" do
+      expect(@dispatcher.request_trip(@passenger_id)).must_be_kind_of RideShare::Trip
+    end
+
+    it "updates the trip lists for the driver and passenger" do
+
+      original_number_of_trips = @dispatcher.trips.length
+      increase_trips_by_one = original_number_of_trips + 1
+      @dispatcher.request_trip(@passenger_id)
+      updated_number_of_trips = @dispatcher.trips.length
+
+      expect(updated_number_of_trips).must_equal increase_trips_by_one
+    end
+
+  end
+
 end
+
+
+
+

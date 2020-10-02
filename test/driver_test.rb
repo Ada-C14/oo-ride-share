@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -89,8 +89,8 @@ xdescribe "Driver class" do
         id: 8,
         driver: @driver,
         passenger_id: 3,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 8),
+        start_time: Time.new(2016, 8, 8, 2),
+        end_time: Time.new(2016, 8, 8, 3),
         rating: 5
       )
       @driver.add_trip(trip)
@@ -131,6 +131,79 @@ xdescribe "Driver class" do
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    it "returns total cost of trips (trip amount > $1.65)" do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip_1 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8, 2),
+        end_time: Time.new(2016, 8, 8, 3),
+        cost: 3,
+        rating: 5
+      )
+
+      trip_2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8, 2),
+        end_time: Time.new(2016, 8, 8, 3),
+        cost: 3,
+        rating: 5
+      )
+      @driver.add_trip(trip_1)
+      @driver.add_trip(trip_2)
+
+
+      expect(@driver.total_revenue).must_equal 2.16
+    end
+
+    it "returns 0 if there are no trips" do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+
+      expect(@driver.total_revenue).must_equal 0
+    end
+
+    it "returns 90% of trip cost (trip amount <= 1.65)" do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip_1 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8, 2),
+        end_time: Time.new(2016, 8, 8, 3),
+        cost: 1,
+        rating: 5
+      )
+
+      trip_2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8, 2),
+        end_time: Time.new(2016, 8, 8, 3),
+        cost: 1,
+        rating: 5
+      )
+      @driver.add_trip(trip_1)
+      @driver.add_trip(trip_2)
+
+
+      expect(@driver.total_revenue).must_equal 1.8
+
+    end
   end
 end
