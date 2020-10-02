@@ -152,5 +152,13 @@ describe "TripDispatcher class" do
         @dispatcher.request_trip(3)
       }.must_raise ArgumentError
     end
+
+    it "Correctly calculates Passenger's net_expenditures excluding nil values (in-progress trips)" do
+      net_expenditures = @dispatcher.find_passenger(1).net_expenditures
+
+      @dispatcher.request_trip(1)  #this trip has no cost since it's in progress. net_expenditures should exclude this
+
+      expect(@dispatcher.find_passenger(1).net_expenditures).must_equal net_expenditures
+    end
   end
 end
