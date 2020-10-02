@@ -123,4 +123,46 @@ describe "TripDispatcher class" do
       end
     end
   end
+  # ====================
+  describe "describe request_trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+      @passenger = @dispatcher.passengers.first
+    end
+
+    it "creat a trip instance" do
+      expect(@dispatcher.request_trip(@passenger.id)).must_be_kind_of RideShare::Trip
+    end
+
+    it "accurately loads information" do
+
+      new_trip = @dispatcher.request_trip(@passenger.id)
+      expect(new_trip.id).must_be_kind_of Integer
+      expect(new_trip.start_time).must_be_instance_of Time
+      expect(new_trip.end_time).must_be_nil
+      expect(new_trip.cost).must_be_nil
+      expect(new_trip.rating).must_be_nil
+    end
+
+    it "add trip to passenger trips list" do
+      new_trip = @dispatcher.request_trip(@passenger.id)
+      expect(new_trip.passenger.trips).must_include new_trip
+    end
+
+    it "add trip to driver trips list" do
+      new_trip = @dispatcher.request_trip(@passenger.id)
+      expect(new_trip.driver.trips).must_include new_trip
+    end
+
+    it "add trip to total trip list" do
+      new_trip = @dispatcher.request_trip(@passenger.id)
+      expect(@dispatcher.trips).must_include new_trip
+    end
+
+    # it "raise error if there is no available driver " do
+    #   @dispatcher.drivers.each { |driver| driver.status = :UNAVAILABLE }
+    #
+    #   expect {@dispatcher.request_trip(@passenger.id)}.must_raise ArgumentError
+    # end
+  end
 end
