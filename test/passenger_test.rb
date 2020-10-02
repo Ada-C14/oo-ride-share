@@ -102,9 +102,6 @@ describe "Passenger class" do
           cost: 10
       )
 
-      # @passenger.add_trip(trip)
-      # @passenger.add_trip(trip_2)
-      # there are two trips in the passenger instance now
     end
 
     it "returns the accurate cost " do
@@ -127,7 +124,6 @@ describe "Passenger class" do
     it "ignores in-progress trips" do
       #arrange
       new_trip = RideShare::Trip.new(
-          # what should the id of this trip be?
           id: 25,
           passenger: @passenger,
           passenger_id: @passenger.id,
@@ -212,6 +208,5 @@ describe "Passenger class" do
       expect(@passenger.total_time_spent).must_equal 600
 
     end
-
   end
 end

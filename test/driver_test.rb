@@ -259,7 +259,7 @@ describe "Driver class" do
       @driver.add_trip(new_trip)
 
       expect(@driver.total_revenue).must_be_close_to 10.68, 0.1
-      
+
     end
 
   end
