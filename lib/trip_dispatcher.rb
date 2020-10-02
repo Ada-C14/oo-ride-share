@@ -61,7 +61,7 @@ module RideShare
         if driver.trips.length == 0
           return driver
         else
-          latest_trip = get_latest_trip(driver)
+          latest_trip = driver.get_latest_trip
           if latest_trip.end_time < oldest_time
             oldest_time = latest_trip.end_time
             driver_oldest_trip = driver

@@ -46,16 +46,19 @@ module RideShare
       new_trip.passenger.add_trip(new_trip)
     end
 
+    def get_latest_trip
+      return @trips.max_by {|trip| trip.end_time}
+    end
+
     private
 
     def self.from_csv(record)
       return new(
-          id: record[:id],
-          name: record[:name],
-          vin: record[:vin],
-          status: record[:status].to_sym
+        id: record[:id],
+        name: record[:name],
+        vin: record[:vin],
+        status: record[:status].to_sym
       )
     end
-
   end
 end
