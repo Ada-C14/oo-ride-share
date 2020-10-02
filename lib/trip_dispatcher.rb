@@ -63,9 +63,8 @@ module RideShare
       passenger.add_trip(new_trip)
 
       first_available_driver.trip_in_progress(new_trip)
-
+      connect_trips
       return new_trip
-      # connect_trips
     end
 
 

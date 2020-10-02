@@ -124,6 +124,10 @@ describe "Passenger class" do
       @passenger.add_trip(@trip4)
       expect(@passenger.net_expenditures).must_equal 0
     end
+
+    it "Passenger has 0 trips" do
+      expect(@passenger.net_expenditures).must_equal 0
+    end
   end
   describe "total time spent" do
 

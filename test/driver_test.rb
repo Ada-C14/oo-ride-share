@@ -208,6 +208,6 @@ describe "Driver class" do
     it "Ignores an in progress trip" do
       @driver.add_trip(@trip3)
       expect(@driver.total_revenue).must_equal 0
-      end
+    end
   end
 end

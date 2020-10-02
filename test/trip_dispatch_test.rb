@@ -133,26 +133,18 @@ describe "TripDispatcher class" do
       passenger = @dispatcher.find_passenger(2)
       expect(@dispatcher.request_trip(passenger.id)).must_be_instance_of RideShare::Trip
     end
-    it'Updates trip lists for driver and passenger'do
+
+    it 'Updates trip lists for driver and passenger' do
       passenger = @dispatcher.find_passenger(2)
       driver = @dispatcher.find_driver(2)
-      #passenger.trips = 0
-      #driver.trips = 0
+
       expect(driver.status).must_equal :AVAILABLE
       new_trip = @dispatcher.request_trip(passenger.id)
-      # expect that passenger.trips includes new_trip
-      # expect that driver's in progress trip is the new_trip
       expect(passenger.trips).must_include new_trip
       expect(driver.trips).must_include new_trip
       expect(driver.status).must_equal :UNAVAILABLE
-      #@driver.status = :UNAVAILABLE
-      #
-      #expect(@dispatcher.connect_trips(passenger, driver.trips))
-
-      # Passenger.trips
-      # Driver.trips
-
     end
+
     it 'What happens if you try to request a trip when there are no AVAILABLE drivers?' do
       @dispatcher.request_trip(2)
       @dispatcher.request_trip(1)
