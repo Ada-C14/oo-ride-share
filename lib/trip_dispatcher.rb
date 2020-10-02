@@ -27,6 +27,7 @@ module RideShare
     end
 
     def find_driver_for_new_trip
+      # (we got these methods written for Wave 4 but didn't have time to write tests)
       drivers = @drivers.find_all { |driver| driver.status == :AVAILABLE }
       raise ArgumentError.new("No available drivers") if drivers.empty?
 
