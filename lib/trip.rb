@@ -47,7 +47,6 @@ module RideShare
         raise ArgumentError.new("Invalid Time")
       end
 
-
     end
 
     def inspect
@@ -73,7 +72,6 @@ module RideShare
     end
 
 
-
     private
 
     def self.from_csv(record)
@@ -89,6 +87,4 @@ module RideShare
              )
       end
     end
-
-
   end

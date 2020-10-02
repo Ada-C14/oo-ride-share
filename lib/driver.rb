@@ -12,11 +12,10 @@ module RideShare
 
       @name = name
       @vin = vin
-
-      raise ArgumentError.new("Invalid status") if (vin.length) != 17
+      raise ArgumentError.new("Invalid VIN") if (vin.length) != 17
 
       @status = status
-      raise ArgumentError, "Invalid status" if ![:AVAILABLE, :UNAVAILABLE].include?(@status)
+      raise ArgumentError.new("Invalid status") if ![:AVAILABLE, :UNAVAILABLE].include?(@status)
 
       @trips = trips
 
@@ -39,16 +38,6 @@ module RideShare
       driver_revenue = (trip_cost.sum - 1.65) * 0.80
       return driver_revenue.to_f
     end
-    #
-    #
-    # def net_expenditures
-    #   total_expenditure = @trips.sum(&:cost)
-    #   return total_expenditure
-    # end
-    #
-    # def total_time_spent
-    #   return @trips.sum(&:duration_trip)
-    # end
 
     private
 
@@ -57,7 +46,7 @@ module RideShare
           id: record[:id],
           name: record[:name],
           vin: record[:vin],
-          status: record[:status]
+          status: record[:status].to_sym
       )
     end
   end

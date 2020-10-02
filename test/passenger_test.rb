@@ -98,7 +98,7 @@ describe "Passenger class" do
       # Check how to say floats should be within a margin of error
       # Margin of Error in Epsilon (use helper function from MiniTest. Must be within perhaps)
       # Never use floats for currencies
-      # When you have an array of sutff, you can't call instance methods on those things, but map allows us to call an instance method on a bunch of objects in an array
+      # When you have an array of stuff, you can't call instance methods on those things, but map allows us to call an instance method on a bunch of objects in an array
       #
     end
 
