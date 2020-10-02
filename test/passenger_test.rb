@@ -77,34 +77,54 @@ describe "Passenger class" do
     before do
       @passenger = RideShare::Passenger.new(id: 3, name: "Sammy", phone_number: "353-076-5334")
       @driver = RideShare::Driver.new(id: 1, name: "Bob Bobston", vin: "WBS76FYD47DJF7206")
+      @trip1 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 5,
+          cost: 14
+      )
+      @trip2 = RideShare::Trip.new(
+          id: 9,
+          driver: @driver,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 5,
+          cost: 10
+      )
       end
 
     it "returns accurate net_expenditures" do
-      trip = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
-        passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        rating: 5,
-        cost: 14
-      )
-      @passenger.add_trip(trip)
+      @passenger.add_trip(@trip1)
       total_cost = @passenger.net_expenditures
       expect(total_cost).must_equal 14
 
 
-      trip2 = RideShare::Trip.new(
-        id: 9,
-        driver: @driver,
-        passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        rating: 5,
-        cost: 10
-      )
-      @passenger.add_trip(trip2)
+      @passenger.add_trip(@trip2)
       total_cost = @passenger.net_expenditures
+      expect(total_cost).must_equal 24
+    end
+
+    it "does not include expenditures from trips in progress (values will be nil)" do
+      trip_in_progress = RideShare::Trip.new(
+          id: 3,
+          driver: @driver,
+          passenger: @passenger,
+          start_time: Time.now,
+          end_time: nil,
+          rating: nil,
+          cost: nil
+      )
+
+      @passenger.add_trip(@trip1)
+      @passenger.add_trip(@trip2)
+      @passenger.add_trip(trip_in_progress)
+
+      total_cost = @passenger.net_expenditures
+
       expect(total_cost).must_equal 24
     end
 
@@ -117,34 +137,56 @@ describe "Passenger class" do
     before do
       @passenger = RideShare::Passenger.new(id: 3, name: "Sammy", phone_number: "353-076-5334")
       @driver = RideShare::Driver.new(id: 1, name: "Bob Bobston", vin: "WBS76FYD47DJF7206")
-    end
 
-    it "returns total amount of time passenger has spent on trips" do
       start_time = Time.now - 60 * 60
       end_time = start_time + 25 * 60
-      trip1 = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
-        passenger: @passenger,
-        start_time: start_time,
-        end_time: end_time,
-        rating: 5,
-        cost: 14
+      @trip1 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger: @passenger,
+          start_time: start_time,
+          end_time: end_time,
+          rating: 5,
+          cost: 14
       )
 
       start_time2 = Time.now - 60 * 60
       end_time2 = start_time + 10 * 60
-      trip2 = RideShare::Trip.new(
-        id: 9,
-        driver: @driver,
-        passenger: @passenger,
-        start_time: start_time2,
-        end_time: end_time2,
-        rating: 5,
-        cost: 10
+      @trip2 = RideShare::Trip.new(
+          id: 9,
+          driver: @driver,
+          passenger: @passenger,
+          start_time: start_time2,
+          end_time: end_time2,
+          rating: 5,
+          cost: 10
       )
-      @passenger.add_trip(trip1)
-      @passenger.add_trip(trip2)
+    end
+
+    it "returns total amount of time passenger has spent on trips" do
+
+      @passenger.add_trip(@trip1)
+      @passenger.add_trip(@trip2)
+
+      total_time = @passenger.total_time_spent
+
+      expect(total_time).must_be_close_to 2100.0
+    end
+
+    it "does not include duration of trips in progress (values will be nil)" do
+      trip_in_progress = RideShare::Trip.new(
+          id: 3,
+          driver: @driver,
+          passenger: @passenger,
+          start_time: Time.now,
+          end_time: nil,
+          rating: nil,
+          cost: nil
+      )
+
+      @passenger.add_trip(@trip1)
+      @passenger.add_trip(@trip2)
+      @passenger.add_trip(trip_in_progress)
 
       total_time = @passenger.total_time_spent
 

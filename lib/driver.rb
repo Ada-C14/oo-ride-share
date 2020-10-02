@@ -26,13 +26,19 @@ module RideShare
       if trips.empty?
         average_rating = 0
       else
-        total_ratings = trips.sum do |trip|
+        completed_trips = @trips.select do |trip|
+          trip.rating != nil
+        end
+        total_ratings = completed_trips.sum do |trip|
            trip.rating
         end
-        average_rating = total_ratings.to_f/trips.length
+
+        average_rating = total_ratings.to_f/completed_trips.length
       end
+
       return average_rating
     end
+
 
     def total_revenue
       total_revenue = 0.0
@@ -40,7 +46,10 @@ module RideShare
       if @trips.empty?
         return total_revenue
       else
-        @trips.each do |trip|
+        completed_trips = @trips.select do |trip|
+          trip.cost != nil
+        end
+        completed_trips.each do |trip|
           if trip.cost < 1.65
             total_revenue += trip.cost
           elsif trip.cost >= 1.65
@@ -50,6 +59,11 @@ module RideShare
       end
 
       return total_revenue.round(2)
+    end
+
+    def update_status(trip_in_progress)
+      @trips << trip_in_progress
+      @status = :UNAVAILABLE
     end
 
     private

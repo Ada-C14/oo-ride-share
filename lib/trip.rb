@@ -42,13 +42,16 @@ module RideShare
       @start_time = start_time
       @end_time = end_time
 
-      raise ArgumentError, "End time cannot be before start time." if @end_time < @start_time
+
+      raise ArgumentError, "End time cannot be before start time." unless @end_time.nil? || @end_time > @start_time
 
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      unless rating.nil?
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
     end
 
@@ -75,7 +78,7 @@ module RideShare
 
 
     def get_duration # return duration of trip in seconds
-      return @end_time - @start_time
+      return @end_time - @start_time unless @end_time.nil? # returns nil if end_time is nil
     end
 
 

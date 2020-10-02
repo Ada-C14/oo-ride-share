@@ -75,9 +75,34 @@ describe "Trip class" do
 
   describe "get_duration" do
     it "return accurate duration of the trip in seconds" do
-      trip_duration = @trip.end_time - @trip.start_time
+      trip_duration = @trip.get_duration
+
       expect(trip_duration).must_be_kind_of Float
       expect(trip_duration).must_be_close_to 1500.0 #25 minutes
+    end
+
+    it"return nil if trip is in progress (no end_time)" do
+      trip_data = {
+          id: 8,
+          passenger: RideShare::Passenger.new(
+              id: 1,
+              name: "Ada",
+              phone_number: "412-432-7640"
+          ),
+          driver: RideShare::Driver.new(
+              id: 2,
+              name: "Bob",
+              vin: "WBS76FYD47DJF7206"
+          ),
+          start_time: Time.now,
+          end_time: nil,
+          cost: 23.45,
+          rating: 3
+      }
+
+      trip_in_progress = RideShare::Trip.new(trip_data)
+
+      expect(trip_in_progress.get_duration).must_be_nil
     end
   end
 end
