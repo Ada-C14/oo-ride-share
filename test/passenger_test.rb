@@ -35,10 +35,19 @@ describe "Passenger class" do
     @trip3 = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: Time.new(2016, 8, 8, 12,10,00),
+        start_time: Time.new(2016, 8, 8, 12, 10, 00),
         end_time: Time.new(2016, 8, 8, 12, 10, 10),
         cost: 13.45,
         rating: 5,
+        driver: @driver
+    )
+    @trip4 = RideShare::Trip.new(
+        id: 20,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8, 12, 10, 00),
+        end_time: nil,
+        cost: nil,
+        rating: nil,
         driver: @driver
     )
   end
@@ -111,6 +120,10 @@ describe "Passenger class" do
       expect(@passenger.net_expenditures).must_equal 64.35
     end
 
+    it "Ignores an in progress trip" do
+      @passenger.add_trip(@trip4)
+      expect(@passenger.net_expenditures).must_equal 0
+    end
   end
   describe "total time spent" do
 
@@ -127,13 +140,12 @@ describe "Passenger class" do
     end
 
     it "Passenger has 0 trips" do
-      @passenger = RideShare::Passenger.new(
-          id: 9,
-          name: "Merl Glover III",
-          phone_number: "1-602-620-2330 x3723",
-          trips: []
-      )
+      expect(@passenger.total_time_spent).must_equal 0
+    end
+    it "Ignores an in progress trip" do
+      @passenger.add_trip(@trip4)
       expect(@passenger.total_time_spent).must_equal 0
     end
   end
 end
+

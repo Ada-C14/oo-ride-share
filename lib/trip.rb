@@ -76,6 +76,9 @@ module RideShare
     end
 
     def duration
+      if end_time == nil
+        return 0
+      end
       total = (end_time - start_time)
       #TimeDifference.between(@start_time, @end_time).in_seconds
       return total

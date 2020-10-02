@@ -94,6 +94,21 @@ describe "Driver class" do
         rating: 5
       )
       @driver.add_trip(trip)
+
+      @trip3 = RideShare::Trip.new(
+          id: 8,
+          passenger_id: 1,
+          start_time: Time.parse("2018-11-04 12:00:00 -0800"),
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+          driver: @driver
+      )
+    end
+
+    it "Ignores an in progress trip" do
+      @driver.add_trip(@trip3)
+      expect(@driver.average_rating).must_be_close_to 5
     end
 
     it "returns a float" do
@@ -128,6 +143,7 @@ describe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
   end
 
   describe "total_revenue" do
@@ -162,6 +178,15 @@ describe "Driver class" do
           rating: 5,
           driver: @driver
           )
+      @trip3 = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.parse("2018-11-04 12:00:00 -0800"),
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+          driver: @driver
+      )
 
     end
     it 'returns 0 for no trips taken' do
@@ -180,5 +205,9 @@ describe "Driver class" do
       expect(@driver.total_revenue).must_be_close_to 38.08
     end
 
+    it "Ignores an in progress trip" do
+      @driver.add_trip(@trip3)
+      expect(@driver.total_revenue).must_equal 0
+      end
   end
 end
