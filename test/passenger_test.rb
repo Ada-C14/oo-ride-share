@@ -100,12 +100,6 @@ describe "Passenger class" do
       @passenger.add_trip(trip_1)
       @passenger.add_trip(trip_2)
 
-      #@td = RideShare::TripDispatcher.new
-      #random_passenger = rand(1..150)
-
-
-      #total_trip_cost is $15:
-      #@total_trip_cost = @td.passengers.first.trips[0].cost + @td.passengers.first.trips[1].cost
     end
 
     it "return the total amount of money that passenger has spent on their trips" do

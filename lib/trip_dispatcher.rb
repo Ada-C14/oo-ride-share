@@ -45,14 +45,13 @@ module RideShare
     def request_trip(passenger_id)
       available_drivers = find_available_drivers
       selected_driver = available_drivers[0]
-      # passenger = find_passenger(passenger_id)
 
       new_trip = RideShare::Trip.new(
         id: (@trips.length + 1),
         driver: selected_driver,
         driver_id: nil,
-        passenger: find_passenger(passenger_id), # should we create a variable
-        passenger_id: passenger_id, #maybe use find_passenger method?
+        passenger: find_passenger(passenger_id),
+        passenger_id: passenger_id,
         start_time: Time.now,
         end_time: nil,
         cost: nil,

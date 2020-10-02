@@ -49,8 +49,6 @@ describe "Trip class" do
     end
 
     it "raises an error when the end time is before the start time" do
-      #TODO: check again later, causing errors
-
 
       start_time = Time.now + 60 * 60 # 60 minutes
       end_time = start_time - 25 * 60 # 25 minutes
