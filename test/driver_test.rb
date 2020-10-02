@@ -56,6 +56,7 @@ describe "Driver class" do
         id: 3,
         name: "Test Driver",
         vin: "12345678912345678"
+
       )
       @trip = RideShare::Trip.new(
         id: 8,
@@ -83,8 +84,7 @@ describe "Driver class" do
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ"
-        status: :AVAILABLE
+        vin: "1C9EVBRM0YBC564DZ",
       )
       trip = RideShare::Trip.new(
         id: 8,

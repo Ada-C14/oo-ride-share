@@ -4,19 +4,22 @@ require_relative 'passenger'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :id, :name, :vin, :status, :trips
+    attr_reader :id, :name, :vin, :trips
+    attr_accessor :status
 
-    def initialize(id:, name:, vin:, status:, trips: [])
+    def initialize(id:, name:, vin:, status: :AVAILABLE, trips: [])
       super(id)
 
       @name = name
       @vin = vin
+
       raise ArgumentError.new("Invalid status") if (vin.length) != 17
 
       @status = status
       raise ArgumentError, "Invalid status" if ![:AVAILABLE, :UNAVAILABLE].include?(@status)
 
       @trips = trips
+        # return 0 if (@trips) == [] || @trips == nil
     end
 
     # def add_trip(trip)
