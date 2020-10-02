@@ -1,4 +1,4 @@
-require 'csv'
+# frozen_string_literal: true
 
 require_relative 'csv_record'
 
@@ -8,15 +8,14 @@ module RideShare
 
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: [])
       super(id)
+
       @name = name
-      if vin.length != 17
-        raise ArgumentError, 'Invalid VIN number'
-      end
+
+      raise ArgumentError, 'Invalid VIN number' if vin.length != 17
 
       @vin = vin
-      if status != :AVAILABLE && status != :UNAVAILABLE
-        raise ArgumentError, "Invalid status#{status}"
-      end
+
+      raise ArgumentError, "Invalid status#{status}" if status != :AVAILABLE && status != :UNAVAILABLE
 
       @status = status
 
@@ -24,16 +23,19 @@ module RideShare
     end
 
     def add_trip(trip)
-      @trips << trip
+      @status = :UNAVAILABLE if trip.end_time.nil?
+      @trips << trip unless trip.end_time.nil?
     end
-    
+
     def average_rating
       total_rating = 0
       @trips.each do |trip|
         total_rating += trip.rating
       end
+
       average_rating = total_rating.to_f / @trips.length
-      if @trips.length == 0
+
+      if @trips.length.zero?
         return 0
       else
         return average_rating.round(2)
@@ -42,30 +44,28 @@ module RideShare
 
     def total_revenue
       total = 0
-      fee = 1.65
+      fee_per_trip = 1.65
+      earning_rate = 0.8
 
       @trips.each do |trip|
-        total += trip.cost
+        total += trip.cost - fee_per_trip
       end
 
-      earning = (total - fee) * 0.8
-      if earning < 0
-        return 0
-      end
-
+      earning = total * earning_rate
+      # if earning.negative?
+      #   return 0
+      # else
+      #
+      # end
       return earning.round(2)
-
     end
 
-    def driver_status_updating
-      @trips.each do |trip|
-        if trip.end_time == nil
-          @status = :UNAVAILABLE
-        end
-      end
-    end
+    # def driver_status_updating
+    #   @trips.each do |trip|
+    #     @status = :UNAVAILABLE if trip.end_time == nil
+    #   end
+    # end
 
-    
     def self.from_csv(record)
       return new(
         id: record[:id],

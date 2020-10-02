@@ -10,8 +10,6 @@ module RideShare
       @id = id
     end
 
-    # binding.pry
-
     # Takes either full_path or directory and optional file_name
     # Default file name matches class name
     def self.load_all(full_path: nil, directory: nil, file_name: nil)
@@ -43,7 +41,7 @@ module RideShare
     # Helper method to make sure that that your load_all method is using a correct path
     def self.build_path(directory, file_name)
       unless directory
-        raise ArgumentError, "Either full_path or directory is required"
+        raise ArgumentError, 'Either full_path or directory is required'
       end
 
       unless file_name

@@ -72,7 +72,6 @@ module RideShare
         "cost=#{cost} " +
         "rating=#{rating} " +
         "driver_id = #{driver&.id.inspect}>"
-
     end
 
     def connect(passenger, driver)
@@ -106,11 +105,4 @@ module RideShare
   end
 end
 
-# Updating str_time to time() with time method/enumerable
-# Helper method to convert starting time and ending time in a trip
-# to regular time mon, day, year and time of the day hr, min, sec
-# def time_conversion
 
-# RideShare::Trip.load_all(full_path: '/Users/ada/Ada/oo-ride-share/support/trips.csv').each do |trip|
-#     puts "Passenger Id: #{trip.passenger_id}"
-# end

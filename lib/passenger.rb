@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'csv_record'
 
 module RideShare
@@ -17,8 +19,6 @@ module RideShare
     end
 
     def net_expenditures
-      # You are already in the passenger class, a passenger knows
-      # how many trips there are.
       total = 0
       @trips.each do |trip|
         total += trip.cost

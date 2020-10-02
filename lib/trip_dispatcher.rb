@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 require 'time'
 
@@ -29,21 +31,22 @@ module RideShare
       assigned_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
       new_passenger = @passengers.find_passenger(passenger_id)
       new_trip = RideShare::Trip.new(
-          id: 5,
-          driver: assigned_driver,
-          passenger: new_passenger,
-          start_time: Time.now,
-          end_time: nil,
-          rating: nil,
-          cost: nil
+        id: 5,
+        driver: assigned_driver,
+        passenger: new_passenger,
+        start_time: Time.now,
+        end_time: nil,
+        rating: nil,
+        cost: nil
       )
       assigned_driver.add_trip(new_trip) # add trip to driver's trip, need to be in order
-      assigned_driver.driver_status_updating # change driver to unavailable
+      # assigned_driver.driver_status_updating # change driver to unavailable
       new_passenger.add_trip(new_trip) # add trip to passenger's trip, need to initialize a passenger in find passenger
 
       return new_trip
 
     end
+
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
