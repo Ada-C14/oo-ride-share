@@ -1,5 +1,6 @@
 require_relative 'csv_record'
 
+
 module RideShare
   class Passenger < CsvRecord
     attr_reader :name, :phone_number, :trips
@@ -14,6 +15,18 @@ module RideShare
 
     def add_trip(trip)
       @trips << trip
+    end
+    # method the return total amount of money passenger has spent on a trips
+    def net_expenditures
+      total = @trips.sum { |trip| trip.cost }
+      return total
+    end
+
+    # method that Return the total amount of time passenger spent on a trips
+    def total_time_spent
+      # trip_duration method created in trip class
+      total_time = @trips.sum { |trip| trip.trip_duration }
+      return total_time
     end
 
     private

@@ -17,12 +17,13 @@ describe "TripDispatcher class" do
 
     it "establishes the base data structures when instantiated" do
       dispatcher = build_test_dispatcher
-      [:trips, :passengers].each do |prop|
+      [:trips, :passengers, :drivers].each do |prop|
         expect(dispatcher).must_respond_to prop
       end
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
       # expect(dispatcher.drivers).must_be_kind_of Array
     end
 
@@ -79,7 +80,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -120,6 +121,52 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+  # ====================
+  describe "describe request_trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+      @passenger = @dispatcher.passengers.first
+    end
+
+    it "creat a trip instance" do
+      expect(@dispatcher.request_trip(@passenger.id)).must_be_kind_of RideShare::Trip
+    end
+
+    it "accurately loads information" do
+
+      new_trip = @dispatcher.request_trip(@passenger.id)
+      expect(new_trip.id).must_be_kind_of Integer
+      expect(new_trip.start_time).must_be_instance_of Time
+      expect(new_trip.end_time).must_be_nil
+      expect(new_trip.cost).must_be_nil
+      expect(new_trip.rating).must_be_nil
+    end
+
+    it "add trip to passenger trips list" do
+      new_trip = @dispatcher.request_trip(@passenger.id)
+      expect(new_trip.passenger.trips).must_include new_trip
+    end
+
+    it "add trip to driver trips list" do
+      new_trip = @dispatcher.request_trip(@passenger.id)
+      expect(new_trip.driver.trips).must_include new_trip
+    end
+
+    it "add trip to total trip list" do
+      new_trip = @dispatcher.request_trip(@passenger.id)
+      expect(@dispatcher.trips).must_include new_trip
+    end
+
+    it "raise error if there is no available driver " do
+      # @dispatcher.drivers.each { |driver| driver.status = :UNAVAILABLE }
+
+      # arr
+      @dispatcher.request_trip(@passenger.id)
+      @dispatcher.request_trip(@passenger.id)
+
+      expect {@dispatcher.request_trip(@passenger.id)}.must_raise ArgumentError
     end
   end
 end
