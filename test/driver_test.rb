@@ -199,7 +199,7 @@ describe "Driver class" do
       @driver_2 = RideShare::Driver.new(
           id: 30,
           name: "Jimmy Pesto",
-          vin: "1C9EVBRM0YBC564DZ",
+          vin: "10YBC564DZC9EVBRM",
           status: :UNAVAILABLE
       )
     end
