@@ -154,6 +154,18 @@ describe "TripDispatcher class" do
       expect { @dispatcher.request_trip(9) }.must_raise ArgumentError
     end
 
+    it "select a driver whose has no trip" do
+      expect(@new_trip.driver_id).must_equal 3
+    end
+
+    it "select a driver who has the earliest end time" do
+      @dispatcher = build_test_dispatcher
+      trip_for_driver3 = RideShare::Trip.new(id: 9, passenger: nil, passenger_id: 1, start_time: Time.new(2019, 7, 25, 11, 52, 40), end_time: Time.new(2019, 7, 25, 12, 25, 0), cost: 10, rating: 2, driver: nil, driver_id: 3)
+      trip_for_driver3.connect(@dispatcher.find_passenger(1), @dispatcher.find_driver(3))
+      trip_for_earliest_endtime = @dispatcher.request_trip(1)
+      expect(trip_for_earliest_endtime.driver_id).must_equal 2
+    end
+
   end
 
 

@@ -39,7 +39,17 @@ module RideShare
       unless @driver.find {|driver| driver.status == :AVAILABLE}
         raise ArgumentError, 'Sorry, no driver is available now.'
       end
-      trip_driver = @driver.find {|driver| driver.status == :AVAILABLE}
+
+      trip_drivers = (@driver.select {|driver| driver.status == :AVAILABLE})
+                        .select {|driver| driver.trips == [] || driver.trips.last.end_time != nil }
+
+      driver_with_no_trip = trip_drivers.find {|driver| driver.trips == []}
+      if driver_with_no_trip
+        trip_driver = driver_with_no_trip
+      else
+        trip_driver = trip_drivers.min_by {|driver| driver.trips.last.end_time }
+      end
+
       trip = Trip.new(id: (@trips.length + 1),
                                         passenger: find_passenger(passenger_id),
                                         passenger_id: passenger_id,
@@ -48,7 +58,7 @@ module RideShare
                                         cost: nil,
                                         rating: nil,
                                         driver: trip_driver,
-                                        driver_id:trip_driver.id)
+                                        driver_id: trip_driver.id)
       trip.connect(trip.passenger, trip.driver)
       @trips << trip
       trip_driver.status = :UNAVAILABLE
