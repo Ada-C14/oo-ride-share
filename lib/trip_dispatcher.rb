@@ -33,15 +33,38 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
-    def first_available_driver
-      first = @drivers.find { |driver| driver.status == :AVAILABLE }
-      raise ArgumentError.new("no available drivers") if first == nil
-      return first
+    def intelligent_dispatch
+      first = @drivers.find_all { |driver| driver.status == :AVAILABLE }
+      not_in_progress = []
+      first.each do |driver|
+        nil_time = "no"
+        driver.trips.each do |trip|
+          nil_time = "yes" if trip.end_time == nil
+        end
+        not_in_progress << driver if nil_time == "no"
+      end
+      raise ArgumentError.new("no available drivers") if not_in_progress.empty?
+      newest_trips = {}
+      not_in_progress.each do |driver|
+        if driver.trips.empty?
+          return driver
+        else
+          newest_end_time = driver.trips[0].end_time
+          driver.trips.each do |trip|
+            if trip.end_time > newest_end_time
+              newest_end_time = trip.end_time
+            end
+            newest_trips[driver.id] = newest_end_time
+          end
+        end
+      end
+      assign_driver_id = newest_trips.min_by { |key, value| value }
+      return find_driver(assign_driver_id[0])
     end
 
     def request_trip(passenger_id)
       current_passenger = find_passenger(passenger_id)
-      current_driver = first_available_driver
+      current_driver = intelligent_dispatch
       current_trip = RideShare::Trip.new(
           id: @trips.length + 1,
           driver: current_driver,
