@@ -142,9 +142,21 @@ describe "TripDispatcher class" do
       expect(@dispatcher.request_trip(@passenger.id)).must_be_kind_of RideShare::Trip
     end
 
-    it "adds the new trip to the passenger trips array" do
+    it "check if the trip is in progress " do
 
+      test_trip = @dispatcher.request_trip(@passenger.id)
+
+
+      expect(test_trip.end_time).must_be_nil
+      expect(test_trip.cost).must_be_nil
+      expect(test_trip.rating).must_be_nil
+
+    end
+
+    it "adds the new trip to the passenger trips array" do
+      #act
       new_trip = @dispatcher.request_trip(@passenger.id)
+      #assert
       expect(new_trip.passenger.trips).must_include new_trip
 
     end
@@ -153,7 +165,7 @@ describe "TripDispatcher class" do
       new_trip = @dispatcher.request_trip(@passenger.id)
       # new_trip is the new trip instance, with a driver read
 
-      #driver = new_trip.driver # => driver instance
+
       #make sure that my new trip is inside my driver trips array
       expect(new_trip.driver.trips).must_include new_trip
 
@@ -173,9 +185,7 @@ describe "TripDispatcher class" do
       @dispatcher.drivers.each {|driver| driver.status = :UNAVAILABLE}
       #new_trip = @dispatcher.request_trip(@passenger.id)
 
-      expect do
-        @dispatcher.request_trip(@passenger.id)
-      end.must_raise ArgumentError
+      expect {@dispatcher.request_trip(@passenger.id)}.must_raise ArgumentError
 
     end
 

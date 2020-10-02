@@ -33,11 +33,20 @@ module RideShare
     # td.passengers.first.trips.sum {|trip| trip.cost}
     def net_expenditures
       # need to account when cost is nil for in-progress trips
+      # sum = 0
       # if @trips.empty?
       #   return 0
       # else
-      #   return @trips.sum {|trip| trip.cost unless trip.end_time == nil}
+      #   @trips.each do |trip|
+      #     if trip.cost == nil
+      #       sum += 0
+      #     else
+      #       sum += trip.cost
+      #     end
+      #   end
       # end
+      #
+      # return sum
 
       # if @trips.empty?
       #   return 0
@@ -56,6 +65,7 @@ module RideShare
       # end
 
       total_cost = 0
+
       if @trips.empty?
         return 0
       else
@@ -68,16 +78,7 @@ module RideShare
         end
       end
 
-      # @trips.each do |trip|
-      #   if trip.end_time == nil
-      #     total_cost += 0
-      #   else
-      #     total_cost += trip.cost
-      #   end
-      # end
-
       return total_cost
-
 
     end
 
@@ -86,7 +87,7 @@ module RideShare
       # if @trips.empty?
       #   return 0
       # else
-      #   return @trips.sum {|trip| trip.duration unless trip.end_time == nil}
+      #   return @trips.sum {|trip| trip.duration}
       # end
 
       total_time = 0
