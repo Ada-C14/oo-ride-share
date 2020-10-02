@@ -16,6 +16,14 @@ module RideShare
       @trips << trip
     end
 
+    def net_expenditures
+      return @trips.reduce(0) { |total_cost, trip| total_cost + trip.cost }
+    end
+
+    def total_time_spent
+      return @trips.reduce(0) { |total_duration, trip| total_duration + trip.duration }
+    end
+
     private
 
     def self.from_csv(record)

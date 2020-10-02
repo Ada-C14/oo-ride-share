@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -78,24 +78,49 @@ xdescribe "Driver class" do
     end
   end
 
-  describe "average_rating method" do
-    before do
-      @driver = RideShare::Driver.new(
+  before do
+    @driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ"
-      )
-      trip = RideShare::Trip.new(
+    )
+    trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
+        cost: 10,
         rating: 5
-      )
-      @driver.add_trip(trip)
-    end
+    )
+    @driver.add_trip(trip)
+  end
 
+  let (:trip_2) {
+    RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 5,
+        rating: 1
+    )
+  }
+
+  let (:in_progress_trip) {
+    RideShare::Trip.new(
+      id: 9,
+      driver: @driver,
+      passenger_id: 4,
+      start_time: Time.new(2016, 8, 8),
+      end_time: nil,
+      cost: nil,
+      rating: nil
+    )
+  }
+
+  describe "average_rating method" do
     it "returns a float" do
       expect(@driver.average_rating).must_be_kind_of Float
     end
@@ -116,15 +141,14 @@ xdescribe "Driver class" do
     end
 
     it "correctly calculates the average rating" do
-      trip2 = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
-        passenger_id: 3,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        rating: 1
-      )
-      @driver.add_trip(trip2)
+      @driver.add_trip(trip_2)
+
+      expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
+    end
+
+    it "ignores in progress trip with no rating" do
+      @driver.add_trip(trip_2)
+      @driver.add_trip(in_progress_trip)
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
@@ -132,5 +156,45 @@ xdescribe "Driver class" do
 
   describe "total_revenue" do
     # You add tests for the total_revenue method
+    it "returns a float" do
+      expect(@driver.total_revenue).must_be_kind_of Float
+    end
+
+    it "returns zero if no driven trips" do
+      driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+      expect(driver.total_revenue).must_equal 0
+    end
+
+    it "correctly calculates the total revenue" do
+      @driver.add_trip(trip_2)
+
+      expect(@driver.total_revenue).must_equal 0.8 * (10 + 5 - 2 * 1.65)
+    end
+
+    it "returns zero if trip cost is less than or equal to 1.65" do
+      trip_3 = RideShare::Trip.new(
+          id: 9,
+          driver: @driver,
+          passenger_id: 4,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          cost: 1.64,
+          rating: 5
+      )
+      @driver.add_trip(trip_3)
+
+      expect(@driver.total_revenue).must_equal 0.8 * (10 - 1.65)
+    end
+
+    it "ignores in progress trips with no cost" do
+      @driver.add_trip(trip_2)
+      @driver.add_trip(in_progress_trip)
+
+      expect(@driver.total_revenue).must_equal 0.8 * (10 + 5 - 2 * 1.65)
+    end
   end
 end

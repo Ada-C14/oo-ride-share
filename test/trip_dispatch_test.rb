@@ -17,13 +17,13 @@ describe "TripDispatcher class" do
 
     it "establishes the base data structures when instantiated" do
       dispatcher = build_test_dispatcher
-      [:trips, :passengers].each do |prop|
+      [:trips, :passengers, :drivers].each do |prop|
         expect(dispatcher).must_respond_to prop
       end
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -36,12 +36,12 @@ describe "TripDispatcher class" do
     end
   end
 
+  before do
+    @dispatcher = build_test_dispatcher
+  end
+
   describe "passengers" do
     describe "find_passenger method" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
-
       it "throws an argument error for a bad ID" do
         expect{ @dispatcher.find_passenger(0) }.must_raise ArgumentError
       end
@@ -53,10 +53,6 @@ describe "TripDispatcher class" do
     end
 
     describe "Passenger & Trip loader methods" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
-
       it "accurately loads passenger information into passengers array" do
         first_passenger = @dispatcher.passengers.first
         last_passenger = @dispatcher.passengers.last
@@ -79,12 +75,8 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
-
       it "throws an argument error for a bad ID" do
         expect { @dispatcher.find_driver(0) }.must_raise ArgumentError
       end
@@ -96,10 +88,6 @@ describe "TripDispatcher class" do
     end
 
     describe "Driver & Trip loader methods" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
-
       it "accurately loads driver information into drivers array" do
         first_driver = @dispatcher.drivers.first
         last_driver = @dispatcher.drivers.last
@@ -120,6 +108,55 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+
+  # pulls data from test/test_data
+  describe "Request trip method" do
+    it "selects first available driver and changes its status to UNAVAILABLE" do
+      available_driver = @dispatcher.find_driver(2)
+      expect(available_driver.status).must_equal :AVAILABLE
+
+      selected_driver = @dispatcher.request_trip(4).driver
+      expect(selected_driver.status).must_equal :UNAVAILABLE
+      expect(selected_driver.id).must_equal available_driver.id
+    end
+
+    it "creates trip that is in progress" do
+      new_trip = @dispatcher.request_trip(4)
+
+      expect(new_trip).must_be_kind_of RideShare::Trip
+      expect(new_trip.end_time).must_be_nil
+      expect(new_trip.cost).must_be_nil
+      expect(new_trip.rating).must_be_nil
+    end
+
+    it "updates passenger trip list" do
+      previous_trips = @dispatcher.find_passenger(4).trips
+      num_previous_trips = previous_trips.length
+      new_trip = @dispatcher.request_trip(4)
+      current_trips = @dispatcher.find_passenger(4).trips
+
+      expect(current_trips).must_include new_trip
+      expect(current_trips.length).must_equal num_previous_trips + 1
+    end
+
+    it "updates driver trip list" do
+      previous_trips = @dispatcher.find_driver(2).trips
+      num_previous_trips = previous_trips.length
+      new_trip = @dispatcher.request_trip(4)
+      current_trips = @dispatcher.find_driver(2).trips
+
+      expect(current_trips).must_include new_trip
+      expect(current_trips.length).must_equal num_previous_trips + 1
+    end
+
+    it "raises an error if there are no available drivers" do
+      @dispatcher.drivers.each { |driver| driver.change_status }
+
+      expect{
+        @dispatcher.request_trip(4)
+      }.must_raise ArgumentError
     end
   end
 end
