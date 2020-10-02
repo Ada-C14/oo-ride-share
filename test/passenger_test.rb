@@ -17,8 +17,8 @@ describe "Passenger class" do
     @trip1 = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
+        start_time: Time.new(2016, 8, 8, 12, 10, 00),
+        end_time: Time.new(2016, 8, 8, 12, 10, 10),
         cost: 23.45,
         rating: 5,
         driver: @driver
@@ -26,8 +26,8 @@ describe "Passenger class" do
     @trip2 = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
+        start_time: Time.new(2016, 8, 8, 12, 10, 00),
+        end_time: Time.new(2016, 8, 8, 12, 10, 10),
         cost: 27.45,
         rating: 5,
         driver: @driver
@@ -35,8 +35,8 @@ describe "Passenger class" do
     @trip3 = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
+        start_time: Time.new(2016, 8, 8, 12,10,00),
+        end_time: Time.new(2016, 8, 8, 12, 10, 10),
         cost: 13.45,
         rating: 5,
         driver: @driver
@@ -117,13 +117,15 @@ describe "Passenger class" do
     it "total amount of time the passenger has spent on their trips" do
       @passenger.add_trip(@trip1)
       @passenger.add_trip(@trip2)
-      expect(@passenger.total_time_spent).must_equal 75
+      expect(@passenger.total_time_spent).must_equal 20
     end
 
     it "must be a float" do
       @passenger.add_trip(@trip1)
       expect(@passenger.total_time_spent).must_be_instance_of Float
+      expect(@passenger.total_time_spent).must_equal 10
     end
+
     it "Passenger has 0 trips" do
       @passenger = RideShare::Passenger.new(
           id: 9,

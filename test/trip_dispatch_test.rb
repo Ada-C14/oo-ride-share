@@ -125,13 +125,15 @@ describe "TripDispatcher class" do
   end
 
   describe "Request_trip" do
-    it "Was the trip created properly?" do
+    before do
       @dispatcher = build_test_dispatcher
+
+    end
+    it "Was the trip created properly?" do
       passenger = @dispatcher.find_passenger(2)
       expect(@dispatcher.request_trip(passenger.id)).must_be_instance_of RideShare::Trip
     end
     it'Updates trip lists for driver and passenger'do
-      @dispatcher = build_test_dispatcher
       passenger = @dispatcher.find_passenger(2)
       driver = @dispatcher.find_driver(2)
       #passenger.trips = 0
@@ -152,7 +154,6 @@ describe "TripDispatcher class" do
 
     end
     it 'What happens if you try to request a trip when there are no AVAILABLE drivers?' do
-      @dispatcher = build_test_dispatcher
       @dispatcher.request_trip(2)
       @dispatcher.request_trip(1)
       trip3 = @dispatcher.request_trip(3)
