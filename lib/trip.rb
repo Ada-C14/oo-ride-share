@@ -1,6 +1,5 @@
 require 'csv'
 require 'time'
-require_relative 'driver'
 
 require_relative 'csv_record'
 
@@ -61,9 +60,11 @@ module RideShare
         "rating=#{rating}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
+      @driver = driver
+      driver.add_trip(self)
     end
 
     def duration_trip
@@ -85,6 +86,6 @@ module RideShare
                driver_id: record[:driver_id],
                driver: record[:driver]
              )
-      end
     end
   end
+end

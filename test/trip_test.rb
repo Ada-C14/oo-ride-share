@@ -15,9 +15,15 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver: RideShare::Driver.new(
+          id: 54,
+          name: "Test Driver",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+      )
       }
-      @trip = RideShare::Trip.new(@trip_data)
+      @trip = RideShare::Trip.new(**@trip_data) # ** spreads the hash into named parameters
     end
 
     it "is an instance of Trip" do
@@ -29,7 +35,6 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
@@ -37,7 +42,7 @@ describe "Trip class" do
       [-3, 0, 6].each do |rating|
         @trip_data[:rating] = rating
         expect do
-          RideShare::Trip.new(@trip_data)
+          RideShare::Trip.new(**@trip_data)
         end.must_raise ArgumentError
       end
     end
@@ -45,7 +50,7 @@ describe "Trip class" do
     it "raises an error for invalid time" do
       @trip_data[:end_time] = @trip_data[:start_time]-1
       expect do
-        RideShare::Trip.new(@trip_data)
+        RideShare::Trip.new(**@trip_data)
       end.must_raise ArgumentError
     end
 
