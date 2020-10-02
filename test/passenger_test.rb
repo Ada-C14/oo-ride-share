@@ -1,11 +1,48 @@
 require_relative 'test_helper'
 
 describe "Passenger class" do
-
+  before do
+    @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+    )
+    @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Test Driver",
+        vin: "12345678901234567",
+        status: :AVAILABLE
+    )
+    @trip1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 23.45,
+        rating: 5,
+        driver: @driver
+    )
+    @trip2 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 27.45,
+        rating: 5,
+        driver: @driver
+    )
+    @trip3 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 13.45,
+        rating: 5,
+        driver: @driver
+    )
+  end
   describe "Passenger instantiation" do
-    before do
-      @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
-    end
 
     it "is an instance of Passenger" do
       expect(@passenger).must_be_kind_of RideShare::Passenger
@@ -37,25 +74,14 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
-      @passenger = RideShare::Passenger.new(
-        id: 9,
-        name: "Merl Glover III",
-        phone_number: "1-602-620-2330 x3723",
-        trips: []
-      )
+
       trip = RideShare::Trip.new(
-        id: 8,
-        passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        rating: 5,
-        driver: RideShare::Driver.new(
-          id: 54,
-          name: "Test Driver",
-          vin: "12345678901234567",
-          status: :AVAILABLE
-        )
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 5,
+          driver: @driver
       )
 
       @passenger.add_trip(trip)
@@ -76,128 +102,34 @@ describe "Passenger class" do
 
   describe "net_expenditures" do
 
-    # You add tests for the net_expenditures method
     it "return the total amount of money the passenger has spent" do
-      @passenger = RideShare::Passenger.new(
-        id: 9,
-        name: "Merl Glover III",
-        phone_number: "1-602-620-2330 x3723",
-        trips: []
-      )
-      trip1 = RideShare::Trip.new(
-        id: 8,
-        passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        cost: 23.45,
-        rating: 5,
-        driver: RideShare::Driver.new(
-          id: 54,
-          name: "Test Driver",
-          vin: "12345678901234567",
-          status: :AVAILABLE
-      )
-      )
-      trip2 = RideShare::Trip.new(
-        id: 8,
-        passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        cost: 27.45,
-        rating: 5,
-        driver: RideShare::Driver.new(
-          id: 54,
-          name: "Test Driver",
-          vin: "12345678901234567",
-          status: :AVAILABLE
-        )
-      )
-      trip3 = RideShare::Trip.new(
-        id: 8,
-        passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        cost: 13.45,
-        rating: 5,
-        driver: RideShare::Driver.new(
-          id: 54,
-          name: "Test Driver",
-          vin: "12345678901234567",
-          status: :AVAILABLE
-        )
-      )
-      @passenger.add_trip(trip1)
-      @passenger.add_trip(trip2)
-      @passenger.add_trip(trip3)
+
+      @passenger.add_trip(@trip1)
+      @passenger.add_trip(@trip2)
+      @passenger.add_trip(@trip3)
 
       expect(@passenger.net_expenditures).must_equal 64.35
     end
 
   end
   describe "total time spent" do
-    before do
-      @passenger = RideShare::Passenger.new(
-        id: 9,
-        name: "Merl Glover III",
-        phone_number: "1-602-620-2330 x3723",
-        trips: []
-      )
-      trip1 = RideShare::Trip.new(
-        id: 8,
-        passenger: @passenger,
-        start_time: Time.parse("2018-11-04 12:00:00 -0800"),
-        end_time: Time.parse("2018-11-04 12:00:30 -0800"),
-        cost: 23.45,
-        rating: 5,
-        driver: RideShare::Driver.new(
-          id: 54,
-          name: "Stacy",
-          vin: "12345678901234567",
-          status: :AVAILABLE
-        )
-      )
-      trip2 = RideShare::Trip.new(
-        id: 8,
-        passenger: @passenger,
-        start_time: Time.parse("2018-11-04 12:00:00 -0800"),
-        end_time: Time.parse("2018-11-04 12:00:45 -0800"),
-        cost: 27.45,
-        rating: 5,
-        driver: RideShare::Driver.new(
-          id: 54,
-          name: "Ida",
-          vin: "12345678901234567",
-          status: :AVAILABLE
-        )
-      )
-      # trip3 = RideShare::Trip.new(
-      #   id: 8,
-      #   passenger: @passenger,
-      #   start_time: Time.new(2016, 8, 8),
-      #   end_time: Time.new(2016, 8, 9),
-      #   cost: 13.45,
-      #   rating: 5
-      # )
-      @passenger.add_trip(trip1)
-      @passenger.add_trip(trip2)
-      # @passenger.add_trip(trip3)
-    end
 
     it "total amount of time the passenger has spent on their trips" do
-
-
+      @passenger.add_trip(@trip1)
+      @passenger.add_trip(@trip2)
       expect(@passenger.total_time_spent).must_equal 75
     end
 
     it "must be a float" do
+      @passenger.add_trip(@trip1)
       expect(@passenger.total_time_spent).must_be_instance_of Float
     end
     it "Passenger has 0 trips" do
       @passenger = RideShare::Passenger.new(
-        id: 9,
-        name: "Merl Glover III",
-        phone_number: "1-602-620-2330 x3723",
-        trips: []
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
       )
       expect(@passenger.total_time_spent).must_equal 0
     end

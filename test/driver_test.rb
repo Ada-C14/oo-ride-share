@@ -171,13 +171,13 @@ describe "Driver class" do
     it 'returns the sum of one trip' do
       @driver.add_trip(@trip1)
 
-      expect(@driver.total_revenue).must_equal 17.44
+      expect(@driver.total_revenue).must_be_close_to 17.44
     end
 
     it'returns the sum of many trips' do
       @driver.add_trip(@trip1)
       @driver.add_trip(@trip2)
-      expect(@driver.total_revenue).must_equal 38.08
+      expect(@driver.total_revenue).must_be_close_to 38.08
     end
 
   end
