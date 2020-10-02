@@ -62,6 +62,7 @@ module RideShare
       @status = :UNAVAILABLE
     end
 
+    private
     def self.from_csv(record)
       new(
         id: record[:id],
