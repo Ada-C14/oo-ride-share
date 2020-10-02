@@ -1,4 +1,5 @@
 require_relative 'test_helper'
+require 'time'
 
 describe "Trip class" do
   describe "initialize" do
@@ -11,6 +12,12 @@ describe "Trip class" do
           id: 1,
           name: "Ada",
           phone_number: "412-432-7640"
+        ),
+        driver: RideShare::Driver.new(
+            id: 54,
+            name: "Test Driver",
+            vin: "12345678901234567",
+            status: :AVAILABLE
         ),
         start_time: start_time,
         end_time: end_time,
@@ -29,7 +36,7 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
+       # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
@@ -41,5 +48,25 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "raises an error if end time is before the start time" do
+      start_time = Time.parse("2018-12-27 02:39:05 -800")
+      end_time = Time.parse("2018-12-17 16:09:21 -800")
+
+      if start_time < end_time
+        expect do
+          RideShare::Trip.new(@trip_data)
+        end.must_raise ArgumentError
+      end
+    end
+
+    it "calculates the duration of a trip" do
+      start_time = Time.parse("2018-12-27 02:39:05 -800")
+      end_time = Time.parse("2018-12-27 03:38:08 -800")
+
+      trip_duration = end_time - start_time
+
+      expect(trip_duration).must_equal 3543.0
+  end
   end
 end

@@ -23,12 +23,12 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
       # Count lines in the file, subtract 1 for headers
-      trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
+      trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1 #Review %x{}
 
       dispatcher = RideShare::TripDispatcher.new
 
@@ -52,7 +52,7 @@ describe "TripDispatcher class" do
       end
     end
 
-    describe "Passenger & Trip loader methods" do
+    describe "Passenger  Trip loader methods" do
       before do
         @dispatcher = build_test_dispatcher
       end
@@ -79,8 +79,9 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
+
       before do
         @dispatcher = build_test_dispatcher
       end
@@ -95,7 +96,7 @@ describe "TripDispatcher class" do
       end
     end
 
-    describe "Driver & Trip loader methods" do
+    describe "Driver and Trip loader methods" do
       before do
         @dispatcher = build_test_dispatcher
       end
@@ -121,5 +122,41 @@ describe "TripDispatcher class" do
         end
       end
     end
+  end
+
+  describe "requesting a trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+      @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
+    end
+
+    it "creates a new trip" do
+      new_trip = @dispatcher.request_trip(1)
+
+      expect(new_trip.passenger).must_be_instance_of RideShare::Passenger
+      expect(new_trip.driver).must_be_instance_of RideShare::Driver
+      expect(new_trip).must_be_instance_of RideShare::Trip
+    end
+
+    it "selected an AVAILABLE driver" do
+      expect(@dispatcher.find_first_available_driver.status).must_equal :AVAILABLE
+    end
+
+    it "raises an ArgumentError when there are no available drivers" do
+      @dispatcher.request_trip(1)
+      @dispatcher.request_trip(1)
+
+      expect {
+        @dispatcher.request_trip(1)
+      }.must_raise ArgumentError
+    end
+
+   it "updates the trip lists for the driver and passenger" do
+     current_trips = @dispatcher.trips.length
+     result = @dispatcher.request_trip(1)
+     updated_trips = current_trips + 1
+     result = @dispatcher.trips.length
+     expect(result).must_equal updated_trips
+   end
   end
 end

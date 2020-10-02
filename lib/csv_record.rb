@@ -5,7 +5,7 @@ module RideShare
     attr_reader :id
 
     def initialize(id)
-      self.class.validate_id(id)
+      self.class.validate_id(id) # Class method, but what does .class.validate_id mean? line 25
       @id = id
     end
     
@@ -30,7 +30,7 @@ module RideShare
 
     private
     
-    def self.from_csv(record)
+    def self.from_csv(record) #Template method
       raise NotImplementedError, 'Implement me in a child class!'
     end
 
