@@ -17,13 +17,13 @@ describe "TripDispatcher class" do
 
     it "establishes the base data structures when instantiated" do
       dispatcher = build_test_dispatcher
-      [:trips, :passengers].each do |prop|
+      [:trips, :passengers, :drivers].each do |prop|
         expect(dispatcher).must_respond_to prop
       end
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -71,6 +71,7 @@ describe "TripDispatcher class" do
         dispatcher = build_test_dispatcher
         dispatcher.trips.each do |trip|
           expect(trip.passenger).wont_be_nil
+          #binding.pry
           expect(trip.passenger.id).must_equal trip.passenger_id
           expect(trip.passenger.trips).must_include trip
         end
@@ -79,7 +80,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -121,5 +122,80 @@ describe "TripDispatcher class" do
         end
       end
     end
+  end
+  # tests for the request_trip method for wave 3
+  describe "request_trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+      @passenger = @dispatcher.passengers.first
+      # @passenger_id = @passenger.id
+
+    end
+
+    it "returns an instance of Trip" do
+      expect(@dispatcher.request_trip(@passenger.id)).must_be_kind_of RideShare::Trip
+    end
+
+    it "check if the trip is in progress " do
+
+      test_trip = @dispatcher.request_trip(@passenger.id)
+
+      expect(test_trip.end_time).must_be_nil
+      expect(test_trip.cost).must_be_nil
+      expect(test_trip.rating).must_be_nil
+
+    end
+
+    it "adds the new trip to the passenger trips array" do
+      # act
+      new_trip = @dispatcher.request_trip(@passenger.id)
+      # assert
+      expect(new_trip.passenger.trips).must_include new_trip
+
+    end
+
+    it "adds the new trip to the driver trips array" do
+      new_trip = @dispatcher.request_trip(@passenger.id)
+      # new_trip is the new trip instance, with a driver read
+
+      # make sure that my new trip is inside my driver trips array
+      expect(new_trip.driver.trips).must_include new_trip
+
+    end
+
+    it "gets added to the trips array" do
+      before_trips_length = @dispatcher.trips.length
+      new_trip = @dispatcher.request_trip(@passenger.id)
+
+      expect(@dispatcher.trips).must_include new_trip
+      expect(@dispatcher.trips.length).must_equal before_trips_length + 1
+
+    end
+
+    it "raises an error if no driver is available " do
+      # arrange
+      @dispatcher.drivers.each {|driver| driver.status = :UNAVAILABLE}
+      # new_trip = @dispatcher.request_trip(@passenger.id)
+
+      expect {@dispatcher.request_trip(@passenger.id)}.must_raise ArgumentError
+
+    end
+  end
+
+  describe "find_first_available_driver" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    it "returns an instance of driver" do
+      #found_driver = @dispatcher.find_first_available_driver
+      expect(@dispatcher.find_first_available_driver).must_be_kind_of RideShare::Driver
+    end
+
+    it "returns a driver whose status is available" do
+      expect(@dispatcher.find_first_available_driver.status).must_equal :AVAILABLE
+    end
+
+    # another test could be to set up three drivers and ensure correct driver is chosen
   end
 end
