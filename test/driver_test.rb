@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -85,15 +85,28 @@ xdescribe "Driver class" do
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ"
       )
-      trip = RideShare::Trip.new(
+
+      start_time = Time.new(2016, 8, 8)
+
+      @trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
         passenger_id: 3,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 8),
+        start_time: start_time,
+        end_time: start_time + 600, # 10min after start_time
         rating: 5
       )
-      @driver.add_trip(trip)
+      @driver.add_trip(@trip)
+
+      @trip2 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 1
+      )
+      @driver.add_trip(@trip2)
     end
 
     it "returns a float" do
@@ -116,21 +129,128 @@ xdescribe "Driver class" do
     end
 
     it "correctly calculates the average rating" do
-      trip2 = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
-        passenger_id: 3,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        rating: 1
-      )
-      @driver.add_trip(trip2)
-
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
+    end
+
+    it  "does not include nil rating" do
+      trip_in_progress = RideShare::Trip.new(
+          id: 3,
+          driver: @driver,
+          passenger_id: 4,
+          start_time: Time.now,
+          end_time: nil,
+          rating: nil,
+          cost: nil
+      )
+
+       @driver.add_trip(trip_in_progress)
+       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @passenger = RideShare::Passenger.new(
+          id: 1,
+          name: "Test Passenger",
+          phone_number: "412-432-7640"
+      )
+      @driver = RideShare::Driver.new(
+          id: 3,
+          name: "Test Driver",
+          vin: "12345678912345678"
+      )
+      @trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2018, 8, 9),
+          rating: 5,
+          cost: 10.50
+      )
+
+      @trip2 =  RideShare::Trip.new(
+          id: 1,
+          driver: @driver,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2018, 8, 9),
+          rating: 5,
+          cost: 12.30
+      )
+    end
+
+    it "return a float rounded to 2 decimal places" do
+      @driver.add_trip(@trip)
+
+      expected_revenue = 0.8 * (10.50 - 1.65)
+
+      expect(@driver.total_revenue).must_be_close_to expected_revenue
+    end
+
+    it "accurately calculates total revenue" do
+      @driver.add_trip(@trip)
+      @driver.add_trip(@trip2)
+
+      revenue_trip1 = 0.8 * (10.50 - 1.65)
+      revenue_trip2 = 0.8 * (12.30 - 1.65)
+      expected_total_revenue = revenue_trip1 + revenue_trip2
+
+      expect(@driver.total_revenue).must_be_close_to expected_total_revenue
+    end
+
+    it  "does not include nil cost" do
+      trip_in_progress = RideShare::Trip.new(
+          id: 3,
+          driver: @driver,
+          passenger_id: 4,
+          start_time: Time.now,
+          end_time: nil,
+          rating: nil,
+          cost: nil
+      )
+
+      @driver.add_trip(@trip)
+      @driver.add_trip(@trip2)
+      @driver.add_trip(trip_in_progress)
+      
+      revenue_trip1 = 0.8 * (10.50 - 1.65) #7.08
+      revenue_trip2 = 0.8 * (12.30 - 1.65) #8.52
+      expected_total_revenue = revenue_trip1 + revenue_trip2
+
+      expect(@driver.total_revenue).must_be_close_to expected_total_revenue
+    end
+
+    it"return 0.00 if there are no trips" do
+      new_driver = RideShare::Driver.new(
+          id: 1,
+          name: "Test",
+          vin: "12345678912345678"
+      )
+
+      expect(new_driver.total_revenue).must_be_close_to 0.0
+    end
+
+    it "returns 100% of trip cost if cost was less than $1.65" do
+      sad_driver = RideShare::Driver.new(
+          id: 1,
+          name: "Test",
+          vin: "12345678912345678",
+      )
+      sad_trip =  RideShare::Trip.new(
+          id: 1,
+          driver: @driver,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2018, 8, 9),
+          rating: 5,
+          cost: 1
+      )
+
+      sad_driver.add_trip(sad_trip)
+
+      expect(sad_driver.total_revenue).must_be_close_to 1.00
+    end
   end
 end
