@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -128,9 +128,109 @@ xdescribe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
+    it "raise an error when there is a trip on progress" do
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip1 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 9),
+          end_time: nil,
+          rating: nil
+      )
+      @driver.add_trip(trip1)
+
+      expect { @driver.average_rating }.must_raise ArgumentError
+    end
   end
 
   describe "total_revenue" do
     # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+          id: 2,
+          name: "El Greco",
+          vin: "WBWC02Y311DDZGFLD",
+          status: :AVAILABLE
+      )
+
+      driver1 = RideShare::Trip.new(
+          id: 5,
+          driver: @driver,
+          passenger_id: 7,
+          start_time: "2016-08-08",
+          end_time: "2016-08-09",
+          rating: 3,
+          cost: 18
+          )
+
+      driver2 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 6,
+          start_time: "2016, 8, 6",
+          end_time: "2016, 8, 9",
+          rating: 5,
+          cost: 16
+          )
+
+      @driver.add_trip(driver1)
+      @driver.add_trip(driver2)
+    end
+
+    it "returns total revenue" do
+      expect(@driver.total_revenue).must_equal 24.56
+    end
+
+    it "returns 0 if there are no trips" do
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ",
+          status: :AVAILABLE,
+          trips: []
+      )
+      expect(@driver.total_revenue).must_equal 0
+    end
+
+    it "returns error when trip cost is less than trip fee" do
+      @driver = RideShare::Driver.new(
+          id: 2,
+          name: "El Greco",
+          vin: "WBWC02Y311DDZGFLD",
+          status: :AVAILABLE
+      )
+
+      driver3 = RideShare::Trip.new(
+          id: 5,
+          driver: @driver,
+          passenger_id: 7,
+          start_time: "2016-08-08",
+          end_time: "2016-08-09",
+          rating: 3,
+          cost: 0.50
+          )
+
+      driver4 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 6,
+          start_time: "2016, 8, 6",
+          end_time: "2016, 8, 9",
+          rating: 5,
+          cost: 0.50
+          )
+
+      @driver.add_trip(driver3)
+      @driver.add_trip(driver4)
+
+      expect{@driver.total_revenue}.must_raise ArgumentError
+    end
+
   end
 end

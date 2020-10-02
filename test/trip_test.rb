@@ -15,7 +15,9 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver_id: 222,
+        driver: RideShare::Driver.new(id: 222, name: "Brad Pit", vin: "KPL7K0AY5U8G2CHPP", status: :AVAILABLE)
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -29,7 +31,7 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
+      # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
@@ -41,5 +43,25 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "raises an error for invalid time" do
+
+      expect do
+      RideShare::Trip.new( id: 3,
+                          passenger_id: 54,
+                          start_time:Time.parse('2018-12-27 05:39:05'),
+                          end_time:Time.parse('2018-12-27 03:38:08'),
+                          cost:12,
+                          rating:4,
+                           driver_id: 333 )
+      end.must_raise ArgumentError
+
+    end
+
+    it "tests the duration of time" do
+      expect(@trip.duration).must_be_instance_of Integer
+      expect(@trip.duration).must_be :>, 0
+    end
+
   end
 end

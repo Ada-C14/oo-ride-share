@@ -17,13 +17,13 @@ describe "TripDispatcher class" do
 
     it "establishes the base data structures when instantiated" do
       dispatcher = build_test_dispatcher
-      [:trips, :passengers].each do |prop|
+      [:trips, :passengers, :driver].each do |prop|
         expect(dispatcher).must_respond_to prop
       end
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.driver).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -101,8 +101,8 @@ describe "TripDispatcher class" do
       end
 
       it "accurately loads driver information into drivers array" do
-        first_driver = @dispatcher.drivers.first
-        last_driver = @dispatcher.drivers.last
+        first_driver = @dispatcher.driver.first
+        last_driver = @dispatcher.driver.last
 
         expect(first_driver.name).must_equal "Driver 1 (unavailable)"
         expect(first_driver.id).must_equal 1
@@ -122,4 +122,52 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "request a new trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+      @new_trip = @dispatcher.request_trip(2)
+    end
+
+    it "the new trip must be a Trip class" do
+      expect(@new_trip).must_be_instance_of RideShare::Trip
+    end
+
+    it "update driver's status to unavailable" do
+      expect(@new_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "update passenger's trip list" do
+      passenger = @dispatcher.find_passenger(2)
+      expect(passenger.trips.last).must_equal @new_trip
+    end
+
+    it "update driver's trip list" do
+      driver = @new_trip.driver
+      expect(driver.trips.last).must_equal @new_trip
+    end
+
+    it "raise error when no driver is available" do
+      @dispatcher.driver.each do |driver|
+        driver.status = :UNAVAILABLE
+      end
+      expect { @dispatcher.request_trip(9) }.must_raise ArgumentError
+    end
+
+    it "select a driver whose has no trip" do
+      expect(@new_trip.driver_id).must_equal 3
+    end
+
+    it "select a driver who has the earliest end time" do
+      @dispatcher = build_test_dispatcher
+      trip_for_driver3 = RideShare::Trip.new(id: 9, passenger: nil, passenger_id: 1, start_time: Time.new(2019, 7, 25, 11, 52, 40), end_time: Time.new(2019, 7, 25, 12, 25, 0), cost: 10, rating: 2, driver: nil, driver_id: 3)
+      trip_for_driver3.connect(@dispatcher.find_passenger(1), @dispatcher.find_driver(3))
+      trip_for_earliest_endtime = @dispatcher.request_trip(1)
+      expect(trip_for_earliest_endtime.driver_id).must_equal 2
+    end
+
+  end
+
+
+
 end
