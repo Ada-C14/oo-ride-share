@@ -48,6 +48,8 @@ module RideShare
           rating: nil,
           driver: selected_driver
       )
+
+      selected_driver.switch_status
       connect_new_trip(new_trip, passenger_id, selected_driver)
       return new_trip
     end

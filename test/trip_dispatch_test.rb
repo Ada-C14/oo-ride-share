@@ -137,7 +137,6 @@ describe "TripDispatcher class" do
     end
 
     it "updates all trip collections appropriately" do
-      # This test will break if wave 4 is implemented b/c the first driver is being selected
       previous_trips_qty = @trip_dispatcher.trips.length
       prev_passenger_trip_qty = @trip_dispatcher.passengers[0].trips.length
       prev_driver_trips_qty = @trip_dispatcher.drivers[2].trips.length
@@ -160,11 +159,41 @@ describe "TripDispatcher class" do
       expect(available_drivers).must_include new_trip.driver
     end
 
-    it "selects a driver with no trips or the driver with longest time since their last ride" do
-      drivers = @trip_dispatcher.drivers.dup
+    it "updates selected driver's status appropriately" do
+      new_trip = @trip_dispatcher.request_trip(1)
+
+      expect(new_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "selects a driver with no trips " do
       new_trip= @trip_dispatcher.request_trip(1)
 
       expect(new_trip.driver_id).must_equal 3
+    end
+
+    it "selects a driver that has gone longest without a trip" do
+      @trip_dispatcher.drivers.delete_at(2)
+      new_driver = RideShare::Driver.new(
+          id: 4,
+          name: "Driver 4 a long time since last trip",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+      )
+      @trip_dispatcher.drivers << new_driver
+      new_trip = RideShare::Trip.new(
+          id: 100,
+          passenger_id: 100,
+          cost: 500,
+          rating: 5,
+          driver: new_driver,
+          start_time: Time.new(1900, 01, 01),
+          end_time: Time.new(1900, 01, 02)
+      )
+      new_driver.trips << new_trip
+
+      requested_trip = @trip_dispatcher.request_trip(1)
+
+      expect(requested_trip.driver).must_be_same_as new_driver
     end
 
     it "raises an ArgumentError if there are no available drivers" do

@@ -65,6 +65,10 @@ module RideShare
       return (net_fee * 0.8).round(2)
     end
 
+    def switch_status
+      status == :AVAILABLE ? @status = :UNAVAILABLE : @status = :AVAILABLE
+    end
+
     private
 
     def self.from_csv(record)
