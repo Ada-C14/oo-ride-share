@@ -123,17 +123,17 @@ describe "TripDispatcher class" do
   end
 
   describe "making a new trip" do
-    describe "first_available_driver" do
+    describe "intelligent_dispatch" do
       before do
         @fake_dispatcher = build_test_dispatcher
       end
 
       it "returns an instance of Driver" do
-        expect(@fake_dispatcher.first_available_driver).must_be_instance_of RideShare::Driver
+        expect(@fake_dispatcher.intelligent_dispatch).must_be_instance_of RideShare::Driver
       end
 
       it "returns a driver who is available" do
-        expect(@fake_dispatcher.first_available_driver.status).must_equal :AVAILABLE
+        expect(@fake_dispatcher.intelligent_dispatch.status).must_equal :AVAILABLE
       end
 
       it "raises an error if no drivers are available" do
@@ -141,6 +141,25 @@ describe "TripDispatcher class" do
         @fake_dispatcher.request_trip(2)
 
         expect { @fake_dispatcher.request_trip(3) }.must_raise ArgumentError
+      end
+
+      it "must find driver with no previous trips" do
+        expect(@fake_dispatcher.intelligent_dispatch.trips).must_be_empty
+      end
+
+      it "must find driver with oldest recent trip" do
+        this_new_trip = RideShare::Trip.new(
+            id: 166,
+            passenger_id: 3,
+            start_time: (Time.now - 60 * 60),
+            end_time: Time.now,
+            cost: 100,
+            rating: 4,
+            driver_id: 3
+        )
+        @fake_dispatcher.find_driver(3).add_trip(this_new_trip)
+
+        expect(@fake_dispatcher.intelligent_dispatch.id).must_equal 2
       end
     end
 
