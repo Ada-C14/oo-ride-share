@@ -19,12 +19,26 @@ module RideShare
       raise ArgumentError, "Invalid status" if ![:AVAILABLE, :UNAVAILABLE].include?(@status)
 
       @trips = trips
-        # return 0 if (@trips) == [] || @trips == nil
+
     end
 
-    # def add_trip(trip)
-    #   @trips << trip
-    # end
+    def add_trip(trip)
+      @trips << trip
+    end
+
+    def average_rating
+      ratings_array = @trips.map(&:rating)
+      return 0 if (@trips) == [] || @trips == nil
+      return (ratings_array.sum/ratings_array.length).to_f
+    end
+
+    def total_revenue
+      return 0 if (@trips) == [] || @trips == nil
+      trip_cost = @trips.map(&:cost)
+      return 0 if trip_cost.sum < 1.65
+      driver_revenue = (trip_cost.sum - 1.65) * 0.80
+      return driver_revenue.to_f
+    end
     #
     #
     # def net_expenditures

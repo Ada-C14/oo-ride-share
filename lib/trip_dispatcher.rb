@@ -12,8 +12,8 @@ module RideShare
     def initialize(directory: './support')
       @passengers = Passenger.load_all(directory: directory)
       @trips = Trip.load_all(directory: directory)
+      @drivers = Driver.load_all(directory: directory)
       connect_trips
-      @driver = Driver.load_all(directory: directory)
     end
 
     def find_passenger(id)
@@ -25,6 +25,7 @@ module RideShare
       Driver.validate_id(id)
       return @drivers.find { |driver| driver.id == id }
     end
+
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
