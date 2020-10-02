@@ -152,7 +152,7 @@ describe 'Passenger class' do
         driver_id: @driver_id
       )
       trip2 = RideShare::Trip.new(
-        id: 8,
+        id: 7,
         passenger: @passenger,
         start_time: Time.new(2016, 7, 7),
         end_time: Time.new(2016, 7, 8),
@@ -160,9 +160,19 @@ describe 'Passenger class' do
         rating: 5,
         driver_id: @driver_id
       )
+      trip3 = RideShare::Trip.new(
+          id: 6,
+          passenger: @passenger,
+          start_time: Time.new(2016, 6, 6),
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+          driver_id: @driver_id
+      )
+
       @passenger.add_trip(trip1)
       @passenger.add_trip(trip2)
-      expect(@passenger.total_time_spent).must_equal trip1.trip_duration + trip2.trip_duration
+      expect(@passenger.total_time_spent).must_equal trip1.trip_duration + trip2.trip_duration + trip3.trip_duration
     end
   end
 end

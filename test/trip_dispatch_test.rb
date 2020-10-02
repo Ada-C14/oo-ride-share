@@ -123,4 +123,21 @@ describe 'TripDispatcher class' do
       end
     end
   end
+
+  describe 'trip' do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    it 'accurately loads driver information into trips array' do
+      first_trip = @dispatcher.trips.first
+      last_trip = @dispatcher.trips.last
+
+      expect(first_trip.id).must_equal 1
+      expect(first_trip.driver_id).must_equal 20
+      expect(last_trip.id).must_equal 600
+      expect(last_trip.driver_id).must_equal 25
+    end
+
+  end
 end

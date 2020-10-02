@@ -128,7 +128,7 @@ describe 'Driver class' do
         vin: '1C9EVBRM0YBC564DZ'
       )
       trip = RideShare::Trip.new(
-        id: 8,
+        id: 6,
         driver: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 9, 8),

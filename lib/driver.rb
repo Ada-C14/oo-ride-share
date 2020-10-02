@@ -23,23 +23,26 @@ module RideShare
     end
 
     def add_trip(trip)
-      @status = :UNAVAILABLE if trip.end_time.nil?
-      @trips << trip unless trip.end_time.nil?
+      @trips << trip
     end
 
     def average_rating
       total_rating = 0
       @trips.each do |trip|
-        total_rating += trip.rating
+        total_rating += trip.rating unless trip.end_time.nil?
       end
 
-      average_rating = total_rating.to_f / @trips.length
+      completed_trips = @trips.count(&:end_time) # count truthy values
+      # completed_trips = @trips.count { |trip| trip.end_time }
+      # completed_trips = @trips.reject { |trip| trip.end_time.nil? }
+      average_rating = total_rating.to_f / completed_trips
 
       if @trips.length.zero?
         return 0
       else
         return average_rating.round(2)
       end
+
     end
 
     def total_revenue
@@ -48,23 +51,21 @@ module RideShare
       earning_rate = 0.8
 
       @trips.each do |trip|
-        total += trip.cost - fee_per_trip
+        total += trip.cost - fee_per_trip unless trip.end_time.nil?
+      end
+      earning = total * earning_rate
+      if earning.negative?
+        return 0
+      else
+        return earning.round(2)
       end
 
-      earning = total * earning_rate
-      # if earning.negative?
-      #   return 0
-      # else
-      #
-      # end
-      return earning.round(2)
     end
 
-    # def driver_status_updating
-    #   @trips.each do |trip|
-    #     @status = :UNAVAILABLE if trip.end_time == nil
-    #   end
-    # end
+    def trip_status_updating(trip)
+      @trips << trip
+      @status = :UNAVAILABLE if trip.end_time.nil?
+    end
 
     def self.from_csv(record)
       return new(
