@@ -49,6 +49,10 @@ module RideShare
       return total_cost
     end
 
+    def make_driver_unavailable
+      @status = :UNAVAILABLE
+    end
+
     private
 
     def self.from_csv(record)

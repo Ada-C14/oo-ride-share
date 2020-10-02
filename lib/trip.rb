@@ -15,7 +15,7 @@ module RideShare
       start_time:,
       end_time:,
       cost: nil,
-      rating:
+      rating: nil
     )
       super(id)
 
@@ -42,16 +42,20 @@ module RideShare
       @start_time = start_time
       @end_time = end_time
 
-      if start_time - end_time >= 0
-        raise ArgumentError, 'Reminder: time moves in the forward direction and teleportation
-        does not yet exist (start time must occur before end time)'
+      unless end_time == nil
+        if start_time - end_time >= 0
+          raise ArgumentError, 'Reminder: time moves in the forward direction and teleportation
+          does not yet exist (start time must occur before end time)'
+        end
       end
 
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      unless @rating == nil
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
     end
 
