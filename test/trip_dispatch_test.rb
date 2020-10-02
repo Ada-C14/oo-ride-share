@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -122,6 +122,7 @@ describe "TripDispatcher class" do
       end
     end
   end
+
   describe "request_trip" do
     before do
       @dispatcher = build_test_dispatcher
@@ -151,7 +152,7 @@ describe "TripDispatcher class" do
 
     it "selects an available driver, then makes them unavailable after new trip" do
       expect(@dispatcher.drivers[2].status).must_equal :AVAILABLE
-      new_trip = @dispatcher.request_trip(1)
+      @dispatcher.request_trip(1)
       expect(@dispatcher.drivers[2].status).must_equal :UNAVAILABLE
     end
 
