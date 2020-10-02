@@ -16,6 +16,26 @@ module RideShare
       @trips << trip
     end
 
+    def net_expenditures
+      total_cost = 0
+      @trips.each do |trip|
+        total_cost += trip.cost.to_f
+      end
+
+      # total_cost = @trips.map { |trip| trip.cost}.sum
+
+      return total_cost
+    end
+
+    def total_time_spent
+      sum = 0
+      @trips.each do |trip|
+        sum += trip.trip_duration
+      end
+      return sum
+    end
+
+
     private
 
     def self.from_csv(record)
