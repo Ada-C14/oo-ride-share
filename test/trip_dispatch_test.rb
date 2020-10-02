@@ -17,13 +17,14 @@ describe "TripDispatcher class" do
 
     it "establishes the base data structures when instantiated" do
       dispatcher = build_test_dispatcher
+
       [:trips, :passengers].each do |prop|
         expect(dispatcher).must_respond_to prop
       end
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -78,8 +79,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -121,5 +121,66 @@ describe "TripDispatcher class" do
         end
       end
     end
+
+    describe "request_trip method(Intelligent Dispatching)" do
+      before do
+        @dispatcher = build_test_dispatcher
+        @driver = @dispatcher.find_driver(3)
+      end
+
+      it "must return trip object" do
+        expect(@dispatcher.request_trip(2)).must_be_instance_of RideShare::Trip
+      end
+
+      it 'adds a trip to the trips attribute' do
+        trips_before_request = @dispatcher.trips.length
+        @dispatcher.request_trip(2)
+        expect(@dispatcher.trips.length).must_equal(trips_before_request + 1)
+      end
+
+      it 'adds a trip to passenger when passengers id is passed' do
+        passenger = @dispatcher.find_passenger(2)
+        trip_count = passenger.trips.length
+        @dispatcher.request_trip(2)
+        expect(passenger.trips.length).must_equal (trip_count + 1)
+      end
+
+      it 'adds a trip to first available driver when request_trip is called' do
+        trip_count = @driver.trips.length
+        @dispatcher.request_trip(2)
+        expect(@driver.trips.length).must_equal (trip_count + 1)
+      end
+
+      it 'assigns the first available driver who has never driven' do
+        requested_trip = @dispatcher.request_trip(2)
+        expect(@driver.id).must_equal (requested_trip.driver.id)
+      end
+
+      it 'assigns the driver who has never driven or whos most recent trip is oldest' do
+        @driver.add_trip(RideShare::Trip.new(
+                                              id:20,
+                                              passenger_id: 2,
+                                              start_time: Time.new(1998, 10, 31),
+                                              end_time: Time.new(1998, 11, 1),
+                                              driver: @driver,
+                                              rating: 3
+                                              ))
+        requested_trip = @dispatcher.request_trip(2)
+        expect(@driver.id).must_equal (requested_trip.driver.id)
+      end
+
+      it 'switches drivers status to unavailable' do
+        @dispatcher.request_trip(2)
+        expect(@driver.status).must_equal (:UNAVAILABLE)
+      end
+
+      it 'returns nil if there are no available drivers' do
+        @dispatcher.request_trip(2)
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(3)
+        expect(@dispatcher.request_trip(3)).must_be_nil
+      end
+    end
   end
 end
+

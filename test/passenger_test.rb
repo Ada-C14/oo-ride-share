@@ -37,7 +37,6 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -46,6 +45,7 @@ describe "Passenger class" do
         )
       trip = RideShare::Trip.new(
         id: 8,
+        driver_id: 11,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
@@ -69,6 +69,106 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    before do
+      @passenger = RideShare::Passenger.new(
+        id: 1,
+        name: "Ada",
+        phone_number: "412-432-7640"
+      )
+      @trips = [{
+        id: 10,
+        driver_id: 11,
+        passenger: @passenger,
+        start_time: Time.now - 60,
+        end_time: Time.now,
+        cost: 23.45,
+        rating: 3
+        },
+            {
+        id: 8,
+        driver_id: 11,
+        passenger: @passenger,
+        start_time: Time.now - 60,
+        end_time: Time.now,
+        cost: 26.55,
+        rating: 3
+        }]
+    end
+
+    it 'accurately adds up the costs of trips' do
+      @trips.each{|trip| @passenger.add_trip(RideShare::Trip.new(trip))}
+
+      expect(@passenger.net_expenditures).must_equal 50
+    end
+
+    it 'if there are no trips, returns 0' do
+      expect(@passenger.net_expenditures).must_equal 0
+    end
+  end
+
+  describe "total_time_spent" do
+    before do
+      @passenger = RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+      )
+      @trips = [{
+                    id: 10,
+                    driver_id: 2,
+                    passenger: @passenger,
+                    start_time: Time.now - 25 * 60,
+                    end_time: Time.now,
+                    cost: 23.45,
+                    rating: 3
+                },
+                {
+                    id: 8,
+                    driver_id: 2,
+                    passenger: @passenger,
+                    start_time: Time.now - 25 * 60,
+                    end_time: Time.now,
+                    cost: 26.55,
+                    rating: 3
+                }]
+    end
+
+    it 'accurately adds up the times of the trips' do
+      @trips.each{|trip| @passenger.add_trip(RideShare::Trip.new(trip))}
+
+      expect(@passenger.total_time_spent).must_be_close_to 3000
+    end
+
+    it 'if there are no trips, returns 0' do
+      expect(@passenger.total_time_spent).must_equal 0
+    end
+  end
+
+  describe "ignore in-progress trips for calculating cost and time" do
+    before do
+      @trip = RideShare::Trip.new(
+        id: 11,
+        passenger_id: 4,
+        start_time: Time.now,
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+        driver_id: 3
+       )
+      @passenger = RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+      )
+      @passenger.add_trip(@trip)
+    end
+
+    it 'should not calculate the cost of a in-progress trip' do
+      expect(@passenger.net_expenditures).must_equal 0
+    end
+
+    it 'should not calculate the time of a in-progress trip' do
+      expect(@passenger.total_time_spent).must_equal 0
+    end
   end
 end
