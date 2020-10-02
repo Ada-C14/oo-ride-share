@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'test_helper'
+require 'time'
 
 TEST_DATA_DIRECTORY = 'test/test_data'
 
@@ -30,7 +31,7 @@ describe 'TripDispatcher class' do
 
     it 'loads the development data by default' do
       # Count lines in the file, subtract 1 for headers
-      trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
+      trip_count = `wc -l 'support/trips.csv'`.split(' ').first.to_i - 1
 
       dispatcher = RideShare::TripDispatcher.new
 
@@ -129,15 +130,100 @@ describe 'TripDispatcher class' do
       @dispatcher = build_test_dispatcher
     end
 
-    it 'accurately loads driver information into trips array' do
+    it 'accurately loads trip information into trips array' do
       first_trip = @dispatcher.trips.first
       last_trip = @dispatcher.trips.last
 
       expect(first_trip.id).must_equal 1
-      expect(first_trip.driver_id).must_equal 20
-      expect(last_trip.id).must_equal 600
-      expect(last_trip.driver_id).must_equal 25
+      expect(first_trip.driver_id).must_equal 1
+      expect(first_trip.passenger_id).must_equal 1
+      expect(first_trip.start_time).must_equal Time.parse('2018-05-25 11:52:40 -0700')
+      expect(first_trip.end_time).must_equal Time.parse('2018-05-25 12:25:00 -0700')
+      expect(first_trip.cost).must_equal 10
+      expect(first_trip.rating).must_equal 5
+      expect(last_trip.id).must_equal 5
+      expect(last_trip.driver_id).must_equal 2
+      expect(last_trip.passenger_id).must_equal 6
+      expect(last_trip.start_time).must_equal Time.parse('2018-08-05 08:58:00 -0700')
+      expect(last_trip.end_time).must_equal Time.parse('2018-08-05 09:30:00 -0700')
+      expect(last_trip.cost).must_equal 32
+      expect(last_trip.rating).must_equal 1
     end
 
   end
+
+  describe 'request_trip' do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    it 'validates driver status' do
+      @drivers = @dispatcher.drivers
+      assigned_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+      expect(assigned_driver.name).must_equal 'Driver 2'
+    end
+
+    it 'return nil if no driver is available' do
+      @drivers = []
+      driver1 = RideShare::Driver.new(
+        id: 54,
+        name: 'Rogers Bartell IV',
+        vin: '1C9EVBRM0YBC564DZ',
+        status: :UNAVAILABLE
+      )
+      driver2 = RideShare::Driver.new(
+        id: 3,
+        name: 'Test Driver',
+        vin: '12345678912345678',
+        status: :UNAVAILABLE
+      )
+      @drivers << driver1
+      @drivers << driver2
+      assigned_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+      expect(assigned_driver).must_equal nil
+    end
+
+    it 'checks if the trip was properly created' do
+      @trips = @dispatcher.trips
+      @drivers = @dispatcher.drivers
+      @passengers = @dispatcher.passengers
+      instance_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+      # instance_passenger = @passengers
+      @new_trip = RideShare::Trip.new(
+        id: @trips.length + 1,
+        driver: instance_driver,
+        passenger: RideShare::Passenger.new(
+          id: 9,
+          name: 'Merl Glover III',
+          phone_number: '1-602-620-2330 x3723',
+          trips: []
+        ),
+        start_time: Time.now,
+        end_time: nil,
+        rating: nil,
+        cost: nil
+      )
+
+      @trips << @new_trip
+      expect(@new_trip.id).must_equal 6
+      expect(@new_trip.driver).must_be_kind_of RideShare::Driver
+      expect(@new_trip.passenger).must_be_kind_of RideShare::Passenger
+      expect(@new_trip.end_time).must_equal nil
+      expect(@new_trip.rating).must_equal nil
+      expect(@new_trip.cost).must_equal nil
+    end
+  end
 end
+# driver1 = RideShare::Driver.new(
+#   id: 54,
+#   name: 'Rogers Bartell IV',
+#   vin: '1C9EVBRM0YBC564DZ'
+# )
+# driver2 = RideShare::Driver.new(
+#   id: 3,
+#   name: 'Test Driver',
+#   vin: '12345678912345678',
+#   status: :UNAVAILABLE
+# )
+# @drivers << driver1
+# @drivers << driver2
