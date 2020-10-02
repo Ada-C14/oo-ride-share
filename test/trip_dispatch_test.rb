@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -78,8 +78,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -120,6 +119,89 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+  describe "request_trip" do
+    before do
+      @trip_dispatcher = build_test_dispatcher
+    end
+    it "returns Trip instance" do
+      expect(@trip_dispatcher.request_trip(1)).must_be_instance_of RideShare::Trip
+    end
+
+    it "creates a unique instance of Trip" do
+      before_request = @trip_dispatcher.trips.dup
+      new_trip = @trip_dispatcher.request_trip(1)
+      expect(before_request.length).must_equal @trip_dispatcher.trips.length - 1
+      expect(before_request).wont_include new_trip
+    end
+
+    it "updates all trip collections appropriately" do
+      previous_trips_qty = @trip_dispatcher.trips.length
+      prev_passenger_trip_qty = @trip_dispatcher.passengers[0].trips.length
+      prev_driver_trips_qty = @trip_dispatcher.drivers[2].trips.length
+      new_trip = @trip_dispatcher.request_trip(1)
+      passenger = @trip_dispatcher.find_passenger(1)
+      driver = new_trip.driver
+
+      expect(prev_driver_trips_qty).must_equal driver.trips.length - 1
+      expect(prev_passenger_trip_qty).must_equal passenger.trips.length - 1
+      expect(previous_trips_qty).must_equal @trip_dispatcher.trips.length - 1
+      expect(driver.trips).must_include new_trip
+      expect(passenger.trips).must_include new_trip
+      expect(@trip_dispatcher.trips).must_include new_trip
+    end
+
+    it "selects an available driver" do
+      available_drivers = @trip_dispatcher.drivers.select { |driver| driver.status == :AVAILABLE }
+      new_trip = @trip_dispatcher.request_trip(1)
+
+      expect(available_drivers).must_include new_trip.driver
+    end
+
+    it "updates selected driver's status appropriately" do
+      new_trip = @trip_dispatcher.request_trip(1)
+
+      expect(new_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "selects a driver with no trips " do
+      new_trip= @trip_dispatcher.request_trip(1)
+
+      expect(new_trip.driver_id).must_equal 3
+    end
+
+    it "selects a driver that has gone longest without a trip" do
+      @trip_dispatcher.drivers.delete_at(2)
+      new_driver = RideShare::Driver.new(
+          id: 4,
+          name: "Driver 4 a long time since last trip",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+      )
+      @trip_dispatcher.drivers << new_driver
+      new_trip = RideShare::Trip.new(
+          id: 100,
+          passenger_id: 100,
+          cost: 500,
+          rating: 5,
+          driver: new_driver,
+          start_time: Time.new(1900, 01, 01),
+          end_time: Time.new(1900, 01, 02)
+      )
+      new_driver.trips << new_trip
+
+      requested_trip = @trip_dispatcher.request_trip(1)
+
+      expect(requested_trip.driver).must_be_same_as new_driver
+    end
+
+    it "raises an ArgumentError if there are no available drivers" do
+      @trip_dispatcher.drivers.delete_if { |driver| driver.status == :AVAILABLE }
+
+      expect{
+        @trip_dispatcher.request_trip(1)
+      }.must_raise ArgumentError
     end
   end
 end

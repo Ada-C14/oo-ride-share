@@ -16,6 +16,32 @@ module RideShare
       @trips << trip
     end
 
+    def net_expenditures
+      return nil if trips.empty?
+
+      total = trips.inject(0) do |sum, trip|
+        if trip.cost.nil?
+          sum + 0
+        else
+          sum + trip.cost
+        end
+      end
+      return total
+    end
+
+    def total_time_spent
+      return nil if trips.empty?
+
+      total = trips.inject(0) do |sum, trip|
+        if trip.end_time.nil?
+          sum + 0
+        else
+          sum + trip.duration
+        end
+      end
+      return total
+    end
+
     private
 
     def self.from_csv(record)

@@ -1,7 +1,6 @@
 require_relative 'test_helper'
 
 describe "Passenger class" do
-
   describe "Passenger instantiation" do
     before do
       @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
@@ -37,19 +36,24 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+            id: 1,
+            name: "Jill",
+            vin: "12345678901234567",
+            )
         )
 
       @passenger.add_trip(trip)
@@ -69,6 +73,130 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    # let block for creating passenger - for last 2 tests
+    before do
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          rating: 5,
+          cost: 32.5,
+          driver: RideShare::Driver.new(
+              id: 1,
+              name: "Jill",
+              vin: "12345678901234567",
+              )
+      )
+
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip)
+    end
+
+    it "returns 0 for empty array" do
+      passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      # create instance of passenger with empty array!
+      expect(passenger.net_expenditures).must_be_nil
+    end
+
+    it "return numeric value" do
+      expect(@passenger.net_expenditures).must_be_kind_of Numeric
+    end
+
+    it "returns sum of all trip costs for passenger" do
+      expect(@passenger.net_expenditures).must_equal 65
+    end
+
+    it "it ignores any in-progress trips" do
+      in_progress_trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2019, 10, 10, 10, 0),
+          end_time: nil,
+          rating: nil,
+          cost: nil,
+          driver: RideShare::Driver.new(
+              id: 1,
+              name: "Jill",
+              vin: "12345678901234567",
+              )
+      )
+      @passenger.add_trip(in_progress_trip)
+
+      expect(@passenger.net_expenditures).must_equal 65
+    end
+  end
+  describe "total_time_spent" do
+    before do
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2019, 10, 10, 10, 0),
+          end_time: Time.new(2019, 10, 10, 10, 5),
+          rating: 5,
+          cost: 32.5,
+          driver: RideShare::Driver.new(
+              id: 1,
+              name: "Jill",
+              vin: "12345678901234567",
+              )
+      )
+
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip)
+    end
+
+    it "it returns nil if no trips were taken" do
+      passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: [])
+      expect(passenger.total_time_spent).must_be_nil
+    end
+
+    it "it returns a numeric value" do
+      expect(@passenger.total_time_spent).must_be_kind_of Numeric
+    end
+
+    it "returns the sum of all trip durations for a passenger" do
+      expect(@passenger.total_time_spent).must_equal 600
+    end
+
+    it "ignores any in-progress trip" do
+      in_progress_trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2019, 10, 10, 10, 0),
+          end_time: nil,
+          rating: nil,
+          cost: nil,
+          driver: RideShare::Driver.new(
+              id: 1,
+              name: "Jill",
+              vin: "12345678901234567",
+              )
+      )
+      @passenger.add_trip(in_progress_trip)
+      expect(@passenger.total_time_spent).must_equal 600
+    end
   end
 end

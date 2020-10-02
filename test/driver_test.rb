@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -128,9 +128,116 @@ xdescribe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
+    it "it ignores any in-progress trips" do
+      in_progress_trip = RideShare::Trip.new(
+          id: 9,
+          passenger_id: 71,
+          start_time: Time.new(2019, 10, 10, 10, 0),
+          end_time: nil,
+          rating: nil,
+          cost: nil,
+          driver: @driver
+      )
+      @driver.add_trip(in_progress_trip)
+
+      expect(@driver.average_rating).must_equal 5.0
+    end
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          rating: 5,
+          cost: 4.55
+      )
+      trip2 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          rating: 5,
+          cost: 12
+
+      )
+      @driver.add_trip(trip)
+      @driver.add_trip(trip2)
+    end
+    it "returns 0 if no trips performed" do
+      driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+
+      expect(driver.total_revenue).must_equal 0
+    end
+
+    it "returns a float" do
+      expect(@driver.total_revenue).must_be_instance_of Float
+    end
+
+    it "it correctly calculates total earnings" do
+      expect(@driver.total_revenue).must_be_close_to 10.6
+    end
+
+    it "it returns 0 if trip cost is less than $1.65" do
+      driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          rating: 5,
+          cost: 0.75
+      )
+      driver.add_trip(trip)
+      expect(driver.total_revenue).must_equal 0
+    end
+    it "adds 0 to a revenue total if a cost is below $1.65" do
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          rating: 5,
+          cost: 0.75
+      )
+      @driver.add_trip(trip)
+
+      expect(@driver.total_revenue).must_be_close_to 10.6
+    end
+
+    it "it ignores any in-progress trips" do
+      in_progress_trip = RideShare::Trip.new(
+          id: 9,
+          passenger_id: 71,
+          start_time: Time.new(2019, 10, 10, 10, 0),
+          end_time: nil,
+          rating: nil,
+          cost: nil,
+          driver: @driver
+      )
+      @driver.add_trip(in_progress_trip)
+
+      expect(@driver.total_revenue).must_be_close_to 10.6
+    end
   end
 end

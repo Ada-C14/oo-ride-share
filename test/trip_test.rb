@@ -15,9 +15,32 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver: RideShare::Driver.new(
+            id: 1,
+            name: "Jill",
+            vin: "12345678901234567",
+        )
       }
       @trip = RideShare::Trip.new(@trip_data)
+    end
+
+    it "raises ArgumentError if end time is before start time" do
+      end_time = Time.now - 60 * 60 # 60 minutes
+      start_time = end_time + 25 * 60 # 25 minutes
+      trip_data = {
+          id: 8,
+          passenger: RideShare::Passenger.new(
+              id: 1,
+              name: "Ada",
+              phone_number: "412-432-7640"
+          ),
+          start_time: start_time,
+          end_time: end_time,
+          cost: 23.45,
+          rating: 3
+      }
+      expect{RideShare::Trip.new(trip_data)}.must_raise ArgumentError
     end
 
     it "is an instance of Trip" do
@@ -29,7 +52,6 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
@@ -39,6 +61,12 @@ describe "Trip class" do
         expect do
           RideShare::Trip.new(@trip_data)
         end.must_raise ArgumentError
+      end
+    end
+
+    describe "trip_duration" do
+      it "calculates duration for trip with start and end time" do
+        expect(@trip.duration).must_be_instance_of Float
       end
     end
   end
