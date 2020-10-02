@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -128,9 +128,157 @@ xdescribe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
+    it "correctly calculates the average rating when trips in progress" do
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: nil,
+        rating: nil
+      )
+      @driver.add_trip(trip2)
+
+      expect(@driver.average_rating).must_be_close_to 5.0
+    end
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+    end
+    it "returns zero if no driven trips" do
+      expect(@driver.total_revenue).must_equal 0
+    end
+
+    it "waives the $1.65 deduction for trips costing < $1.65" do
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 1.50,
+        rating: 5,
+        driver: @driver
+      )
+      @driver.add_trip(trip)
+
+      trip2 = RideShare::Trip.new(
+        id: 9,
+        passenger_id: 4,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 1.25,
+        rating: 5,
+        driver: @driver
+      )
+      @driver.add_trip(trip2)
+
+      trip3 = RideShare::Trip.new(
+        id: 10,
+        passenger_id: 5,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 5,
+        rating: 4,
+        driver: @driver
+      )
+      @driver.add_trip(trip3)
+
+      expect(@driver.total_revenue).must_be_close_to 4.88
+    end
+
+    it "Adds 0 for in progress trips" do
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+        driver: @driver
+      )
+      @driver.add_trip(trip)
+
+      trip2 = RideShare::Trip.new(
+        id: 9,
+        passenger_id: 4,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 10,
+        rating: 5,
+        driver: @driver
+      )
+      @driver.add_trip(trip2)
+
+      trip3 = RideShare::Trip.new(
+        id: 10,
+        passenger_id: 5,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 5,
+        rating: 4,
+        driver: @driver
+      )
+      @driver.add_trip(trip3)
+
+      expect(@driver.total_revenue).must_be_close_to 9.36
+    end
+
+    it "correctly calculates the total revenue" do
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 45,
+        rating: 5,
+        driver: @driver
+      )
+      @driver.add_trip(trip)
+
+      trip2 = RideShare::Trip.new(
+        id: 9,
+        passenger_id: 4,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 20,
+        rating: 5,
+        driver: @driver
+      )
+      @driver.add_trip(trip2)
+
+      trip3 = RideShare::Trip.new(
+        id: 10,
+        passenger_id: 5,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 40,
+        rating: 4,
+        driver: @driver
+      )
+      @driver.add_trip(trip3)
+
+      expect(@driver.total_revenue).must_be_close_to 80.04
+    end
+  end
+
+  describe "unavailable_driver method" do
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+    end
+    it "converts an available driver to unavailable after being called" do
+      @driver.unavailable_driver
+      expect(@driver.status).must_equal :UNAVAILABLE
+    end
   end
 end

@@ -1,21 +1,28 @@
-require 'csv'
+# frozen_string_literal: true
 
+require 'csv'
+require 'time'
 require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver_id, :driver
 
     def initialize(
-          id:,
-          passenger: nil,
-          passenger_id: nil,
-          start_time:,
-          end_time:,
-          cost: nil,
-          rating:
-        )
+      id:,
+      passenger: nil,
+      passenger_id: nil,
+      start_time:,
+      end_time:,
+      cost: nil,
+      rating:,
+      driver_id: nil,
+      driver: nil
+    )
       super(id)
+      if !end_time.nil? && (end_time - start_time).negative?
+        raise ArgumentError, 'Invalid trip time - end time must be later than start time'
+      end
 
       if passenger
         @passenger = passenger
@@ -33,39 +40,57 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      raise ArgumentError, "Invalid rating #{@rating}" if !@rating.nil? && (@rating > 5 || @rating < 1)
+
+      if driver
+        @driver = driver
+        @driver_id = driver.id
+
+      elsif driver_id
+        @driver_id = driver_id
+        all_drivers = Driver.load_all(directory: './support')
+        Driver.validate_id(driver_id)
+        @driver = all_drivers.find { |drivers| drivers.id == driver_id }
+      else
+        raise ArgumentError, 'Driver or driver_id is required'
       end
     end
 
     def inspect
       # Prevent infinite loop when puts-ing a Trip
       # trip contains a passenger contains a trip contains a passenger...
-      "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
-        "id=#{id.inspect} " +
-        "passenger_id=#{passenger&.id.inspect} " +
-        "start_time=#{start_time} " +
-        "end_time=#{end_time} " +
-        "cost=#{cost} " +
+      "#<#{self.class.name}:0x#{object_id.to_s(16)} " \
+        "id=#{id.inspect} " \
+        "passenger_id=#{passenger&.id.inspect} " \
+        "start_time=#{start_time} " \
+        "end_time=#{end_time} " \
+        "cost=#{cost} " \
         "rating=#{rating}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
+      @driver = driver
+      driver.add_trip(self)
     end
 
-    private
+    def trip_duration
+      raise ArgumentError, 'Trip still in progress' if @end_time.nil?
+
+      @end_time - @start_time
+    end
 
     def self.from_csv(record)
-      return self.new(
-               id: record[:id],
-               passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
-               cost: record[:cost],
-               rating: record[:rating]
-             )
+      new(
+        id: record[:id],
+        driver_id: record[:driver_id],
+        passenger_id: record[:passenger_id],
+        start_time: Time.parse(record[:start_time]),
+        end_time: Time.parse(record[:end_time]),
+        cost: record[:cost],
+        rating: record[:rating]
+      )
     end
   end
 end
