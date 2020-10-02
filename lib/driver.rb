@@ -44,12 +44,12 @@ module RideShare
     def total_revenue
       return 0 if @trips.length == 0
 
-      cost = @trips.reduce(0) { |total_cost, trip| total_cost + trip.cost }.to_f
+      cost = @trips.map(&:cost).compact
 
-      return 0 if cost < 1.65
+      return 0 if cost.sum < 1.65
 
-      fee = @trips.length * 1.65
-      return (cost - fee) * 0.8
+      fee = cost.length * 1.65
+      return (cost.sum - fee) * 0.8
     end
 
     def start_trip(trip)
