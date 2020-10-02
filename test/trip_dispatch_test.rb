@@ -188,16 +188,16 @@ describe 'TripDispatcher class' do
       @drivers = @dispatcher.drivers
       @passengers = @dispatcher.passengers
       instance_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
-      # instance_passenger = @passengers
+      new_passenger = RideShare::Passenger.new(
+        id: 8,
+        name: 'Merl Glover III',
+        phone_number: '1-602-620-2330 x3723',
+        trips: []
+      )
       @new_trip = RideShare::Trip.new(
         id: @trips.length + 1,
         driver: instance_driver,
-        passenger: RideShare::Passenger.new(
-          id: 9,
-          name: 'Merl Glover III',
-          phone_number: '1-602-620-2330 x3723',
-          trips: []
-        ),
+        passenger: new_passenger,
         start_time: Time.now,
         end_time: nil,
         rating: nil,
@@ -205,25 +205,16 @@ describe 'TripDispatcher class' do
       )
 
       @trips << @new_trip
+      expect(@trips.length).must_equal 6
+      expect(instance_driver.trip_status_updating(@new_trip)).must_equal :UNAVAILABLE
+      expect(@passengers.length).must_equal 8
       expect(@new_trip.id).must_equal 6
       expect(@new_trip.driver).must_be_kind_of RideShare::Driver
       expect(@new_trip.passenger).must_be_kind_of RideShare::Passenger
       expect(@new_trip.end_time).must_equal nil
       expect(@new_trip.rating).must_equal nil
       expect(@new_trip.cost).must_equal nil
+
     end
   end
 end
-# driver1 = RideShare::Driver.new(
-#   id: 54,
-#   name: 'Rogers Bartell IV',
-#   vin: '1C9EVBRM0YBC564DZ'
-# )
-# driver2 = RideShare::Driver.new(
-#   id: 3,
-#   name: 'Test Driver',
-#   vin: '12345678912345678',
-#   status: :UNAVAILABLE
-# )
-# @drivers << driver1
-# @drivers << driver2

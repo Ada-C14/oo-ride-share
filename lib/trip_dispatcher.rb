@@ -43,7 +43,7 @@ module RideShare
         rating: nil,
         cost: nil
       )
-      # assigned_driver.add_trip(new_trip) # add trip to driver's trip, need to be in order
+
       assigned_driver.trip_status_updating(new_trip) # change driver to unavailable
       new_passenger.add_trip(new_trip) # add trip to passenger's trip, need to initialize a passenger in find passenger
       @trips << new_trip
