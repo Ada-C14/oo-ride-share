@@ -67,7 +67,6 @@ module RideShare
       return new_trip
     end
 
-
     private
 
     def connect_trips

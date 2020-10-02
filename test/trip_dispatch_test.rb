@@ -134,7 +134,7 @@ describe "TripDispatcher class" do
       expect(@dispatcher.request_trip(passenger.id)).must_be_instance_of RideShare::Trip
     end
 
-    it 'Updates trip lists for driver and passenger' do
+    it 'Updates trip lists for driver and passenger, and sets driver status to unavailable' do
       passenger = @dispatcher.find_passenger(2)
       driver = @dispatcher.find_driver(2)
 

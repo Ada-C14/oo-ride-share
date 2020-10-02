@@ -12,9 +12,6 @@ module RideShare
       @vin = vin
       @trips = trips
       valid_status = [:UNAVAILABLE, :AVAILABLE]
-      # if !(valid_status.include?(status))
-      #   raise ArgumentError, "must have valid status"
-      # end
       unless valid_status.include?(status)
         raise ArgumentError, "Must have valid status"
       end
@@ -44,8 +41,6 @@ module RideShare
       return average_total
     end
 
-    #Each driver gets 80% of the trip cost after a fee of $1.65 per trip
-    # is subtracted.
     def total_revenue
       revenue = 0
 
@@ -61,8 +56,6 @@ module RideShare
     end
 
     def trip_in_progress(trip)
-      # @trips.each do |trip|
-      #   if @driver.status = :AVAILABLE
       add_trip(trip)
       @status = :UNAVAILABLE
     end

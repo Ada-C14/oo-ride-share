@@ -25,9 +25,6 @@ module RideShare
       return sum
     end
 
-    #total_time_spent to Passenger that will return the total amount of
-    # time that passenger has spent on their trips
-
     def total_time_spent
       total_time = 0
       @trips.compact.each do |trip|
