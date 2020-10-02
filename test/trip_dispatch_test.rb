@@ -78,8 +78,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -120,6 +119,70 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+
+  describe "request trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    it "creates the trip properly" do
+      expect(@dispatcher.request_trip(3)).must_be_kind_of RideShare::Trip
+    end
+
+    it "updates driver trip list" do
+      expect(@dispatcher.trips.length).must_equal 5
+      expect(@dispatcher.request_trip(3)).must_be_kind_of RideShare::Trip
+      expect(@dispatcher.trips.length).must_equal 6
+
+      expect(@dispatcher.trips.last.id).must_equal 6
+      expect(@dispatcher.trips.last.driver_id).must_equal 2
+      expect(@dispatcher.trips.last.passenger_id).must_equal 3
+      expect(@dispatcher.trips.last.start_time).must_be_close_to Time.now
+      expect(@dispatcher.trips.last.end_time).must_be_nil
+      expect(@dispatcher.trips.last.cost).must_be_nil
+      expect(@dispatcher.trips.last.rating).must_be_nil
+    end
+
+    it "throws error if driver selected is not AVAILABLE" do
+      expect{
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(2)
+        @dispatcher.request_trip(3)
+      }.must_raise ArgumentError
+    end
+
+    it "Correctly calculates Passenger's net_expenditures excluding nil values (in-progress trips)" do
+      net_expenditures = @dispatcher.find_passenger(1).net_expenditures
+
+      @dispatcher.request_trip(1)  #this trip has no cost since it's in progress. net_expenditures should exclude this
+
+      expect(@dispatcher.find_passenger(1).net_expenditures).must_equal net_expenditures
+    end
+
+    it "Correctly calculates Passenger's total_time_spent excluding nil values (in-progress trips)" do
+      total_time_spent = @dispatcher.find_passenger(1).total_time_spent
+
+      @dispatcher.request_trip(1)  #this trip has no cost since it's in progress. net_expenditures should exclude this
+
+      expect(@dispatcher.find_passenger(1).total_time_spent).must_equal total_time_spent
+    end
+
+    it "Correctly calculates Passenger's total_time_spent excluding nil values (in-progress trips)" do
+      total_time_spent = @dispatcher.find_passenger(1).total_time_spent
+
+      @dispatcher.request_trip(1)  #this trip has no duration since it's in progress. total_time_spent should exclude this
+
+      expect(@dispatcher.find_passenger(1).total_time_spent).must_equal total_time_spent
+    end
+
+    it "Correctly calculates Driver's average_rating excluding nil values (in-progress trips)" do
+      average_rating = @dispatcher.find_driver(2).average_rating
+
+      @dispatcher.request_trip(1)
+
+      expect(@dispatcher.find_driver(2).average_rating).must_equal average_rating
     end
   end
 end

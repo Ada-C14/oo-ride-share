@@ -37,7 +37,11 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -46,6 +50,7 @@ describe "Passenger class" do
         )
       trip = RideShare::Trip.new(
         id: 8,
+        driver: @driver,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
@@ -69,6 +74,94 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
+    before do
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      @trip_1 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 10, 11),
+          cost: 15,
+          rating: 5
+      )
+      @trip_2 = RideShare::Trip.new(
+          id: 9,
+          driver: @driver,
+          passenger: @passenger,
+          start_time: Time.new(2016, 9, 10),
+          end_time: Time.new(2016, 9, 11),
+          cost: 5,
+          rating: 5
+      )
+    end
+
     # You add tests for the net_expenditures method
+    it "returns correct total cost of passenger's trips" do
+      @passenger.add_trip(@trip_1)
+      @passenger.add_trip(@trip_2)
+
+      expect(@passenger.net_expenditures).must_equal 20
+    end
+
+    it "returns nil if @trips is empty" do
+      expect(@passenger.net_expenditures).must_be_nil
+    end
+  end
+
+  describe "total_time_spent" do
+    before do
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+      )
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      @trip_1 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger: @passenger,
+          start_time: Time.new(2016, 10, 11, 9, 30, 0, -0700),
+          end_time: Time.new(2016, 10, 11, 10, 30, 0, -0700),
+          cost: 15,
+          rating: 5
+      )
+      @trip_2 = RideShare::Trip.new(
+          id: 9,
+          driver: @driver,
+          passenger: @passenger,
+          start_time: Time.new(2016, 9, 10, 9, 30, 0, -0700),
+          end_time: Time.new(2016, 9, 10, 10, 30, 0, -0700),
+          cost: 5,
+          rating: 5
+      )
+
+    end
+
+    it 'returns total time spent for all Passenger trips' do
+      @passenger.add_trip(@trip_1)
+      @passenger.add_trip(@trip_2)
+
+      expect(@passenger.total_time_spent).must_equal 7200.0
+    end
+
+    it 'returns nil if Passenger has no trips' do
+      expect(@passenger.total_time_spent).must_be_nil
+    end
   end
 end
