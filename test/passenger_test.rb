@@ -34,7 +34,6 @@ describe "Passenger class" do
     end
   end
 
-
   describe "trips property" do
     before do
       # TODO: you'll need to add a driver at some point here.
@@ -44,11 +43,19 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Test Driver",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+      )
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
+        driver: @driver,
+        start_time: Time.new(2016, 8, 8, 9, 25, 25),
+        end_time: Time.new(2016, 8, 8, 9, 35, 25),
+        cost: 13.55,
         rating: 5
         )
 
@@ -68,7 +75,61 @@ describe "Passenger class" do
     end
   end
 
-  describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+  describe "check net expensitures and total time spent" do
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+      )
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Test Driver",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+      )
+
+    end
+    it "net_expenditures sums cost correctly" do
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          driver: @driver,
+          start_time: Time.new(2016, 8, 8, 9, 25, 25),
+          end_time: Time.new(2016, 8, 8, 9, 35, 25),
+          cost: 13.55,
+          rating: 5
+      )
+
+      @passenger.add_trip(trip)
+      # You add tests for the net_expenditures method
+      expect(@passenger.net_expenditures).must_equal 13.55
+    end
+
+    it "net_expenditures will return 0 if there are no trips" do
+      expect(@passenger.net_expenditures).must_equal 0
+    end
+
+    it "total time spent sums of durtions of each trip correctly" do
+      trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          driver: @driver,
+          start_time: Time.new(2016, 8, 8, 9, 25, 25),
+          end_time: Time.new(2016, 8, 8, 9, 35, 25),
+          cost: 13.55,
+          rating: 5
+      )
+
+      @passenger.add_trip(trip)
+      expect(@passenger.total_time_spent).must_equal 10 * 60
+    end
+
+    it "total_time_spent will return 0 if there are no trips" do
+      expect(@passenger.total_time_spent).must_equal 0
+    end
+
   end
 end

@@ -9,6 +9,12 @@ describe "TripDispatcher class" do
     )
   end
 
+  def build_test_dispatcher_2
+    return RideShare::TripDispatcher.new(
+        directory: './support'
+    )
+  end
+
   describe "Initializer" do
     it "is an instance of TripDispatcher" do
       dispatcher = build_test_dispatcher
@@ -17,13 +23,13 @@ describe "TripDispatcher class" do
 
     it "establishes the base data structures when instantiated" do
       dispatcher = build_test_dispatcher
-      [:trips, :passengers].each do |prop|
+      [:trips, :passengers, :drivers].each do |prop|
         expect(dispatcher).must_respond_to prop
       end
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -79,7 +85,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -119,6 +125,66 @@ describe "TripDispatcher class" do
           expect(trip.driver.id).must_equal trip.driver_id
           expect(trip.driver.trips).must_include trip
         end
+      end
+    end
+
+    describe "request_trip" do
+      before do
+        @dispatcher = build_test_dispatcher_2
+      end
+
+      it "Check that the number of trips increases by 1" do
+        before_length_trip = @dispatcher.trips.length
+        before_length_driver = @dispatcher.find_driver(1).trips.length
+        before_length_passenger = @dispatcher.find_passenger(1).trips.length
+
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(1)
+        expect(@dispatcher.trips.length).must_equal before_length_trip + 2
+        expect(@dispatcher.find_driver(1).trips.length).must_equal before_length_driver + 1
+        expect(@dispatcher.find_passenger(1).trips.length).must_equal before_length_passenger + 2
+      end
+
+      it "trip was created properly" do
+        expect(@dispatcher.request_trip(1)).must_be_kind_of RideShare::Trip
+      end
+
+      it "Driver status is unavailable" do
+        expect(@dispatcher.request_trip(1).driver.status).must_equal :UNAVAILABLE
+      end
+
+      it "check if request trip adds the correct passenger id" do
+        expect(@dispatcher.request_trip(1).passenger.id).must_equal 1
+      end
+
+      it "check if request trip adds the correct driver id" do
+        expect(@dispatcher.request_trip(1).driver.id).must_equal 1
+      end
+
+      it "check if driver's status changes" do
+        expect(@dispatcher.find_driver(1).status).must_equal :AVAILABLE
+        @dispatcher.request_trip(1)
+        expect(@dispatcher.find_driver(1).status).must_equal :UNAVAILABLE
+      end
+
+      it "check that correct driver's status changes for each call of request trip" do
+        expect(@dispatcher.find_driver(6).status).must_equal :AVAILABLE
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(1)
+        expect(@dispatcher.find_driver(6).status).must_equal :UNAVAILABLE
+      end
+
+      it "check if the status changes for the chosen driver whose most recent trip is the oldest" do
+        expect(@dispatcher.find_driver(28).status).must_equal :AVAILABLE
+        7.times {@dispatcher.request_trip(1)}
+        expect(@dispatcher.find_driver(28).status).must_equal :UNAVAILABLE
+      end
+
+      it "There is no available drivers" do
+        @dispatcher = build_test_dispatcher
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(1)
+        expect{ @dispatcher.request_trip(1) }.must_raise ArgumentError
       end
     end
   end

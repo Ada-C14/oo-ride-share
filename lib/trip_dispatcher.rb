@@ -2,6 +2,7 @@ require 'csv'
 require 'time'
 
 require_relative 'passenger'
+require_relative 'driver'
 require_relative 'trip'
 
 module RideShare
@@ -10,6 +11,7 @@ module RideShare
 
     def initialize(directory: './support')
       @passengers = Passenger.load_all(directory: directory)
+      @drivers = Driver.load_all(directory: directory)
       @trips = Trip.load_all(directory: directory)
       connect_trips
     end
@@ -17,6 +19,11 @@ module RideShare
     def find_passenger(id)
       Passenger.validate_id(id)
       return @passengers.find { |passenger| passenger.id == id }
+    end
+
+    def find_driver(id)
+      Driver.validate_id(id)
+      return @drivers.find { |driver| driver.id == id }
     end
 
     def inspect
@@ -27,14 +34,69 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+    def get_available_drivers
+      available_drivers = []
+      drivers.each do |driver|
+        if driver.status == :AVAILABLE
+          available_drivers << driver
+        end
+      end
+
+      if available_drivers.nil? || available_drivers == []
+        raise ArgumentError, "There is no available drivers"
+      end
+      return available_drivers
+    end
+
+    def get_latest_trip(driver)
+      return driver.trips.max_by {|trip| trip.end_time}
+    end
+
+    def choose_driver(available_drivers)
+
+      driver_oldest_trip = nil
+      oldest_time = Time.now
+
+      available_drivers.each do |driver|
+        if driver.trips.length == 0
+          return driver
+        else
+          latest_trip = driver.get_latest_trip
+          if latest_trip.end_time < oldest_time
+            oldest_time = latest_trip.end_time
+            driver_oldest_trip = driver
+          end
+        end
+      end
+      return driver_oldest_trip
+    end
+
+    def request_trip(passenger_id)
+      available_drivers = get_available_drivers
+      chosen_driver = choose_driver(available_drivers)
+      passenger = find_passenger(passenger_id)
+      new_trip = Trip.new(id: @trips.length + 1,
+                          passenger: passenger,
+                          driver: chosen_driver,
+                          start_time: Time.now,
+                          end_time: nil,
+                          cost: nil,
+                          rating: nil)
+
+      chosen_driver.request_trip_helper(new_trip)
+
+      @trips << new_trip
+      return new_trip
+    end
+
     private
 
     def connect_trips
       @trips.each do |trip|
         passenger = find_passenger(trip.passenger_id)
-        trip.connect(passenger)
+        driver = find_driver(trip.driver_id)
+        trip.connect(passenger, driver)
       end
-
       return trips
     end
   end
