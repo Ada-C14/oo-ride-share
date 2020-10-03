@@ -27,18 +27,19 @@ module RideShare
     end
 
     def driver_assigned
-      @trips.map(&:trip)
-      return trip.driver if trip.driver.status == :AVAILABLE
-      raise ArgumentError, "No drivers available"
+      driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+      return driver
     end
 
     def request_trip(passenger_id)
       driver = driver_assigned
+      return nil if driver == nil
+
       start_time = Time.now
       end_time = nil
       passenger = find_passenger(passenger_id)
       trip_data = {
-          id: nil,
+          id: @trips.length + 1,
           passenger: passenger,
           start_time: start_time,
           end_time: end_time,
@@ -50,12 +51,12 @@ module RideShare
 
       new_trip_instance = RideShare::Trip.new(trip_data)
 
-      driver.trips << new_trip_instance #  Add the new trip to the collection of trips for that Driver
-      driver.status = :UNAVAILABLE  #          Set the driver's status to :UNAVAILABLE
-      passenger.add_trip(passenger) # Add the Trip to the Passenger's list of Trips
-      @trips << new_trip_instance   #  Add the new trip to the collection of all Trips in TripDispatcher
 
-      return new_trip_instance #  Return the newly created trip
+      driver.accept_new_trip(new_trip_instance)
+      passenger.add_trip(new_trip_instance)
+      @trips << new_trip_instance
+
+      return new_trip_instance
 
     end
 

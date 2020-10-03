@@ -19,12 +19,17 @@ module RideShare
 
     end
 
+    def accept_new_trip(trip)
+      add_trip(trip)
+      @status = :UNAVAILABLE
+    end
+
     def add_trip(trip)
       @trips << trip
     end
 
     def average_rating
-      ratings_array = @trips.map(&:rating)
+      ratings_array = @trips.reject { |trip| trip.rating == nil }.map(&:rating)
       return 0 if (@trips) == [] || @trips == nil
       return (ratings_array.sum/ratings_array.length).to_f
     end
