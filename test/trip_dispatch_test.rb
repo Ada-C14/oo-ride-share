@@ -52,7 +52,7 @@ describe "TripDispatcher class" do
       end
     end
 
-    describe "Passenger & Trip loader methods" do
+    describe "Passenger and Trip loader methods" do
       before do
         @dispatcher = build_test_dispatcher
       end
@@ -78,8 +78,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -95,7 +94,7 @@ describe "TripDispatcher class" do
       end
     end
 
-    describe "Driver & Trip loader methods" do
+    describe "Driver and Trip loader methods" do
       before do
         @dispatcher = build_test_dispatcher
       end
@@ -119,6 +118,34 @@ describe "TripDispatcher class" do
           expect(trip.driver.id).must_equal trip.driver_id
           expect(trip.driver.trips).must_include trip
         end
+      end
+    end
+
+    describe "Request Trip Methods Testing" do
+
+    # before do
+    #   ####
+    # end
+
+      it "creates a trip properly" do
+        dispatcher = build_test_dispatcher
+        trip = dispatcher.request_trip(8)
+
+        expect(trip).must_be_instance_of RideShare::Trip
+        expect(trip.id).must_equal 6
+        expect(trip.driver_id).must_equal 2
+        expect(trip.driver).must_be_instance_of RideShare::Driver
+        expect(trip.driver.id).must_equal 2
+
+        expect(trip.passenger).must_be_instance_of RideShare::Passenger
+        expect(trip.passenger.id).must_equal 8
+        expect(trip.passenger_id).must_equal 8
+
+        expect(trip.start_time).must_be_instance_of Time
+        expect(trip.end_time).must_be_nil
+
+        expect(trip.cost).must_be_nil
+        expect(trip.rating).must_be_nil
       end
     end
   end

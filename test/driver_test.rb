@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -56,6 +56,7 @@ xdescribe "Driver class" do
         id: 3,
         name: "Test Driver",
         vin: "12345678912345678"
+
       )
       @trip = RideShare::Trip.new(
         id: 8,
@@ -83,7 +84,7 @@ xdescribe "Driver class" do
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ"
+        vin: "1C9EVBRM0YBC564DZ",
       )
       trip = RideShare::Trip.new(
         id: 8,
@@ -128,9 +129,57 @@ xdescribe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
+    it "correctly calculates the average rating including an in-progress trip" do
+      trip2 = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8)
+      )
+      @driver.add_trip(trip2)
+
+      expect(@driver.average_rating).must_be_close_to (5.0) / 1.0, 0.01
+    end
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ",
+          trips: []
+          )
+      trip = RideShare::Trip.new(
+          id: 8,
+          driver: @driver,
+          passenger_id: 3,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          rating: 5,
+          cost: 20,
+      )
+      @driver.add_trip(trip)
+    end
+
+    it "correctly calculates total_revenue" do
+      total = @driver.total_revenue
+      expect(total).must_be_close_to 14.68
+    end
+
+    it "total_revenue returns a float" do
+      expect(@driver.total_revenue).must_be_kind_of Float
+    end
+
+    it "returns 0 if there are no trips" do
+      @driver = RideShare::Driver.new(
+          id: 32,
+          name: "Colorful Blob",
+          vin: "DKJSEKVKDKFJEKRKT"
+      )
+        expect(@driver.total_revenue).must_equal 0
+    end
   end
 end
+
