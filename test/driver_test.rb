@@ -145,7 +145,7 @@ describe "Driver class" do
       driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
       trip = RideShare::Trip.new(
           id: 8,
-          driver: @driver,
+          driver: driver,
           passenger_id: 3,
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
@@ -161,7 +161,7 @@ describe "Driver class" do
       driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
       trip = RideShare::Trip.new(
           id: 8,
-          driver: @driver,
+          driver: driver,
           passenger_id: 3,
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
@@ -178,7 +178,7 @@ describe "Driver class" do
       driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
       trip = RideShare::Trip.new(
           id: 8,
-          driver: @driver,
+          driver: driver,
           passenger_id: 3,
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
@@ -195,7 +195,7 @@ describe "Driver class" do
       driver = RideShare::Driver.new(id: 10, name: "Random Driver", vin: 12345671234567816, status: :AVAILABLE, trips: [])
       trip = RideShare::Trip.new(
           id: 8,
-          driver: @driver,
+          driver: driver,
           passenger_id: 3,
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),

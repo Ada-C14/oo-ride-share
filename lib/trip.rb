@@ -78,6 +78,7 @@ module RideShare
 
     end
 
+
     # Add an instance method to the Trip class to calculate the duration of the trip
     # in seconds, and a corresponding test
 

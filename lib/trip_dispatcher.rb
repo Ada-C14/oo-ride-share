@@ -5,6 +5,11 @@ require_relative 'passenger'
 require_relative 'trip'
 
 module RideShare
+
+  class NoDriverAvailableError < StandardError
+
+  end
+
   class TripDispatcher
     attr_accessor :drivers, :passengers, :trips
 
@@ -44,7 +49,9 @@ module RideShare
         end
       end
 
-      passenger_identified = find_passenger(passenger_id)
+      raise NoDriverAvailableError.new if selected_driver.nil?
+
+          passenger_identified = find_passenger(passenger_id)
 
       trip_id = @trips.length + 1
 
@@ -67,6 +74,8 @@ module RideShare
       #     break
       #   end
       # end
+
+
       selected_driver.accept_trip_request(trip_created)
 
       passenger_identified.add_trip(trip_created)
