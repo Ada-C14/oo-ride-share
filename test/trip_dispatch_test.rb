@@ -17,13 +17,13 @@ describe "TripDispatcher class" do
 
     it "establishes the base data structures when instantiated" do
       dispatcher = build_test_dispatcher
-      [:trips, :passengers].each do |prop|
+      [:trips, :passengers, :drivers].each do |prop|
         expect(dispatcher).must_respond_to prop
       end
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -78,8 +78,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -119,6 +118,91 @@ describe "TripDispatcher class" do
           expect(trip.driver.id).must_equal trip.driver_id
           expect(trip.driver.trips).must_include trip
         end
+      end
+    end
+  end
+
+  describe "making a new trip" do
+    describe "intelligent_dispatch" do
+      before do
+        @fake_dispatcher = build_test_dispatcher
+      end
+
+      it "returns an instance of Driver" do
+        expect(@fake_dispatcher.intelligent_dispatch).must_be_instance_of RideShare::Driver
+      end
+
+      it "returns a driver who is available" do
+        expect(@fake_dispatcher.intelligent_dispatch.status).must_equal :AVAILABLE
+      end
+
+      it "raises an error if no drivers are available" do
+        @fake_dispatcher.request_trip(1)
+        @fake_dispatcher.request_trip(2)
+
+        expect { @fake_dispatcher.request_trip(3) }.must_raise ArgumentError
+      end
+
+      it "must find driver with no previous trips" do
+        expect(@fake_dispatcher.intelligent_dispatch.trips).must_be_empty
+      end
+
+      it "must find driver with oldest recent trip" do
+        this_new_trip = RideShare::Trip.new(
+            id: 166,
+            passenger_id: 3,
+            start_time: (Time.now - 60 * 60),
+            end_time: Time.now,
+            cost: 100,
+            rating: 4,
+            driver_id: 3
+        )
+        @fake_dispatcher.find_driver(3).add_trip(this_new_trip)
+
+        expect(@fake_dispatcher.intelligent_dispatch.id).must_equal 2
+      end
+    end
+
+    describe "request_trip" do
+      before do
+        @fake_dispatcher = build_test_dispatcher
+        @fake_trip = @fake_dispatcher.request_trip(1)
+      end
+
+      it "returns an instance of Trip" do
+        expect(@fake_trip).must_be_instance_of RideShare::Trip
+      end
+
+      it "creates a trip with current start time" do
+        current_time = Time.now.to_s
+        expect(@fake_trip.start_time.to_s).must_equal current_time
+      end
+
+      it "creates a trip with nil values for end time, cost, rating" do
+        expect(@fake_trip.end_time).must_be_nil
+        expect(@fake_trip.cost).must_be_nil
+        expect(@fake_trip.rating).must_be_nil
+      end
+
+      it "add in progress trip to passenger's trips array" do
+        expect(@fake_trip.passenger.trips).must_include @fake_trip
+      end
+
+      it "add in progress trip to driver's trips array" do
+        expect(@fake_trip.driver.trips).must_include @fake_trip
+      end
+
+      it "adds in progress trip to tripdispatcher's trips array" do
+        expect(@fake_dispatcher.trips).must_include @fake_trip
+      end
+
+      it "adds correct passenger to trip" do
+        fake_passenger = @fake_dispatcher.find_passenger(1)
+        expect(@fake_trip.passenger).must_equal fake_passenger
+      end
+
+      it "changes status of driver of in progress trip to unavailable" do
+        expect(@fake_trip.driver.status).must_equal :UNAVAILABLE
       end
     end
   end
