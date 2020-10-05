@@ -69,6 +69,18 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    it "properly calculate total passenger money charged" do
+      dispatch = RideShare::TripDispatcher.new
+
+      expect(dispatch.passengers[0].net_expenditures).must_equal 15
+    end
+  end
+
+  describe "duration" do
+    it "properly calculate total time of total passenger trips" do
+      dispatch = RideShare::TripDispatcher.new
+
+      expect(dispatch.passengers[0].total_time_spent).must_equal 5410.0
+    end
   end
 end
