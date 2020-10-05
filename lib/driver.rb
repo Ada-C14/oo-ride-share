@@ -33,7 +33,6 @@ module RideShare
       end
 
       completed_trips = @trips.count(&:end_time) # count truthy values
-      # completed_trips = @trips.reject { |trip| trip.end_time.nil? }
       average_rating = total_rating.to_f / completed_trips
 
       if @trips.length.zero?

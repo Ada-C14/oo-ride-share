@@ -33,10 +33,8 @@ module RideShare
 
     def request_trip(passenger_id)
       assigned_driver = find_available_driver
-      if assigned_driver.nil?
-        return nil
-      end
-      # what do we do if the passenger doesn't exist, or if the id we got was bad?
+      return nil if assigned_driver.nil?
+
       new_passenger = find_passenger(passenger_id)
       new_trip = RideShare::Trip.new(
         id: @trips.length + 1,
@@ -48,8 +46,8 @@ module RideShare
         cost: nil
       )
 
-      assigned_driver.trip_status_updating(new_trip) # change driver to unavailable
-      new_passenger.add_trip(new_trip) # add trip to passenger's trip, need to initialize a passenger in find passenger
+      assigned_driver.trip_status_updating(new_trip)
+      new_passenger.add_trip(new_trip)
       @trips << new_trip
 
       return new_trip

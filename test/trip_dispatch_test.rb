@@ -157,14 +157,11 @@ describe 'TripDispatcher class' do
       @dispatcher = build_test_dispatcher
     end
 
-    # should call @dispatcher.find_driver or @dispatcher.find_available_driver - are these separate methods
     it 'validates driver status' do
       assigned_driver = @dispatcher.find_available_driver
       expect(assigned_driver.name).must_equal 'Driver 2'
     end
 
-    #should call @dispatcher.find_available_driver
-    # set all drivers status to unavailable on dispatcher
     it 'return nil if no driver is available' do
       drivers = @dispatcher.drivers
       drivers.each do |driver|
