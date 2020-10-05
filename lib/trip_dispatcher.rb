@@ -27,13 +27,17 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
 
+    def find_available_driver
+      return @drivers.find { |driver| driver.status == :AVAILABLE }
+    end
+
     def request_trip(passenger_id)
-      assigned_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+      assigned_driver = find_available_driver
       if assigned_driver.nil?
         return nil
       end
-
-      new_passenger = @passengers.find_passenger(passenger_id)
+      # what do we do if the passenger doesn't exist, or if the id we got was bad?
+      new_passenger = find_passenger(passenger_id)
       new_trip = RideShare::Trip.new(
         id: @trips.length + 1,
         driver: assigned_driver,
