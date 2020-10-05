@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'csv_record'
 
 module RideShare
@@ -16,6 +18,26 @@ module RideShare
       @trips << trip
     end
 
+    def net_expenditures
+      total = 0
+      @trips.each do |trip|
+        total += trip.cost unless trip.end_time.nil?
+      end
+
+      return total
+
+    end
+
+    def total_time_spent
+      total = 0
+      @trips.each do |trip|
+        total += trip.trip_duration
+      end
+
+      return total
+
+    end
+
     private
 
     def self.from_csv(record)
@@ -27,3 +49,4 @@ module RideShare
     end
   end
 end
+
