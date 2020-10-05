@@ -25,10 +25,8 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
 
-    def request_trip(passenger_id)
-      passenger = find_passenger(passenger_id)
+    def intelligent_dispatch
       drivers_available = @drivers.select { |driver| driver.status == :AVAILABLE }
-
       raise ArgumentError.new("No available drivers") if drivers_available.empty?
 
       if drivers_available.any? { |candidate| candidate.trips.count == 0 }
@@ -36,8 +34,15 @@ module RideShare
       else
         driver = drivers_available.min_by { |candidate| candidate.trips.last.end_time }
       end
+      return driver
+    end
+
+    def request_trip(passenger_id)
+      passenger = find_passenger(passenger_id)
+      driver = intelligent_dispatch
 
       trip = Trip.new(id: @trips.last.id + 1, passenger: passenger, passenger_id: passenger_id, driver: driver, driver_id: driver.id, start_time: Time.now, end_time: nil, cost: nil, rating: nil)
+
       @trips << trip
       passenger.add_trip(trip)
       driver.add_trip(trip)
