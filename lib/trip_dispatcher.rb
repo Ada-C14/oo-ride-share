@@ -45,14 +45,6 @@ module RideShare
       trip_driver = select_driver
       return nil unless trip_driver
 
-      # TODO remove
-      # # Find a driver, returning nil if there are no available drivers
-      # trip_driver = nil
-      # driver_index = @drivers.find_index { |driver| driver.status == :AVAILABLE }
-      # return nil unless driver_index
-      # trip_driver = @drivers[driver_index]
-      # return nil if trip_driver == nil
-
       new_trip = Trip.new(
           id: @trips.length + 1,
           passenger: find_passenger(passenger_id),
@@ -110,10 +102,11 @@ module RideShare
       # Create hash of drivers and most recent trip end times
       drivers_last_trips = {}
       driver_pool.each do |driver|
-        drivers_last_trips[driver] = driver.trips.max_by { |trip| trip.end_time }
+        drivers_last_trips[driver] = driver.trips.max_by { |trip| trip.end_time }.end_time
       end
 
       # Find driver that last drove the longest ago
+      drivers_last_trips.compact!
       new_driver = drivers_last_trips.min_by { |driver, last_trip| last_trip }[0]
       return new_driver if new_driver
       return nil

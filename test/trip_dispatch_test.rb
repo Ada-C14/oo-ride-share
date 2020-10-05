@@ -184,15 +184,19 @@ describe "TripDispatcher class" do
       @correct_driver = @dispatcher.select_driver
     end
     it "check there are no in-progress trips selected" do
-
+      @dispatcher.request_trip(1)
+      @dispatcher.request_trip(1)
+      @dispatcher.request_trip(1)
+      expect(@dispatcher.request_trip(1)).must_be_nil
     end
 
     it "pick driver that has never driven" do
-
+      expect(@dispatcher.request_trip(1).driver_id).must_equal 3
     end
 
     it "If all drivers have driven, pick one that's driven last" do
-
+      @dispatcher.request_trip(1)
+      expect(@dispatcher.request_trip(1).driver_id).must_equal 2
     end
   end
 end
