@@ -1,15 +1,18 @@
 require 'csv'
+require 'time'
 
 require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    attr_reader :id, :passenger, :passenger_id,:driver, :driver_id, :start_time, :end_time, :cost, :rating
 
     def initialize(
           id:,
           passenger: nil,
           passenger_id: nil,
+          driver: nil,
+          driver_id: nil,
           start_time:,
           end_time:,
           cost: nil,
@@ -28,14 +31,28 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
+      raise ArgumentError, 'Driver or driver_id is required' unless driver || driver_id
+      @driver = driver
+      @driver.nil? ? @driver_id = driver_id : @driver_id = driver.id
+
       @start_time = start_time
       @end_time = end_time
-      @cost = cost
-      @rating = rating
+      raise ArgumentError.new("Start time should occur before the end time") if @start_time > @end_time unless @end_time.nil?
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      @cost = cost
+
+      @rating = rating
+      raise ArgumentError.new("Invalid rating #{@rating}") if @rating > 5 || @rating < 1 unless @rating.nil?
+
+    end
+
+    def duration
+      if @end_time.nil?
+        duration = 0
+      else
+        duration = @end_time - @start_time
       end
+      return duration.to_i
     end
 
     def inspect
@@ -44,15 +61,18 @@ module RideShare
       "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
         "id=#{id.inspect} " +
         "passenger_id=#{passenger&.id.inspect} " +
+        "driver_id=#{driver&.id.inspect} " +
         "start_time=#{start_time} " +
         "end_time=#{end_time} " +
-        "cost=#{cost} " +
+        "cost=#{cost}  " +
         "rating=#{rating}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
+      @driver = driver
       passenger.add_trip(self)
+      driver.add_trip(self)
     end
 
     private
@@ -61,8 +81,9 @@ module RideShare
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
+               driver_id: record[:driver_id],
+               start_time: Time.parse(record[:start_time]),
+               end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating]
              )
